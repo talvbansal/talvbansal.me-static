@@ -6,25 +6,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="TalvBansal.me">
-    <title>Tag: Laravel - TalvBansal.me</title>
+    <title>Replacing Momentjs With Dayjs - TalvBansal.me</title>
     <meta name="author" content="Talv Bansal">
     
         <meta name="keywords" content="hexo,gitlab,github,javascript,es6,laravel,php,vue,vue.js,development,full stack,CI/CD,">
     
     
     
-    <script type="application/ld+json">{}</script>
-    <meta name="description" content="Tales of a full stack developer">
-<meta name="keywords" content="hexo,gitlab,github,javascript,es6,laravel,php,vue,vue.js,development,full stack,CI&#x2F;CD">
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Talv Bansal","sameAs":["https://github.com/talvbansal","https://twitter.com/talv","https://instagram.com/iwantthewindowseat","https://www.linkedin.com/in/talvinder-bansal-5826594a","mailto:talvbansal@outlook.com"],"image":"https://www.gravatar.com/avatar/be14e67a41106fe8731f839b3bd46733"},"articleBody":"Earlier this year I blogged about reducing the file size of moment.js by stripping out additional locales. Whilst stripping the locales made a good saving in file size, really all I was using it for was to format dates within my user interfaces. So I set out on finding a lightweight alternative to do just that…\n\nIn my quest to reduce my bundle size I came across a few libraries and the easiest one I found to swap in was one called dayjs. It weighed in at 2kB and had the same (well very similar) API to that of moment.js.\nImplementing it was easy - first add it to your packages.json:\n1yarn add dayjs\nWith the library installed I set out to search for all of the references to moment within my project:\n1grep -i -r \"moment\" resources/js/\nAnd then replaced the relevant imports from moment to dayjs and the method calls from moment to dayjs.I did have to update a couple of the formatters as they weren’t exactly the same as moment.js’s but my test suite picked those errors up.\nFollowing a production build I was able to compare the bundle sizes between moment.js with locales remove and dayjs in the project I was working on:\n\n\n\nConfiguration\nBundle Size\n\n\n\n\nMedia-manager with moment.js\n468kB\n\n\nMedia-manager with moment.js and locales stripped\n281kB\n\n\nMedia-manager with dayjs\n237kB\n\n\n\nSo from using moment.js without any optimiation there a pretty huge file size saving of nearly 50%! After optimising moment by stripping out excess locales we’re still seeing a 44kB file size saving giving us an additional 15% saving on this particular bundle.\nAs well as givng a smaller bundle there was no longer any need to have additional configuration within my webpack.mix.js file!\nDon’t forget to remove momentjs from your packages.json file and run yarn to rebuild the lockfile.\n","dateCreated":"2018-10-02T19:01:00-05:00","dateModified":"2018-10-02T20:03:28-05:00","datePublished":"2018-10-02T19:01:00-05:00","description":"Earlier this year I blogged about reducing the file size of moment.js by stripping out additional locales. Whilst stripping the locales made a good saving in file size, really all I was using it for was to format dates within my user interfaces. So I set out on finding a lightweight alternative to do just that…","headline":"Replacing Momentjs With Dayjs","image":["mexico-city-bellas-artes.jpg","./mexico-city-bellas-artes.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://talvbansal.me/blog/replace-momentjs-with-dayjs/"},"publisher":{"@type":"Organization","name":"Talv Bansal","sameAs":["https://github.com/talvbansal","https://twitter.com/talv","https://instagram.com/iwantthewindowseat","https://www.linkedin.com/in/talvinder-bansal-5826594a","mailto:talvbansal@outlook.com"],"image":"https://www.gravatar.com/avatar/be14e67a41106fe8731f839b3bd46733","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/be14e67a41106fe8731f839b3bd46733"}},"url":"https://talvbansal.me/blog/replace-momentjs-with-dayjs/","keywords":"Laravel, Javascript, Ecmascript, Tooling, Moment.js, Day.js","thumbnailUrl":"mexico-city-bellas-artes.jpg"}</script>
+    <meta name="description" content="Earlier this year I blogged about reducing the file size of moment.js by stripping out additional locales. Whilst stripping the locales made a good saving in file size, really all I was using it for w">
+<meta name="keywords" content="Laravel,Javascript,Ecmascript,Tooling,Moment.js,Day.js">
 <meta property="og:type" content="blog">
-<meta property="og:title" content="TalvBansal.me">
-<meta property="og:url" content="https://talvbansal.me/tags/Laravel/index.html">
+<meta property="og:title" content="Replacing Momentjs With Dayjs">
+<meta property="og:url" content="https://talvbansal.me/blog/replace-momentjs-with-dayjs/index.html">
 <meta property="og:site_name" content="TalvBansal.me">
-<meta property="og:description" content="Tales of a full stack developer">
+<meta property="og:description" content="Earlier this year I blogged about reducing the file size of moment.js by stripping out additional locales. Whilst stripping the locales made a good saving in file size, really all I was using it for w">
 <meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2018-10-03T01:03:28.114Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="TalvBansal.me">
-<meta name="twitter:description" content="Tales of a full stack developer">
+<meta name="twitter:title" content="Replacing Momentjs With Dayjs">
+<meta name="twitter:description" content="Earlier this year I blogged about reducing the file size of moment.js by stripping out additional locales. Whilst stripping the locales made a good saving in file size, really all I was using it for w">
 <meta name="twitter:creator" content="@talv">
     
     
@@ -34,6 +35,12 @@
         <meta property="og:image" content="https://www.gravatar.com/avatar/321065504328f47a4f9d8b57df0635f4?s=640"/>
     
     
+        <meta property="og:image" content="https://talvbansal.me/blog/replace-momentjs-with-dayjs/mexico-city-bellas-artes.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://talvbansal.me/blog/replace-momentjs-with-dayjs/mexico-city-bellas-artes.jpg" />
+    
+    
+        <meta property="og:image" content="https://talvbansal.me/blog/replace-momentjs-with-dayjs/./mexico-city-bellas-artes.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://talvbansal.me/blog/replace-momentjs-with-dayjs/./mexico-city-bellas-artes.jpg" />
     
     
     <!--STYLES-->
@@ -53,7 +60,7 @@
         
     
 
-<header id="header" data-behavior="1">
+<header id="header" data-behavior="4">
     <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
     <div class="header-title">
         <a class="header-title-link" href="/ ">TalvBansal.me</a>
@@ -75,7 +82,7 @@
 
     
 
-<nav id="sidebar" data-behavior="1">
+<nav id="sidebar" data-behavior="4">
     <div class="sidebar-container">
         
             <div class="sidebar-profile">
@@ -242,26 +249,20 @@
 </nav>
 
             
-            <div id="main" data-behavior="1"
-                 class="
-                        hasCoverMetaIn
-                        ">
-                
-    <section class="postShorten-group main-content-wrap">
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
+        <div class="post-header-cover
+                    text-center
+                    post-header-cover--partial"
+             style="background-image:url('/blog/replace-momentjs-with-dayjs/./mexico-city-bellas-artes.jpg');"
+             data-behavior="4">
             
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/replace-momentjs-with-dayjs/">
-                            Replacing Momentjs With Dayjs
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
+                <div class="post-header main-content-wrap text-center">
+    
+        <h1 class="post-title">
+            Replacing Momentjs With Dayjs
+        </h1>
+    
+    
+        <div class="post-meta">
     <time datetime="2018-10-02T19:01:00-05:00">
 	
 		    Oct 02, 2018
@@ -270,461 +271,155 @@
     
 </div>
 
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <p>Earlier this year I blogged about reducing the file size of moment.js by stripping out additional locales. Whilst stripping the locales made a good saving in file size, really all I was using it for was to format dates within my user interfaces. So I set out on finding a lightweight alternative to do just that…</p>
-                    
-                        <a href="/blog/replace-momentjs-with-dayjs/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/blog/replace-momentjs-with-dayjs/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://talvbansal.me/blog/replace-momentjs-with-dayjs/mexico-city-bellas-artes.jpg"/>
-                </div>
-            </a>
-            
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/optimising-moment-js-with-laravel-mix/">
-                            Optimising Moment.js with Laravel Mix
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-04-18T15:56:44-05:00">
-	
-		    Apr 18, 2018
-    	
-    </time>
     
 </div>
 
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <p>The PHP library <a href="https://carbon.nesbot.com/docs/" target="_blank" rel="noopener">Carbon</a> is hands down my favourite way to work with dates within PHP.<br>When using Javascript the closes thing ive found to it is a library called <a href="https://momentjs.com" target="_blank" rel="noopener">Moment.js</a>.</p>
-<p>By default Moment.js is bundled with a plethora of locales which might not all be relavent to you or your users. In this article I want to look at how much of a size reduction we can use by stripping out unwanted locales using <a href="https://webpack.js.org" target="_blank" rel="noopener">webpack</a> via <a href="https://github.com/JeffreyWay/laravel-mix/tree/master/docs#readme" target="_blank" rel="noopener">Laravel-Mix</a>.</p>
-                    
-                        <a href="/blog/optimising-moment-js-with-laravel-mix/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
             
         </div>
-        
-            <a href="/blog/optimising-moment-js-with-laravel-mix/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://talvbansal.me/blog/optimising-moment-js-with-laravel-mix/mexico-city-street-art.jpg"/>
-                </div>
-            </a>
+
+            <div id="main" data-behavior="4"
+                 class="hasCover
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>Earlier this year I blogged about reducing the file size of moment.js by stripping out additional locales. Whilst stripping the locales made a good saving in file size, really all I was using it for was to format dates within my user interfaces. So I set out on finding a lightweight alternative to do just that…</p>
+<a id="more"></a>
+<p>In my quest to reduce my bundle size I came across a few libraries and the easiest one I found to swap in was one called <a href="https://github.com/iamkun/dayjs" target="_blank" rel="noopener">dayjs</a>. It weighed in at 2kB and had the same (well very similar) API to that of moment.js.</p>
+<p>Implementing it was easy - first add it to your <code>packages.json</code>:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yarn add dayjs</span><br></pre></td></tr></table></figure>
+<p>With the library installed I set out to search for all of the references to moment within my project:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep -i -r <span class="string">"moment"</span> resources/js/</span><br></pre></td></tr></table></figure>
+<p>And then replaced the relevant imports from <code>moment</code> to <code>dayjs</code> and the method calls from <code>moment</code> to <code>dayjs</code>.<br>I did have to update a couple of the <a href="https://github.com/iamkun/dayjs/blob/master/docs/en/API-reference.md#format-formatstringwithtokens-string" target="_blank" rel="noopener">formatters</a> as they weren’t exactly the same as moment.js’s but my test suite picked those errors up.</p>
+<p>Following a production build I was able to compare the bundle sizes between <code>moment.js</code> with locales remove and <code>dayjs</code> in the project I was working on:</p>
+<table>
+<thead>
+<tr>
+<th>Configuration</th>
+<th style="text-align:center">Bundle Size</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://github.com/talvbansal/media-manager/blob/ee76639b154a88f58f05a97c5533922a23448274/public/js/media-manager.js" target="_blank" rel="noopener">Media-manager with moment.js</a></td>
+<td style="text-align:center">468kB</td>
+</tr>
+<tr>
+<td><a href="https://github.com/talvbansal/media-manager/blob/37936444d356e41aab395c402c5837e957f241b0/public/js/media-manager.js" target="_blank" rel="noopener">Media-manager with moment.js and locales stripped</a></td>
+<td style="text-align:center">281kB</td>
+</tr>
+<tr>
+<td><a href="https://github.com/talvbansal/media-manager/blob/ea555c4219cad9581edd3e1ef5673f9ae5bd11a6/public/js/media-manager.js" target="_blank" rel="noopener">Media-manager with dayjs</a></td>
+<td style="text-align:center">237kB</td>
+</tr>
+</tbody>
+</table>
+<p>So from using moment.js without any optimiation there a pretty huge file size saving of nearly 50%! After optimising moment by stripping out excess locales we’re still seeing a 44kB file size saving giving us an additional 15% saving on this particular bundle.</p>
+<p>As well as givng a smaller bundle there was no longer any need to have <a href="https://github.com/talvbansal/media-manager/commit/ea555c4219cad9581edd3e1ef5673f9ae5bd11a6#diff-61877038a5575038809abf03f0009520" target="_blank" rel="noopener">additional configuration within my <code>webpack.mix.js</code> file</a>!</p>
+<p>Don’t forget to remove <code>momentjs</code> from your <code>packages.json</code> file and run <code>yarn</code> to rebuild the lockfile.</p>
+
             
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
         
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/adding-eslint-to-your-laravel-application/">
-                            Adding eslint to your Laravel application
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-02-04T15:56:44-06:00">
-	
-		    Feb 04, 2018
-    	
-    </time>
-    
-</div>
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/Day-js/">Day.js</a> <a class="tag tag--primary tag--small t-link" href="/tags/Ecmascript/">Ecmascript</a> <a class="tag tag--primary tag--small t-link" href="/tags/Javascript/">Javascript</a> <a class="tag tag--primary tag--small t-link" href="/tags/Laravel/">Laravel</a> <a class="tag tag--primary tag--small t-link" href="/tags/Moment-js/">Moment.js</a> <a class="tag tag--primary tag--small t-link" href="/tags/Tooling/">Tooling</a>
 
             </div>
-            
-                <div class="postShorten-excerpt">
-                    <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>My latest projects at work have evolved from being PHP / Laravel applications with sprinklings of Vue JS on the front end to being almost entirely Vue JS components driving the frontend with Laravel backends.</p>
-<p>Whilst laravel ships with <a href="https://laravel.com/docs/master/mix" target="_blank" rel="noopener">Laravel-Mix</a> to make webpack / asset compilation easier it doesn’t ship with anyway to lint your javascript.</p>
-<p>Luckily adding <a href="https://eslint.org/" target="_blank" rel="noopener">eslint</a> and defining rules for your <code>.js</code> and <code>.vue</code> files to follow is pretty straight forward.</p>
-                    
-                        <a href="/blog/adding-eslint-to-your-laravel-application/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
         
-            <a href="/blog/adding-eslint-to-your-laravel-application/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://talvbansal.me/blog/adding-eslint-to-your-laravel-application/portugal-tram.jpg"/>
-                </div>
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--disabled">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/blog/testing-gitlab-ci-config-locally/" data-tooltip="Testing your Gitlab CI config locally" aria-label="NEXT: Testing your Gitlab CI config locally">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://talvbansal.me/blog/replace-momentjs-with-dayjs/" title="Share on Facebook">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://talvbansal.me/blog/replace-momentjs-with-dayjs/" title="Share on Twitter">
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://talvbansal.me/blog/replace-momentjs-with-dayjs/" title="Share on Google+">
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
             
         
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
+        <li class="post-action">
             
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/jquery-to-vue/">
-                            jQuery to Vue
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-01-15T16:24:17-06:00">
-	
-		    Jan 15, 2018
-    	
-    </time>
-    
-</div>
-
-            </div>
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
             
-                <div class="postShorten-excerpt">
-                    <p>Recently I spoke at <a href="http://vuejs.nyc/" target="_blank" rel="noopener">VueNYC</a> about my journey from the world of jQuery to Vue and some of the problems people may have along the way:</p>
-<p>Check it out below:</p>
-<div class="video-container"><iframe src="//www.youtube.com/embed/7YiWLXzXFh4" frameborder="0" allowfullscreen></iframe></div>
-<p>If you’re in NYC they have monthly meetups that you can sign up for over here : <a href="https://www.meetup.com/vueJsNYC" target="_blank" rel="noopener">VueNYC</a>. </p>
-                    
-                        <a href="/blog/jquery-to-vue/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/blog/jquery-to-vue/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://talvbansal.me/blog/jquery-to-vue/nyc-from-empire-state.jpg"/>
-                </div>
+                <i class="fa fa-list" aria-hidden="true"></i>
             </a>
-            
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/simple-push-to-deploy-with-gitlab-cicd/">
-                            Simple push to deploy with Gitlab CI/CD
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2017-05-24T16:15:27-05:00">
-	
-		    May 24, 2017
-    	
-    </time>
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>This article follows directly on from my <a href="https://talvbansal.me/blog/gitlab-ci-for-php-applications">previous article</a> on adding gitlab’s CI to my PHP projects.</p>
-<p>Once we’re happy with our code being automatically tested we might want it to be automatically deployed to a testing server / environment or maybe even production.<br>
-                    
-                        <a href="/blog/simple-push-to-deploy-with-gitlab-cicd/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/blog/simple-push-to-deploy-with-gitlab-cicd/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://talvbansal.me/blog/simple-push-to-deploy-with-gitlab-cicd/westminister-sunset.jpg"/>
-                </div>
-            </a>
-            
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/gitlab-ci-for-php-applications/">
-                            Gitlab CI for PHP applications
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2017-02-24T16:24:17-06:00">
-	
-		    Feb 24, 2017
-    	
-    </time>
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>Gitlab provides some good documentation on getting build runners for your projects set up which can be found <a href="https://about.gitlab.com/2016/03/01/gitlab-runner-with-docker/" target="_blank" rel="noopener">here</a>. However I haven’t found a good article on setting up Gitlab CI for PHP applications yet. </p>
-<p>This article is not going to discuss setting up shared runners on Gitlab since I felt the documentation provided by them in the link above was easy enough to follow, what this I am going to focus on is the <code>.gitlab-ci.yml</code> configuration that I’m currently using in my projects to do the following: </p>
-<ul>
-<li>Run PHP CS against our code base to ensure that it conforms to PSR-2</li>
-<li>Run PHPUnit against our code base to ensure that our unit tests pass against different versions of PHP (5.6, 7.0, 7.1)</li>
-</ul>
-                    
-                        <a href="/blog/gitlab-ci-for-php-applications/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/blog/gitlab-ci-for-php-applications/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://talvbansal.me/blog/gitlab-ci-for-php-applications/cancun-sunset.jpg"/>
-                </div>
-            </a>
-            
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/setting-up-a-private-gitlab-server-on-ubuntu-1604/">
-                            Setting up a private GitLab server on Ubuntu 16.04
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2016-09-16T19:09:13-05:00">
-	
-		    Sep 16, 2016
-    	
-    </time>
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>Where I work, we’ve been using an Ubuntu Server running <a href="http://gitolite.com/gitolite/index.html" target="_blank" rel="noopener">gitolite</a> to act as our “Source control server” and manage permissions and access. Its worked well, and after some initial configuration (which I recall being pretty tricky) looking after the gitolite instance has been pretty easy and could easily continue to serve our needs as a small business well.</p>
-<p>Adding new users required you to get an ssh key from the new user, add it to an “administration repository” and then add their name to a config file within that repository. The same config file could then be used to determine which access rights they had to repositories as well as defining new repositories.</p>
-<p>We also use a <a href="https://getcomposer.org/doc/articles/handling-private-packages-with-satis.md" target="_blank" rel="noopener">satis</a> install to act as a private composer for our internal private packages.</p>
-<p>One of the things gitolite doesn’t provide you with is any sort of front end at all, everything has to be done through the terminal. It also requires you to have all of the following tools separately:</p>
-<ul>
-<li>Issue tracker</li>
-<li>File browser</li>
-<li>Activity stream</li>
-<li>Pull request management</li>
-</ul>
-<p>Which are all features that github has built in natively. </p>
-                    
-                        <a href="/blog/setting-up-a-private-gitlab-server-on-ubuntu-1604/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/blog/setting-up-a-private-gitlab-server-on-ubuntu-1604/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://talvbansal.me/blog/setting-up-a-private-gitlab-server-on-ubuntu-1604/st-basils-moscow.jpg"/>
-                </div>
-            </a>
-            
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/looking-back-on-laracon-eu-2016/">
-                            Looking back on Laracon EU 2016
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2016-08-30T19:14:25-05:00">
-	
-		    Aug 30, 2016
-    	
-    </time>
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <p>Earlier this week I attended my first “Big” Conference - <strong><a href="http://laracon.eu/2016/" target="_blank" rel="noopener">Laracon EU 2016</a></strong>. I’ve been to other tech conferences before but by comparison Laracon EU was <strong>HUGE</strong>, there were 650 people in attendance in one of the most incredible venues I’ve seen. I sent pictures back to my friends and home who said that it looked like a club night more than a conference!<br>
-                    
-                        <a href="/blog/looking-back-on-laracon-eu-2016/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/blog/looking-back-on-laracon-eu-2016/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://talvbansal.me/blog/looking-back-on-laracon-eu-2016/laracon-2016-stage.jpg"/>
-                </div>
-            </a>
-            
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/finally-contributing-to-open-source/">
-                            (Finally) Contributing to open source
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2016-08-16T19:24:17-05:00">
-	
-		    Aug 16, 2016
-    	
-    </time>
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <p>I once read an article on the merits of contributing to open source projects, within it i remember the author saying that the even smallest things can make all the difference. They even went on to say that their first commit was fixing a one character spelling mistake.</p>
-<p>Open source software has provided me the tools to make my living as a software engineer over the past 9ish years, over that period I’ve always wanted to contribute back to the community to but for some reason I never actually have. Maybe I wasn’t looking in the right places, perhaps i was looking at the wrong projects when my skills weren’t where they needed who knows. I just knew that eventually I wanted to.</p>
-                    
-                        <a href="/blog/finally-contributing-to-open-source/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/blog/finally-contributing-to-open-source/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://talvbansal.me/blog/finally-contributing-to-open-source/south-africa-penguins.jpg"/>
-                </div>
-            </a>
-            
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/laravel-homestead-on-windows-10-with-bash-on-ubuntu/">
-                            Laravel Homestead on Windows 10 with Bash On Ubuntu
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2016-08-11T19:17:46-05:00">
-	
-		    Aug 11, 2016
-    	
-    </time>
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <p>In preparation for <a href="http://laracon.eu/2016/" target="_blank" rel="noopener">Laracon EU</a> in a couple of weeks i figured I’d need to take a device along with me - paper and pen would probably have been fine but Laracon looks to be huge and i dont want to be unprepared, plus you always see rows of silver lids and glowing apple symbols in the photos from developer conferences! </p>
-<p>I do almost all of my work on a Dell Precision 7710 which dual boots Ubuntu for development purposes and Windows for my photo editing. I also have a Surface Pro 4 which i use for note taking and photo editing on the go - <em>I’ll be writing about how I keep all of my photos in sync in a future post</em>!</p>
-<p>Neither of the above are Macbooks but whilst the Dell Precision runs Ubuntu and anything else I can throw at it, it is HUGE and not ideal to take well … anywhere! So I figured I’d try and get a development environment set up on my Surface Pro 4 instead. </p>
-<p>I’d heard of setups using Homestead / Vagrant / Virtualbox before, but since I was using Ubuntu, I’ve never had any need to explore it any further so this really is a guide for first timer noobs. The <a href="https://laravel.com/docs/5.2/homestead" target="_blank" rel="noopener">official Laravel Homestead guide</a> appears to be geared up mostly for Mac users, Windows users will need a bit more help which is where I’m hoping this post will help.</p>
-<p>Anyway by the end of this guide I’ll have a Surface Pro 4 running Laravel Homestead and fingers crossed you’ll have a Windows device doing the same thing too! This has been a really long introduction, lets get to it!</p>
-                    
-                        <a href="/blog/laravel-homestead-on-windows-10-with-bash-on-ubuntu/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/blog/laravel-homestead-on-windows-10-with-bash-on-ubuntu/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://talvbansal.me/blog/laravel-homestead-on-windows-10-with-bash-on-ubuntu/south-africa-lion-male.jpg"/>
-                </div>
-            </a>
-            
-        
-    </article>
-    
-    <div class="pagination-bar">
-    <ul class="pagination">
-        
-        
-        <li class="pagination-number">page 1 of 1</li>
+        </li>
     </ul>
 </div>
 
-</section>
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
 
 
                 <footer id="footer" class="main-content-wrap">
@@ -734,6 +429,113 @@
 </footer>
 
             </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--disabled">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/blog/testing-gitlab-ci-config-locally/" data-tooltip="Testing your Gitlab CI config locally" aria-label="NEXT: Testing your Gitlab CI config locally">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://talvbansal.me/blog/replace-momentjs-with-dayjs/" title="Share on Facebook">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://talvbansal.me/blog/replace-momentjs-with-dayjs/" title="Share on Twitter">
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://talvbansal.me/blog/replace-momentjs-with-dayjs/" title="Share on Google+">
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+    <i id="btn-close-shareoptions" class="fa fa-times"></i>
+    <ul class="share-options">
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://talvbansal.me/blog/replace-momentjs-with-dayjs/">
+                    <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https://talvbansal.me/blog/replace-momentjs-with-dayjs/">
+                    <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https://talvbansal.me/blog/replace-momentjs-with-dayjs/">
+                    <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                </a>
+            </li>
+        
+    </ul>
+</div>
+
             
         </div>
         
@@ -1095,6 +897,25 @@
         <!--SCRIPTS-->
 <script src="/assets/js/script-vufjrm3fmbuttogo1hxuu0w9w0sesk5iyysjuguc2hdhufot9szxg8twijry.min.js"></script>
 <!--SCRIPTS END-->
+
+    
+        <script>
+             var disqus_config = function () {
+                 this.page.url = 'https://talvbansal.me/blog/replace-momentjs-with-dayjs/';
+                 
+                    this.page.identifier = 'blog/replace-momentjs-with-dayjs/';
+                 
+             };
+            (function() {
+                var d = document, s = d.createElement('script');
+                var disqus_shortname = 'talvbansalblog';
+                s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment-with-locales.min.js"></script>
