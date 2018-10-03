@@ -1,0 +1,971 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="TalvBansal.me">
+    <title>Setting up a private GitLab server on Ubuntu 16.04 - TalvBansal.me</title>
+    <meta name="author" content="Talv Bansal">
+    
+        <meta name="keywords" content="hexo,gitlab,github,javascript,es6,laravel,php,vue,vue.js,development,full stack,">
+    
+    
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Talv Bansal","sameAs":["https://github.com/talvbansal","https://twitter.com/talv","https://facebook.com/","https://www.linkedin.com/in/talvinder-bansal-5826594a","mailto:talvbansal@outlook.com"],"image":"https://www.gravatar.com/avatar/be14e67a41106fe8731f839b3bd46733"},"articleBody":"IntroductionWhere I work, we’ve been using an Ubuntu Server running gitolite to act as our “Source control server” and manage permissions and access. Its worked well, and after some initial configuration (which I recall being pretty tricky) looking after the gitolite instance has been pretty easy and could easily continue to serve our needs as a small business well.\nAdding new users required you to get an ssh key from the new user, add it to an “administration repository” and then add their name to a config file within that repository. The same config file could then be used to determine which access rights they had to repositories as well as defining new repositories.\nWe also use a satis install to act as a private composer for our internal private packages.\nOne of the things gitolite doesn’t provide you with is any sort of front end at all, everything has to be done through the terminal. It also requires you to have all of the following tools separately:\n\nIssue tracker\nFile browser\nActivity stream\nPull request management\n\nWhich are all features that github has built in natively. \n\nSince I used github for my own projects it would have been ideal for us to move to the paid plan over there to keep our repositories private. However our business wanted to keep everything on our own servers - hence the original gitolite set up. \nGitlab  is very similar to github in what it offers (free for open source projects, paid for private) but with one big difference, it offers a community version that you can self host. \nMostly for my own reference I’m going to detail the steps I’ve gone through to get our gitlab instance set up. The gitlab install process is straight forward, just follow the CE documentation.\nBefore i started anything I checked that all of the projects I wanted to migrate had been checked out on my local machine along with all of the branches of those projects that I wanted to keep (another benefit over gitolite should bring is the ease of identifying old branches within a repository that can be removed!).\n Beyond the base install I’ll be covering the following:\n\nChanging the storage directory for git repositories\nSetting up postfix to send emails from out mail server using SMTP\nCreating groups within gitlab\nImporting old repositories into the new gitlab instance\n\nI’m fortunate to be starting the process off with a freshly installed Ubuntu 16.04 LTS server, thats been fully upgraded.\nInstalling and configuring gitlab\nInstall dependencies\n 1sudo apt-get install curl openssh-server ca-certificates postfix\n\nInstall gitlab\n 12curl -sS https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh | sudo bashsudo apt-get install gitlab-ce\n\nConfigure gitlab\n 1sudo gitlab-ctl reconfigure\n\nConfigure gitlab to send E-mails via SMTP\n Edit the gitlab.rb file\n 1sudo nano /etc/gitlab/gitlab.rb\n\n\nFind the “GitLab” email server settings” section update and it and uncomment it to suite your email server settings    12345678gitlab_rails[&apos;smtp_enable&apos;] = truegitlab_rails[&apos;smtp_address&apos;] = &quot;mail.yourserver.com&quot;gitlab_rails[&apos;smtp_port&apos;] = 587gitlab_rails[&apos;smtp_domain&apos;] = &quot;mail.yourserver.com&quot;gitlab_rails[&apos;smtp_authentication&apos;] = &quot;login&quot;gitlab_rails[&apos;smtp_enable_starttls_auto&apos;] = truegitlab_rails[&apos;smtp_tls&apos;] = falsegitlab_rails[&apos;smtp_openssl_verify_mode&apos;] = &apos;none&apos;\n\nSet the git data directory\n Edit the gitlab.rb file\n 1sudo nano /etc/gitlab/gitlab.rb\n  Add the following to the bottom of the file\n  1git_data_dirs(&#123;&quot;default&quot; =&gt; &quot;/my/custom/git-data&quot;&#125;)\n\n\n\nReconfigure gitlab to make changes take effect\n 1sudo gitlab-ctl reconfigure\n\n\n\nLog into gitlab and start setting up your users and repositories!\n\nThe next thing I did was create some of the users for the system set up SSH keys (really easy to do within the admin area), create some groups and then begin importing our existing projects into the gitlab.\nGitlab groupsBy default if I as a user were to create a repository within gitlab it would exist under my username’s namespace, forexample : talv/my-project. Normally this would be the expected behaviour and totally fine for my own work, but when working on company projects it wont do, we’d want something like company-name/project-name which could then be forked by other users.\nOriginally i created a user called with the name of our company and figured that admin users could just  “impersonate” (an awesome admin feature that lets you pretend to be another user and see / interact with the system as them) the company user to create new project repositories. This 100% was not the right thing to do, since deleting that user would delete all of the companys codebase along with it! \nI then came across the Groups feature within the admin area. Creating a group makes a namespace for projects to become a part of, so if you had a bunch of projects that are only ever used internally by other projects (as our company does) you could create an “Internal” group. \nAfter creating a group every project you create going forward can belong to either your User namespace (talv/my-project) or a Group namespace (internal/important-api)\nThe other thing with groups are that you can not delete a user if it is the Owner of a group. You have to transfer ownership of the group to another user then delete the user account. Much safer than what I originally had!\nImporting existing repositoriesGitlab provides a number of hooks to import existing repositories from some of the most popular services (github, bitbucket etc) into it using the New Project section, it even allows you to add a repo from a url!\nThis should be fine for most use case scenarios however gitolite uses ssh keys to authenticate use access and whilst you can add username / password authentication to your url strings, I couldn’t figure out how to get gitlab to authenticate with an ssh key. \nTo be honest i didn’t really look for very long as i knew of a way that was a bit more labour intensive but didn’t take too long.\nI knew from past experience you can edit a projects .git/config file to point at a new location and push all of the projects history there too.\nSo to begin with, within gitlab I created blank projects for all of the projects i wanted to import. \nThen back on my development machine (with all of our work projects checked out on.) I went into each project folder and then opened the .git/config file I edited the origin remote’s url key to point at the new server and repository name.\n123[remote &quot;origin&quot;]\turl = git@server-name:/group-name/project-name\tfetch = +refs/heads/*:refs/remotes/origin/*\nThen after saving the changes above, i then had to checkout each branch that I wanted to save to our new server and run git push to push that branch to gitlab.\nLike i said this is a labour intensive process so if anyone knows of a better way of doing this let me know and I’ll update the post!\nEndYou should now have a configured gitlab instance up and running with groups created with repositories imported and ready for you to continue using.\nWhat else do you do with your gitlab installs let me know in the comments!\n","dateCreated":"2016-09-16T19:09:13-05:00","dateModified":"2018-09-10T08:05:33-05:00","datePublished":"2016-09-16T19:09:13-05:00","description":"IntroductionWhere I work, we’ve been using an Ubuntu Server running gitolite to act as our “Source control server” and manage permissions and access. Its worked well, and after some initial configuration (which I recall being pretty tricky) looking after the gitolite instance has been pretty easy and could easily continue to serve our needs as a small business well.\nAdding new users required you to get an ssh key from the new user, add it to an “administration repository” and then add their name to a config file within that repository. The same config file could then be used to determine which access rights they had to repositories as well as defining new repositories.\nWe also use a satis install to act as a private composer for our internal private packages.\nOne of the things gitolite doesn’t provide you with is any sort of front end at all, everything has to be done through the terminal. It also requires you to have all of the following tools separately:\n\nIssue tracker\nFile browser\nActivity stream\nPull request management\n\nWhich are all features that github has built in natively. ","headline":"Setting up a private GitLab server on Ubuntu 16.04","image":["st-basils-moscow.jpg","./st-basils-moscow.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://talvbansal.me/blog/setting-up-a-private-gitlab-server-on-ubuntu-1604/"},"publisher":{"@type":"Organization","name":"Talv Bansal","sameAs":["https://github.com/talvbansal","https://twitter.com/talv","https://facebook.com/","https://www.linkedin.com/in/talvinder-bansal-5826594a","mailto:talvbansal@outlook.com"],"image":"https://www.gravatar.com/avatar/be14e67a41106fe8731f839b3bd46733","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/be14e67a41106fe8731f839b3bd46733"}},"url":"https://talvbansal.me/blog/setting-up-a-private-gitlab-server-on-ubuntu-1604/","keywords":"Laravel, Gitlab, PHP, Devops","thumbnailUrl":"st-basils-moscow.jpg"}</script>
+    <meta name="description" content="IntroductionWhere I work, we’ve been using an Ubuntu Server running gitolite to act as our “Source control server” and manage permissions and access. Its worked well, and after some initial configurat">
+<meta name="keywords" content="Laravel,Gitlab,PHP,Devops">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Setting up a private GitLab server on Ubuntu 16.04">
+<meta property="og:url" content="https://talvbansal.me/blog/setting-up-a-private-gitlab-server-on-ubuntu-1604/index.html">
+<meta property="og:site_name" content="TalvBansal.me">
+<meta property="og:description" content="IntroductionWhere I work, we’ve been using an Ubuntu Server running gitolite to act as our “Source control server” and manage permissions and access. Its worked well, and after some initial configurat">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2018-09-10T13:05:33.107Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Setting up a private GitLab server on Ubuntu 16.04">
+<meta name="twitter:description" content="IntroductionWhere I work, we’ve been using an Ubuntu Server running gitolite to act as our “Source control server” and manage permissions and access. Its worked well, and after some initial configurat">
+<meta name="twitter:creator" content="@talv">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://www.gravatar.com/avatar/321065504328f47a4f9d8b57df0635f4?s=640"/>
+    
+    
+        <meta property="og:image" content="https://talvbansal.me/blog/setting-up-a-private-gitlab-server-on-ubuntu-1604/st-basils-moscow.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://talvbansal.me/blog/setting-up-a-private-gitlab-server-on-ubuntu-1604/st-basils-moscow.jpg" />
+    
+    
+        <meta property="og:image" content="https://talvbansal.me/blog/setting-up-a-private-gitlab-server-on-ubuntu-1604/./st-basils-moscow.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://talvbansal.me/blog/setting-up-a-private-gitlab-server-on-ubuntu-1604/./st-basils-moscow.jpg" />
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-du2xmrqdqrl2ollgeiw050kpl6l4nbyz7bumjuurjgsxyopifvukebxc9lqe.min.css">
+    <!--STYLES END-->
+    
+
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a class="header-title-link" href="/ ">TalvBansal.me</a>
+    </div>
+    
+        
+            <a  class="header-right-picture "
+                href="#about">
+        
+        
+            <img class="header-picture" src="https://www.gravatar.com/avatar/321065504328f47a4f9d8b57df0635f4?s=90" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+    
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a href="/#about">
+                    <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/321065504328f47a4f9d8b57df0635f4?s=110" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Talv Bansal</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>author.bio</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                            title="Categories"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-tags"
+                            
+                            title="Tags"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archives"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link open-algolia-search"
+                             href="#search"
+                            
+                            title="Search"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Search</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="#about"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/talvbansal" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://twitter.com/talv" target="_blank" rel="noopener" title="Twitter">
+                    
+                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://facebook.com/" target="_blank" rel="noopener" title="Facebook">
+                    
+                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Facebook</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://www.linkedin.com/in/talvinder-bansal-5826594a" target="_blank" rel="noopener" title="LinkedIn">
+                    
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="mailto:talvbansal@outlook.com" target="_blank" rel="noopener" title="Mail">
+                    
+                        <i class="sidebar-button-icon fa fa-envelope" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Mail</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/atom.xml"
+                            
+                            title="RSS"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+        <div class="post-header-cover
+                    text-center
+                    post-header-cover--partial"
+             style="background-image:url('/blog/setting-up-a-private-gitlab-server-on-ubuntu-1604/./st-basils-moscow.jpg');"
+             data-behavior="4">
+            
+                <div class="post-header main-content-wrap text-center">
+    
+        <h1 class="post-title">
+            Setting up a private GitLab server on Ubuntu 16.04
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2016-09-16T19:09:13-05:00">
+	
+		    Sep 16, 2016
+    	
+    </time>
+    
+</div>
+
+    
+</div>
+
+            
+        </div>
+
+            <div id="main" data-behavior="4"
+                 class="hasCover
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>Where I work, we’ve been using an Ubuntu Server running <a href="http://gitolite.com/gitolite/index.html" target="_blank" rel="noopener">gitolite</a> to act as our “Source control server” and manage permissions and access. Its worked well, and after some initial configuration (which I recall being pretty tricky) looking after the gitolite instance has been pretty easy and could easily continue to serve our needs as a small business well.</p>
+<p>Adding new users required you to get an ssh key from the new user, add it to an “administration repository” and then add their name to a config file within that repository. The same config file could then be used to determine which access rights they had to repositories as well as defining new repositories.</p>
+<p>We also use a <a href="https://getcomposer.org/doc/articles/handling-private-packages-with-satis.md" target="_blank" rel="noopener">satis</a> install to act as a private composer for our internal private packages.</p>
+<p>One of the things gitolite doesn’t provide you with is any sort of front end at all, everything has to be done through the terminal. It also requires you to have all of the following tools separately:</p>
+<ul>
+<li>Issue tracker</li>
+<li>File browser</li>
+<li>Activity stream</li>
+<li>Pull request management</li>
+</ul>
+<p>Which are all features that github has built in natively. </p>
+<a id="more"></a>
+<p>Since I used github for my own projects it would have been ideal for us to move to the paid plan over there to keep our repositories private. However our business wanted to keep everything on our own servers - hence the original gitolite set up. </p>
+<p><a href="http://www.gitlab.com" target="_blank" rel="noopener">Gitlab </a> is very similar to github in what it offers (free for open source projects, paid for private) but with one big difference, it offers a community version that you can self host. </p>
+<p>Mostly for my own reference I’m going to detail the steps I’ve gone through to get our gitlab instance set up. The gitlab install process is straight forward, just follow the <a href="https://about.gitlab.com/downloads/#ubuntu1604" target="_blank" rel="noopener">CE documentation</a>.</p>
+<p>Before i started anything I checked that all of the projects I wanted to migrate had been checked out on my local machine along with all of the branches of those projects that I wanted to keep (another benefit over gitolite should bring is the ease of identifying old branches within a repository that can be removed!).</p>
+<p> Beyond the base install I’ll be covering the following:</p>
+<ul>
+<li>Changing the storage directory for git repositories</li>
+<li>Setting up postfix to send emails from out mail server using SMTP</li>
+<li>Creating groups within gitlab</li>
+<li>Importing old repositories into the new gitlab instance</li>
+</ul>
+<p>I’m fortunate to be starting the process off with a freshly installed Ubuntu 16.04 LTS server, thats been fully upgraded.</p>
+<h2 id="Installing-and-configuring-gitlab"><a href="#Installing-and-configuring-gitlab" class="headerlink" title="Installing and configuring gitlab"></a>Installing and configuring gitlab</h2><ol>
+<li><p>Install dependencies</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install curl openssh-server ca-certificates postfix</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Install gitlab</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl -sS https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh | sudo bash</span><br><span class="line">sudo apt-get install gitlab-ce</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Configure gitlab</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo gitlab-ctl reconfigure</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Configure gitlab to send E-mails via SMTP</p>
+<p> Edit the gitlab.rb file</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo nano /etc/gitlab/gitlab.rb</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>Find the “GitLab” email server settings” section update and it and uncomment it to suite your email server settings<br>    <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">gitlab_rails[&apos;smtp_enable&apos;] = true</span><br><span class="line">gitlab_rails[&apos;smtp_address&apos;] = &quot;mail.yourserver.com&quot;</span><br><span class="line">gitlab_rails[&apos;smtp_port&apos;] = 587</span><br><span class="line">gitlab_rails[&apos;smtp_domain&apos;] = &quot;mail.yourserver.com&quot;</span><br><span class="line">gitlab_rails[&apos;smtp_authentication&apos;] = &quot;login&quot;</span><br><span class="line">gitlab_rails[&apos;smtp_enable_starttls_auto&apos;] = true</span><br><span class="line">gitlab_rails[&apos;smtp_tls&apos;] = false</span><br><span class="line">gitlab_rails[&apos;smtp_openssl_verify_mode&apos;] = &apos;none&apos;</span><br></pre></td></tr></table></figure></p>
+<ol>
+<li><p>Set the git data directory</p>
+<p> Edit the gitlab.rb file</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo nano /etc/gitlab/gitlab.rb</span><br></pre></td></tr></table></figure>
+<p>  Add the following to the bottom of the file</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git_data_dirs(&#123;&quot;default&quot; =&gt; &quot;/my/custom/git-data&quot;&#125;)</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<ol>
+<li><p>Reconfigure gitlab to make changes take effect</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo gitlab-ctl reconfigure</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<ol>
+<li>Log into gitlab and start setting up your users and repositories!</li>
+</ol>
+<p>The next thing I did was create some of the users for the system set up SSH keys (really easy to do within the admin area), create some groups and then begin importing our existing projects into the gitlab.</p>
+<h2 id="Gitlab-groups"><a href="#Gitlab-groups" class="headerlink" title="Gitlab groups"></a>Gitlab groups</h2><p>By default if I as a user were to create a repository within gitlab it would exist under my username’s namespace, forexample : <code>talv/my-project</code>. Normally this would be the expected behaviour and totally fine for my own work, but when working on company projects it wont do, we’d want something like <code>company-name/project-name</code> which could then be forked by other users.</p>
+<p>Originally i created a user called with the name of our company and figured that admin users could just <strong><em> “impersonate”</em></strong> (an awesome admin feature that lets you pretend to be another user and see / interact with the system as them) the company user to create new project repositories. This 100% was not the right thing to do, since deleting that user would delete all of the companys codebase along with it! </p>
+<p>I then came across the <strong>Groups</strong> feature within the admin area. Creating a group makes a namespace for projects to become a part of, so if you had a bunch of projects that are only ever used internally by other projects (as our company does) you could create an <strong>“Internal”</strong> group. </p>
+<p>After creating a group every project you create going forward can belong to either your <strong>User namespace</strong> (<code>talv/my-project</code>) <em>or</em> a <strong>Group namespace</strong> (<code>internal/important-api</code>)</p>
+<p>The other thing with groups are that you can not delete a user if it is the <strong>Owner</strong> of a group. You have to transfer ownership of the group to another user then delete the user account. Much safer than what I originally had!</p>
+<h2 id="Importing-existing-repositories"><a href="#Importing-existing-repositories" class="headerlink" title="Importing existing repositories"></a>Importing existing repositories</h2><p>Gitlab provides a number of hooks to import existing repositories from some of the most popular services (github, bitbucket etc) into it using the <strong>New Project</strong> section, it even allows you to add a repo from a url!</p>
+<p>This should be fine for most use case scenarios however gitolite uses ssh keys to authenticate use access and whilst you can add username / password authentication to your url strings, I couldn’t figure out how to get gitlab to authenticate with an ssh key. </p>
+<p><em>To be honest i didn’t really look for very long as i knew of a way that was a bit more labour intensive but didn’t take too long.</em></p>
+<p>I knew from past experience you can edit a projects <code>.git/config</code> file to point at a new location and push all of the projects history there too.</p>
+<p>So to begin with, within gitlab I created blank projects for all of the projects i wanted to import. </p>
+<p>Then back on my development machine (with all of our work projects checked out on.) I went into each project folder and then opened the <code>.git/config</code> file I edited the <code>origin</code> remote’s <code>url</code> key to point at the new server and repository name.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[remote &quot;origin&quot;]</span><br><span class="line">	url = git@server-name:/group-name/project-name</span><br><span class="line">	fetch = +refs/heads/*:refs/remotes/origin/*</span><br></pre></td></tr></table></figure>
+<p>Then after saving the changes above, i then had to checkout each branch that I wanted to save to our new server and run <code>git push</code> to push that branch to gitlab.</p>
+<p>Like i said this is a labour intensive process so if anyone knows of a better way of doing this let me know and I’ll update the post!</p>
+<h2 id="End"><a href="#End" class="headerlink" title="End"></a>End</h2><p>You should now have a configured gitlab instance up and running with groups created with repositories imported and ready for you to continue using.</p>
+<p>What else do you do with your gitlab installs let me know in the comments!</p>
+
+            
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/Devops/">Devops</a> <a class="tag tag--primary tag--small t-link" href="/tags/Gitlab/">Gitlab</a> <a class="tag tag--primary tag--small t-link" href="/tags/Laravel/">Laravel</a> <a class="tag tag--primary tag--small t-link" href="/tags/PHP/">PHP</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/blog/updating-a-satis-repository-on-git-push/" data-tooltip="Updating a Satis Repository on Git Push" aria-label="PREVIOUS: Updating a Satis Repository on Git Push">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/blog/looking-back-on-laracon-eu-2016/" data-tooltip="Looking back on Laracon EU 2016" aria-label="NEXT: Looking back on Laracon EU 2016">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://talvbansal.me/blog/setting-up-a-private-gitlab-server-on-ubuntu-1604/" title="Share on Facebook">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://talvbansal.me/blog/setting-up-a-private-gitlab-server-on-ubuntu-1604/" title="Share on Twitter">
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://talvbansal.me/blog/setting-up-a-private-gitlab-server-on-ubuntu-1604/" title="Share on Google+">
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2018 Talv Bansal. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/blog/updating-a-satis-repository-on-git-push/" data-tooltip="Updating a Satis Repository on Git Push" aria-label="PREVIOUS: Updating a Satis Repository on Git Push">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/blog/looking-back-on-laracon-eu-2016/" data-tooltip="Looking back on Laracon EU 2016" aria-label="NEXT: Looking back on Laracon EU 2016">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://talvbansal.me/blog/setting-up-a-private-gitlab-server-on-ubuntu-1604/" title="Share on Facebook">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://talvbansal.me/blog/setting-up-a-private-gitlab-server-on-ubuntu-1604/" title="Share on Twitter">
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://talvbansal.me/blog/setting-up-a-private-gitlab-server-on-ubuntu-1604/" title="Share on Google+">
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+    <i id="btn-close-shareoptions" class="fa fa-times"></i>
+    <ul class="share-options">
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://talvbansal.me/blog/setting-up-a-private-gitlab-server-on-ubuntu-1604/">
+                    <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https://talvbansal.me/blog/setting-up-a-private-gitlab-server-on-ubuntu-1604/">
+                    <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https://talvbansal.me/blog/setting-up-a-private-gitlab-server-on-ubuntu-1604/">
+                    <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                </a>
+            </li>
+        
+    </ul>
+</div>
+
+            
+        </div>
+        
+
+
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://www.gravatar.com/avatar/321065504328f47a4f9d8b57df0635f4?s=110" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Talv Bansal</h4>
+        
+            <div id="about-card-bio"><p>author.bio</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>author.job</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Remote
+            </div>
+        
+    </div>
+</div>
+
+        
+            <div id="algolia-search-modal" class="modal-container">
+    <div class="modal">
+        <div class="modal-header">
+            <span class="close-button"><i class="fa fa-times"></i></span>
+            <a href="https://algolia.com" target="_blank" rel="noopener" class="searchby-algolia text-color-light link-unstyled">
+                <span class="searchby-algolia-text text-color-light text-small">by</span>
+                <img class="searchby-algolia-logo" src="https://www.algolia.com/static_assets/images/press/downloads/algolia-light.svg">
+            </a>
+            <i class="search-icon fa fa-search"></i>
+            <form id="algolia-search-form">
+                <input type="text" id="algolia-search-input" name="search"
+                    class="form-control input--large search-input" placeholder="Search "
+                    />
+            </form>
+        </div>
+        <div class="modal-body">
+            <div class="no-result text-color-light text-center">no post found</div>
+            <div class="results">
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a class="link-unstyled" href="https://talvbansal.me/blog/laravel-homestead-on-windows-10-with-bash-on-ubuntu/">
+                            <img class="media-image" src="https://talvbansal.me/blog/laravel-homestead-on-windows-10-with-bash-on-ubuntu/south-africa-lion-male.jpg" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a class="link-unstyled" href="https://talvbansal.me/blog/laravel-homestead-on-windows-10-with-bash-on-ubuntu/">
+                            <h3 class="media-heading">Laravel Homestead on Windows 10 with Bash On Ubuntu</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    Aug 11, 2016
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>In preparation for <a href="http://laracon.eu/2016/" target="_blank" rel="noopener">Laracon EU</a> in a couple of weeks i figured I’d need to take a device along with me - paper and pen would probably have been fine but Laracon looks to be huge and i dont want to be unprepared, plus you always see rows of silver lids and glowing apple symbols in the photos from developer conferences! </p>
+<p>I do almost all of my work on a Dell Precision 7710 which dual boots Ubuntu for development purposes and Windows for my photo editing. I also have a Surface Pro 4 which i use for note taking and photo editing on the go - <em>I’ll be writing about how I keep all of my photos in sync in a future post</em>!</p>
+<p>Neither of the above are Macbooks but whilst the Dell Precision runs Ubuntu and anything else I can throw at it, it is HUGE and not ideal to take well … anywhere! So I figured I’d try and get a development environment set up on my Surface Pro 4 instead. </p>
+<p>I’d heard of setups using Homestead / Vagrant / Virtualbox before, but since I was using Ubuntu, I’ve never had any need to explore it any further so this really is a guide for first timer noobs. The <a href="https://laravel.com/docs/5.2/homestead" target="_blank" rel="noopener">official Laravel Homestead guide</a> appears to be geared up mostly for Mac users, Windows users will need a bit more help which is where I’m hoping this post will help.</p>
+<p>Anyway by the end of this guide I’ll have a Surface Pro 4 running Laravel Homestead and fingers crossed you’ll have a Windows device doing the same thing too! This has been a really long introduction, lets get to it!</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a class="link-unstyled" href="https://talvbansal.me/blog/finally-contributing-to-open-source/">
+                            <img class="media-image" src="https://talvbansal.me/blog/finally-contributing-to-open-source/south-africa-penguins.jpg" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a class="link-unstyled" href="https://talvbansal.me/blog/finally-contributing-to-open-source/">
+                            <h3 class="media-heading">(Finally) Contributing to open source</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    Aug 16, 2016
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>I once read an article on the merits of contributing to open source projects, within it i remember the author saying that the even smallest things can make all the difference. They even went on to say that their first commit was fixing a one character spelling mistake.</p>
+<p>Open source software has provided me the tools to make my living as a software engineer over the past 9ish years, over that period I’ve always wanted to contribute back to the community to but for some reason I never actually have. Maybe I wasn’t looking in the right places, perhaps i was looking at the wrong projects when my skills weren’t where they needed who knows. I just knew that eventually I wanted to.</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a class="link-unstyled" href="https://talvbansal.me/blog/looking-back-on-laracon-eu-2016/">
+                            <img class="media-image" src="https://talvbansal.me/blog/looking-back-on-laracon-eu-2016/laracon-2016-stage.jpg" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a class="link-unstyled" href="https://talvbansal.me/blog/looking-back-on-laracon-eu-2016/">
+                            <h3 class="media-heading">Looking back on Laracon EU 2016</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    Aug 30, 2016
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>Earlier this week I attended my first “Big” Conference - <strong><a href="http://laracon.eu/2016/" target="_blank" rel="noopener">Laracon EU 2016</a></strong>. I’ve been to other tech conferences before but by comparison Laracon EU was <strong>HUGE</strong>, there were 650 people in attendance in one of the most incredible venues I’ve seen. I sent pictures back to my friends and home who said that it looked like a club night more than a conference!<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a class="link-unstyled" href="https://talvbansal.me/blog/setting-up-a-private-gitlab-server-on-ubuntu-1604/">
+                            <img class="media-image" src="https://talvbansal.me/blog/setting-up-a-private-gitlab-server-on-ubuntu-1604/st-basils-moscow.jpg" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a class="link-unstyled" href="https://talvbansal.me/blog/setting-up-a-private-gitlab-server-on-ubuntu-1604/">
+                            <h3 class="media-heading">Setting up a private GitLab server on Ubuntu 16.04</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    Sep 16, 2016
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>Where I work, we’ve been using an Ubuntu Server running <a href="http://gitolite.com/gitolite/index.html" target="_blank" rel="noopener">gitolite</a> to act as our “Source control server” and manage permissions and access. Its worked well, and after some initial configuration (which I recall being pretty tricky) looking after the gitolite instance has been pretty easy and could easily continue to serve our needs as a small business well.</p>
+<p>Adding new users required you to get an ssh key from the new user, add it to an “administration repository” and then add their name to a config file within that repository. The same config file could then be used to determine which access rights they had to repositories as well as defining new repositories.</p>
+<p>We also use a <a href="https://getcomposer.org/doc/articles/handling-private-packages-with-satis.md" target="_blank" rel="noopener">satis</a> install to act as a private composer for our internal private packages.</p>
+<p>One of the things gitolite doesn’t provide you with is any sort of front end at all, everything has to be done through the terminal. It also requires you to have all of the following tools separately:</p>
+<ul>
+<li>Issue tracker</li>
+<li>File browser</li>
+<li>Activity stream</li>
+<li>Pull request management</li>
+</ul>
+<p>Which are all features that github has built in natively. </p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a class="link-unstyled" href="https://talvbansal.me/blog/updating-a-satis-repository-on-git-push/">
+                            <img class="media-image" src="https://talvbansal.me/blog/updating-a-satis-repository-on-git-push/santorini-domes.jpg" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a class="link-unstyled" href="https://talvbansal.me/blog/updating-a-satis-repository-on-git-push/">
+                            <h3 class="media-heading">Updating a Satis Repository on Git Push</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    Sep 27, 2016
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p><strong>Update May 2017, looks like with the Gitab update to V9, which uses a new Gitlab API v4, Packages will not let you enable new repositories</strong></p>
+<p>I’ve made amendments to the necessary files and packages on this fork:</p>
+<p><a href="https://github.com/talvbansal/packages" target="_blank" rel="noopener">https://github.com/talvbansal/packages</a> on the “gitlab” branch.</p>
+<p>As long as you change step 2 in the guide below everything should work as expected:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/talvbansal/packages</span><br><span class="line">cd packages</span><br><span class="line">git checkout gitlab</span><br><span class="line">composer install -o --no-dev</span><br></pre></td></tr></table></figure>
+<hr>
+
+<p>After moving our source control server from <strong><a href="http://gitolite.com/gitolite/index.html" target="_blank" rel="noopener">gitolite</a></strong> to a privately hosted <strong><a href="https://about.gitlab.com" target="_blank" rel="noopener">gitlab</a></strong> instance the next thing I wanted to do was get our internal <strong><a href="https://github.com/composer/satis" target="_blank" rel="noopener">Satis</a></strong> server to automatically update whenever code was pushed to a repository.<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a class="link-unstyled" href="https://talvbansal.me/blog/gitlab-ci-for-php-applications/">
+                            <img class="media-image" src="https://talvbansal.me/blog/gitlab-ci-for-php-applications/cancun-sunset.jpg" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a class="link-unstyled" href="https://talvbansal.me/blog/gitlab-ci-for-php-applications/">
+                            <h3 class="media-heading">Gitlab CI for PHP applications</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    Feb 24, 2017
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>Gitlab provides some good documentation on getting build runners for your projects set up which can be found <a href="https://about.gitlab.com/2016/03/01/gitlab-runner-with-docker/" target="_blank" rel="noopener">here</a>. However I haven’t found a good article on setting up Gitlab CI for PHP applications yet. </p>
+<p>This article is not going to discuss setting up shared runners on Gitlab since I felt the documentation provided by them in the link above was easy enough to follow, what this I am going to focus on is the <code>.gitlab-ci.yml</code> configuration that I’m currently using in my projects to do the following: </p>
+<ul>
+<li>Run PHP CS against our code base to ensure that it conforms to PSR-2</li>
+<li>Run PHPUnit against our code base to ensure that our unit tests pass against different versions of PHP (5.6, 7.0, 7.1)</li>
+</ul></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a class="link-unstyled" href="https://talvbansal.me/blog/simple-push-to-deploy-with-gitlab-cicd/">
+                            <img class="media-image" src="https://talvbansal.me/blog/simple-push-to-deploy-with-gitlab-cicd/westminister-sunset.jpg" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a class="link-unstyled" href="https://talvbansal.me/blog/simple-push-to-deploy-with-gitlab-cicd/">
+                            <h3 class="media-heading">Simple push to deploy with Gitlab CI/CD</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    May 24, 2017
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>This article follows directly on from my <a href="https://talvbansal.me/blog/gitlab-ci-for-php-applications">previous article</a> on adding gitlab’s CI to my PHP projects.</p>
+<p>Once we’re happy with our code being automatically tested we might want it to be automatically deployed to a testing server / environment or maybe even production.<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a class="link-unstyled" href="https://talvbansal.me/blog/rsync-ing-data-between-servers/">
+                            <img class="media-image" src="https://talvbansal.me/blog/rsync-ing-data-between-servers/new-york-skyline.jpg" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a class="link-unstyled" href="https://talvbansal.me/blog/rsync-ing-data-between-servers/">
+                            <h3 class="media-heading">RSync-ing Data Between Servers</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    Aug 20, 2017
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>After moving to NYC this week, I’ve found the need to move sets of data from my local machine to a server I have back at home in the UK.</p>
+<p>Whilst I use <a href="https://www.resilio.com/" target="_blank" rel="noopener">Resilio sync</a> to keep things that i use regularly in sync between a number of devices this was more of a one off type deal so I decided to use the trusty command line tool rsync.<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a class="link-unstyled" href="https://talvbansal.me/blog/jquery-to-vue/">
+                            <img class="media-image" src="https://talvbansal.me/blog/jquery-to-vue/nyc-from-empire-state.jpg" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a class="link-unstyled" href="https://talvbansal.me/blog/jquery-to-vue/">
+                            <h3 class="media-heading">jQuery to Vue</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    Jan 15, 2018
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>Recently I spoke at <a href="http://vuejs.nyc/" target="_blank" rel="noopener">VueNYC</a> about my journey from the world of jQuery to Vue and some of the problems people may have along the way:</p>
+<p>Check it out below:</p>
+<div class="video-container"><iframe src="//www.youtube.com/embed/7YiWLXzXFh4" frameborder="0" allowfullscreen></iframe></div>
+<p>If you’re in NYC they have monthly meetups that you can sign up for over here : <a href="https://www.meetup.com/vueJsNYC" target="_blank" rel="noopener">VueNYC</a>. </p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a class="link-unstyled" href="https://talvbansal.me/blog/adding-eslint-to-your-laravel-application/">
+                            <img class="media-image" src="https://talvbansal.me/blog/adding-eslint-to-your-laravel-application/portugal-tram.jpg" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a class="link-unstyled" href="https://talvbansal.me/blog/adding-eslint-to-your-laravel-application/">
+                            <h3 class="media-heading">Adding eslint to your Laravel application</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    Feb 4, 2018
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>My latest projects at work have evolved from being PHP / Laravel applications with sprinklings of Vue JS on the front end to being almost entirely Vue JS components driving the frontend with Laravel backends.</p>
+<p>Whilst laravel ships with <a href="https://laravel.com/docs/master/mix" target="_blank" rel="noopener">Laravel-Mix</a> to make webpack / asset compilation easier it doesn’t ship with anyway to lint your javascript.</p>
+<p>Luckily adding <a href="https://eslint.org/" target="_blank" rel="noopener">eslint</a> and defining rules for your <code>.js</code> and <code>.vue</code> files to follow is pretty straight forward.</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+            </div>
+        </div>
+        <div class="modal-footer">
+            <p class="results-count text-medium"
+                data-message-zero="no post found"
+                data-message-one="1 post found"
+                data-message-other="{n} posts found">
+                12 posts found
+            </p>
+        </div>
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-vufjrm3fmbuttogo1hxuu0w9w0sesk5iyysjuguc2hdhufot9szxg8twijry.min.js"></script>
+<!--SCRIPTS END-->
+
+    
+        <script>
+             var disqus_config = function () {
+                 this.page.url = 'https://talvbansal.me/blog/setting-up-a-private-gitlab-server-on-ubuntu-1604/';
+                 
+                    this.page.identifier = 'blog/setting-up-a-private-gitlab-server-on-ubuntu-1604/';
+                 
+             };
+            (function() {
+                var d = document, s = d.createElement('script');
+                var disqus_shortname = 'TalvBansal';
+                s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment-with-locales.min.js"></script>
+    <script src="//cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
+    <script>
+        var algoliaClient = algoliasearch('CXJDW0GFV9', '17c6a414fdfe63fab45294772bf9a689');
+        var algoliaIndex = algoliaClient.initIndex('talvbansal.me');
+    </script>
+
+
+    </body>
+</html>

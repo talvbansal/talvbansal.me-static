@@ -1,0 +1,933 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="TalvBansal.me">
+    <title>Gitlab CI for PHP applications - TalvBansal.me</title>
+    <meta name="author" content="Talv Bansal">
+    
+        <meta name="keywords" content="hexo,gitlab,github,javascript,es6,laravel,php,vue,vue.js,development,full stack,">
+    
+    
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Talv Bansal","sameAs":["https://github.com/talvbansal","https://twitter.com/talv","https://facebook.com/","https://www.linkedin.com/in/talvinder-bansal-5826594a","mailto:talvbansal@outlook.com"],"image":"https://www.gravatar.com/avatar/be14e67a41106fe8731f839b3bd46733"},"articleBody":"IntroductionGitlab provides some good documentation on getting build runners for your projects set up which can be found here. However I haven’t found a good article on setting up Gitlab CI for PHP applications yet. \nThis article is not going to discuss setting up shared runners on Gitlab since I felt the documentation provided by them in the link above was easy enough to follow, what this I am going to focus on is the .gitlab-ci.yml configuration that I’m currently using in my projects to do the following: \n\nRun PHP CS against our code base to ensure that it conforms to PSR-2\nRun PHPUnit against our code base to ensure that our unit tests pass against different versions of PHP (5.6, 7.0, 7.1)\n\n\nPreparationI’m using Gitlab CI to test (deploy in the next article) a number of Laravel applications which not only contain 3rd party packages but a number of our own internal packages hosted within our Gitlab CE instance.\nThere are a few of things we need to before we start:\n\nMake sure that both HTTPS and SSH git cloning are enabled. It seems that the runners use the HTTPS protocol to clone the projects into the docker container. This option is the default option and can be found by click on the Administration Area -&gt; Settings Cog -&gt; Visibility and Access Controls -&gt; Enabled Git access protocols\nMake sure we have access to a private key portion of a user that can log into Gitlab. We usually give Gitlab our public key to authenticate us, however for this we’ll need our docker containers to act as us and therefore they’ll need a private key to authenticate with when contacting Gitlab when cloning down our project. You’ll need to add the private portion of the ssh key as a Secret Variable with the name of SSH_PRIVATE_KEY and the value of the Private key.  Project -&gt; Settings Cog -&gt; CI / CD Pipelines -&gt; Secret Variables\nAdding PHP Code Sniffer to our projects dev dependencies:\ncomposer require squizlabs/php_codesniffer --dev\n\n\n\nGetting StartedLets get straight into the good stuff - 4 main files that are necessary to make my builds run that exist all within my project root:\n\nphpunit.xml - I’m not going to cover this since Laravel ships with one \nphpcs.xml - the PHP CS configuration file\n.gitlab-ci.yml - the core configuration file for Gitlab CI\n.gitlab-ci.sh - an additional configuration file for building our docker image\n\nAnd below are their contents:\nphpcs.xmlMy PHP CS file is pretty simple it just enforces the PSR-2 coding standard within the app folder of my project, but should you need to tailor your rules they can be added here too.12345678910&lt;?xml version=\"1.0\"?&gt;&lt;ruleset name=\"PSR2\"&gt;    &lt;description&gt;The PSR2 coding standard.&lt;/description&gt;    &lt;rule ref=\"PSR2\"/&gt;    &lt;file&gt;app/&lt;/file&gt;    &lt;exclude-pattern&gt;vendor&lt;/exclude-pattern&gt;&lt;/ruleset&gt;\n.gitlab-ci.ymlFrom the Gitlab link above:\n\nThis file specifies how the build environment should be set up and what commands to be executed to build, test, and deploy our project in a series of jobs that can be parallelized.\n\n1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950# Select a base image to start working with...image: tetraweb/php:7.0# Configure the base imagebefore_script:  - bash .gitlab-ci.sh# Select folders to cache...cache:  paths:    - vendor/services:  - mysqlvariables:  WITH_XDEBUG: \"1\"  MYSQL_ROOT_PASSWORD: secret  MYSQL_DATABASE: homestead  MYSQL_USER: homestead  MYSQL_PASSWORD: secret# Define pipline stagesstages:  - syntax  - testsphpcs:  stage: syntax  script:    - ./vendor/bin/phpcs --error-severity=1 --warning-severity=8 --extensions=phpphp-5.6:  type: tests  image: tetraweb/php:5.6  script:    - php vendor/bin/phpunit --colors=never --coverage-textphp-7.0:  type: tests  image: tetraweb/php:7.0  script:    - php vendor/bin/phpunit --colors=never --coverage-textphp-7.1:  type: tests  image: tetraweb/php:7.1  script:    - php vendor/bin/phpunit --colors=never --coverage-text  allow_failure: true\n.gitlab-ci.shThis file as described above will configure the environment and handle setting up the SSH agent. One thing to note is part way down you’ll need to change ssh git@gitlab.yourserver.com to match your server name.\n12345678910111213141516171819202122232425262728293031323334353637#!/bin/bash# Install dependencies only for Docker.[[ ! -e /.dockerinit ]] &amp;&amp; [[ ! -e  /.dockerenv ]] &amp;&amp; exit 0# Enable modulesdocker-php-ext-enable zipdocker-php-ext-enable pdo_mysqldocker-php-ext-enable mcrypt# install ssh-agentwhich ssh-agent || ( apt-get update -y &amp;&amp; apt-get install openssh-client -y )# run ssh-agenteval $(ssh-agent -s)# add ssh key stored in SSH_PRIVATE_KEY variable to the agent storessh-add &lt;(echo \"$SSH_PRIVATE_KEY\")# disable host key checking (NOTE: makes you susceptible to man-in-the-middle attacks)# WARNING: use only in docker container, if you use it with shell you will overwrite your user's ssh configmkdir -p ~/.sshecho -e \"Host *\\n\\tStrictHostKeyChecking no\\n\\n\" &gt; ~/.ssh/config# try to connect to GitLab.comssh git@gitlab.yourserver.com# Install project dependencies.composer install --no-suggest --prefer-dist# Copy over testing configuration.cp .env.example .env# Generate an application key. Re-cache.php artisan key:generatephp artisan config:cachephp artisan config:clear\nWrapping upIf you’re going to come across issues with Gitlab CI it’ll be with the SSH config in my experience. However hopefully with the preparation and scripts above you shouldn’t run into these problems.\nRemember that you’ll need to add the SSH_PRIVATE_KEY Secret variable FOR EACH of your your projects - this caught me out a couple of times and hopefully should save you A LOT of time!\n","dateCreated":"2017-02-24T16:24:17-06:00","dateModified":"2018-09-10T08:13:32-05:00","datePublished":"2017-02-24T16:24:17-06:00","description":"IntroductionGitlab provides some good documentation on getting build runners for your projects set up which can be found here. However I haven’t found a good article on setting up Gitlab CI for PHP applications yet. \nThis article is not going to discuss setting up shared runners on Gitlab since I felt the documentation provided by them in the link above was easy enough to follow, what this I am going to focus on is the .gitlab-ci.yml configuration that I’m currently using in my projects to do the following: \n\nRun PHP CS against our code base to ensure that it conforms to PSR-2\nRun PHPUnit against our code base to ensure that our unit tests pass against different versions of PHP (5.6, 7.0, 7.1)\n","headline":"Gitlab CI for PHP applications","image":["cancun-sunset.jpg","./cancun-sunset.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://talvbansal.me/blog/gitlab-ci-for-php-applications/"},"publisher":{"@type":"Organization","name":"Talv Bansal","sameAs":["https://github.com/talvbansal","https://twitter.com/talv","https://facebook.com/","https://www.linkedin.com/in/talvinder-bansal-5826594a","mailto:talvbansal@outlook.com"],"image":"https://www.gravatar.com/avatar/be14e67a41106fe8731f839b3bd46733","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/be14e67a41106fe8731f839b3bd46733"}},"url":"https://talvbansal.me/blog/gitlab-ci-for-php-applications/","keywords":"Laravel, Gitlab, CI/CD, PHP, Devops","thumbnailUrl":"cancun-sunset.jpg"}</script>
+    <meta name="description" content="IntroductionGitlab provides some good documentation on getting build runners for your projects set up which can be found here. However I haven’t found a good article on setting up Gitlab CI for PHP ap">
+<meta name="keywords" content="Laravel,Gitlab,CI&#x2F;CD,PHP,Devops">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Gitlab CI for PHP applications">
+<meta property="og:url" content="https://talvbansal.me/blog/gitlab-ci-for-php-applications/index.html">
+<meta property="og:site_name" content="TalvBansal.me">
+<meta property="og:description" content="IntroductionGitlab provides some good documentation on getting build runners for your projects set up which can be found here. However I haven’t found a good article on setting up Gitlab CI for PHP ap">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2018-09-10T13:13:32.996Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Gitlab CI for PHP applications">
+<meta name="twitter:description" content="IntroductionGitlab provides some good documentation on getting build runners for your projects set up which can be found here. However I haven’t found a good article on setting up Gitlab CI for PHP ap">
+<meta name="twitter:creator" content="@talv">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="https://www.gravatar.com/avatar/321065504328f47a4f9d8b57df0635f4?s=640"/>
+    
+    
+        <meta property="og:image" content="https://talvbansal.me/blog/gitlab-ci-for-php-applications/cancun-sunset.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://talvbansal.me/blog/gitlab-ci-for-php-applications/cancun-sunset.jpg" />
+    
+    
+        <meta property="og:image" content="https://talvbansal.me/blog/gitlab-ci-for-php-applications/./cancun-sunset.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://talvbansal.me/blog/gitlab-ci-for-php-applications/./cancun-sunset.jpg" />
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-du2xmrqdqrl2ollgeiw050kpl6l4nbyz7bumjuurjgsxyopifvukebxc9lqe.min.css">
+    <!--STYLES END-->
+    
+
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+    
+
+<header id="header" data-behavior="4">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a class="header-title-link" href="/ ">TalvBansal.me</a>
+    </div>
+    
+        
+            <a  class="header-right-picture "
+                href="#about">
+        
+        
+            <img class="header-picture" src="https://www.gravatar.com/avatar/321065504328f47a4f9d8b57df0635f4?s=90" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+    
+
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a href="/#about">
+                    <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/321065504328f47a4f9d8b57df0635f4?s=110" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Talv Bansal</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>author.bio</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                            title="Categories"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-tags"
+                            
+                            title="Tags"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archives"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link open-algolia-search"
+                             href="#search"
+                            
+                            title="Search"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Search</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="#about"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/talvbansal" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://twitter.com/talv" target="_blank" rel="noopener" title="Twitter">
+                    
+                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://facebook.com/" target="_blank" rel="noopener" title="Facebook">
+                    
+                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Facebook</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://www.linkedin.com/in/talvinder-bansal-5826594a" target="_blank" rel="noopener" title="LinkedIn">
+                    
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="mailto:talvbansal@outlook.com" target="_blank" rel="noopener" title="Mail">
+                    
+                        <i class="sidebar-button-icon fa fa-envelope" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Mail</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/atom.xml"
+                            
+                            title="RSS"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+        <div class="post-header-cover
+                    text-center
+                    post-header-cover--partial"
+             style="background-image:url('/blog/gitlab-ci-for-php-applications/./cancun-sunset.jpg');"
+             data-behavior="4">
+            
+                <div class="post-header main-content-wrap text-center">
+    
+        <h1 class="post-title">
+            Gitlab CI for PHP applications
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2017-02-24T16:24:17-06:00">
+	
+		    Feb 24, 2017
+    	
+    </time>
+    
+</div>
+
+    
+</div>
+
+            
+        </div>
+
+            <div id="main" data-behavior="4"
+                 class="hasCover
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>Gitlab provides some good documentation on getting build runners for your projects set up which can be found <a href="https://about.gitlab.com/2016/03/01/gitlab-runner-with-docker/" target="_blank" rel="noopener">here</a>. However I haven’t found a good article on setting up Gitlab CI for PHP applications yet. </p>
+<p>This article is not going to discuss setting up shared runners on Gitlab since I felt the documentation provided by them in the link above was easy enough to follow, what this I am going to focus on is the <code>.gitlab-ci.yml</code> configuration that I’m currently using in my projects to do the following: </p>
+<ul>
+<li>Run PHP CS against our code base to ensure that it conforms to PSR-2</li>
+<li>Run PHPUnit against our code base to ensure that our unit tests pass against different versions of PHP (5.6, 7.0, 7.1)</li>
+</ul>
+<a id="more"></a>
+<h2 id="Preparation"><a href="#Preparation" class="headerlink" title="Preparation"></a>Preparation</h2><p>I’m using Gitlab CI to test (deploy in the next article) a number of Laravel applications which not only contain 3rd party packages but a number of our own internal packages hosted within our Gitlab CE instance.</p>
+<p>There are a few of things we need to before we start:</p>
+<ul>
+<li>Make sure that both HTTPS and SSH git cloning are enabled. It seems that the runners use the HTTPS protocol to clone the projects into the docker container. This option is the default option and can be found by click on the <strong>Administration Area -&gt; Settings Cog -&gt; Visibility and Access Controls -&gt; Enabled Git access protocols</strong></li>
+<li>Make sure we have access to a <strong>private</strong> key portion of a user that can log into Gitlab. We usually give Gitlab our public key to authenticate us, however for this we’ll need our docker containers to act as us and therefore they’ll need a private key to authenticate with when contacting Gitlab when cloning down our project. You’ll need to add the private portion of the ssh key as a <strong>Secret Variable</strong> with the name of <strong>SSH_PRIVATE_KEY</strong> and the value of the Private key. <strong> Project -&gt; Settings Cog -&gt; CI / CD Pipelines -&gt; Secret Variables</strong></li>
+<li>Adding <a href="https://github.com/squizlabs/PHP_CodeSniffer" target="_blank" rel="noopener">PHP Code Sniffer</a> to our projects dev dependencies:<ul>
+<li><code>composer require squizlabs/php_codesniffer --dev</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="Getting-Started"><a href="#Getting-Started" class="headerlink" title="Getting Started"></a>Getting Started</h2><p>Lets get straight into the good stuff - 4 main files that are necessary to make my builds run that exist all within my project root:</p>
+<ul>
+<li><code>phpunit.xml</code> - I’m not going to cover this since Laravel ships with one </li>
+<li><code>phpcs.xml</code> - the PHP CS configuration file</li>
+<li><code>.gitlab-ci.yml</code> - the core configuration file for Gitlab CI</li>
+<li><code>.gitlab-ci.sh</code> - an additional configuration file for building our docker image</li>
+</ul>
+<p>And below are their contents:</p>
+<h4 id="phpcs-xml"><a href="#phpcs-xml" class="headerlink" title="phpcs.xml"></a>phpcs.xml</h4><p>My PHP CS file is pretty simple it just enforces the PSR-2 coding standard within the <code>app</code> folder of my project, but should you need to tailor your rules they can be added here too.<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version="1.0"?&gt;</span><br><span class="line"><span class="tag">&lt;<span class="name">ruleset</span> <span class="attr">name</span>=<span class="string">"PSR2"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">description</span>&gt;</span>The PSR2 coding standard.<span class="tag">&lt;/<span class="name">description</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">rule</span> <span class="attr">ref</span>=<span class="string">"PSR2"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">file</span>&gt;</span>app/<span class="tag">&lt;/<span class="name">file</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">exclude-pattern</span>&gt;</span>vendor<span class="tag">&lt;/<span class="name">exclude-pattern</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">ruleset</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="gitlab-ci-yml"><a href="#gitlab-ci-yml" class="headerlink" title=".gitlab-ci.yml"></a>.gitlab-ci.yml</h4><p>From the Gitlab link above:</p>
+<blockquote>
+<p>This file specifies how the build environment should be set up and what commands to be executed to build, test, and deploy our project in a series of jobs that can be parallelized.</p>
+</blockquote>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Select a base image to start working with...</span></span><br><span class="line"><span class="attr">image:</span> <span class="string">tetraweb/php:7.0</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Configure the base image</span></span><br><span class="line"><span class="attr">before_script:</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">bash</span> <span class="string">.gitlab-ci.sh</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Select folders to cache...</span></span><br><span class="line"><span class="attr">cache:</span></span><br><span class="line"><span class="attr">  paths:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">vendor/</span></span><br><span class="line"></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">mysql</span></span><br><span class="line"></span><br><span class="line"><span class="attr">variables:</span></span><br><span class="line"><span class="attr">  WITH_XDEBUG:</span> <span class="string">"1"</span></span><br><span class="line"><span class="attr">  MYSQL_ROOT_PASSWORD:</span> <span class="string">secret</span></span><br><span class="line"><span class="attr">  MYSQL_DATABASE:</span> <span class="string">homestead</span></span><br><span class="line"><span class="attr">  MYSQL_USER:</span> <span class="string">homestead</span></span><br><span class="line"><span class="attr">  MYSQL_PASSWORD:</span> <span class="string">secret</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Define pipline stages</span></span><br><span class="line"><span class="attr">stages:</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">syntax</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">tests</span></span><br><span class="line"></span><br><span class="line"><span class="attr">phpcs:</span></span><br><span class="line"><span class="attr">  stage:</span> <span class="string">syntax</span></span><br><span class="line"><span class="attr">  script:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">./vendor/bin/phpcs</span> <span class="bullet">--error-severity=1</span> <span class="bullet">--warning-severity=8</span> <span class="bullet">--extensions=php</span></span><br><span class="line"></span><br><span class="line"><span class="string">php-5.6:</span></span><br><span class="line"><span class="attr">  type:</span> <span class="string">tests</span></span><br><span class="line"><span class="attr">  image:</span> <span class="string">tetraweb/php:5.6</span></span><br><span class="line"><span class="attr">  script:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">php</span> <span class="string">vendor/bin/phpunit</span> <span class="bullet">--colors=never</span> <span class="bullet">--coverage-text</span></span><br><span class="line"></span><br><span class="line"><span class="string">php-7.0:</span></span><br><span class="line"><span class="attr">  type:</span> <span class="string">tests</span></span><br><span class="line"><span class="attr">  image:</span> <span class="string">tetraweb/php:7.0</span></span><br><span class="line"><span class="attr">  script:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">php</span> <span class="string">vendor/bin/phpunit</span> <span class="bullet">--colors=never</span> <span class="bullet">--coverage-text</span></span><br><span class="line"></span><br><span class="line"><span class="string">php-7.1:</span></span><br><span class="line"><span class="attr">  type:</span> <span class="string">tests</span></span><br><span class="line"><span class="attr">  image:</span> <span class="string">tetraweb/php:7.1</span></span><br><span class="line"><span class="attr">  script:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">php</span> <span class="string">vendor/bin/phpunit</span> <span class="bullet">--colors=never</span> <span class="bullet">--coverage-text</span></span><br><span class="line"><span class="attr">  allow_failure:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+<h4 id="gitlab-ci-sh"><a href="#gitlab-ci-sh" class="headerlink" title=".gitlab-ci.sh"></a>.gitlab-ci.sh</h4><p>This file as described above will configure the environment and handle setting up the SSH agent. One thing to note is part way down you’ll need to change <code>ssh git@gitlab.yourserver.com</code> to match your server name.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Install dependencies only for Docker.</span></span><br><span class="line">[[ ! -e /.dockerinit ]] &amp;&amp; [[ ! -e  /.dockerenv ]] &amp;&amp; <span class="built_in">exit</span> 0</span><br><span class="line"></span><br><span class="line"><span class="comment"># Enable modules</span></span><br><span class="line">docker-php-ext-enable zip</span><br><span class="line">docker-php-ext-enable pdo_mysql</span><br><span class="line">docker-php-ext-enable mcrypt</span><br><span class="line"></span><br><span class="line"><span class="comment"># install ssh-agent</span></span><br><span class="line"><span class="built_in">which</span> ssh-agent || ( apt-get update -y &amp;&amp; apt-get install openssh-client -y )</span><br><span class="line"></span><br><span class="line"><span class="comment"># run ssh-agent</span></span><br><span class="line"><span class="built_in">eval</span> $(ssh-agent -s)</span><br><span class="line"></span><br><span class="line"><span class="comment"># add ssh key stored in SSH_PRIVATE_KEY variable to the agent store</span></span><br><span class="line">ssh-add &lt;(<span class="built_in">echo</span> <span class="string">"<span class="variable">$SSH_PRIVATE_KEY</span>"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># disable host key checking (<span class="doctag">NOTE:</span> makes you susceptible to man-in-the-middle attacks)</span></span><br><span class="line"><span class="comment"># WARNING: use only in docker container, if you use it with shell you will overwrite your user's ssh config</span></span><br><span class="line">mkdir -p ~/.ssh</span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">"Host *\n\tStrictHostKeyChecking no\n\n"</span> &gt; ~/.ssh/config</span><br><span class="line"></span><br><span class="line"><span class="comment"># try to connect to GitLab.com</span></span><br><span class="line">ssh git@gitlab.yourserver.com</span><br><span class="line"></span><br><span class="line"><span class="comment"># Install project dependencies.</span></span><br><span class="line">composer install --no-suggest --prefer-dist</span><br><span class="line"></span><br><span class="line"><span class="comment"># Copy over testing configuration.</span></span><br><span class="line">cp .env.example .env</span><br><span class="line"></span><br><span class="line"><span class="comment"># Generate an application key. Re-cache.</span></span><br><span class="line">php artisan key:generate</span><br><span class="line">php artisan config:cache</span><br><span class="line">php artisan config:clear</span><br></pre></td></tr></table></figure>
+<h2 id="Wrapping-up"><a href="#Wrapping-up" class="headerlink" title="Wrapping up"></a>Wrapping up</h2><p>If you’re going to come across issues with Gitlab CI it’ll be with the SSH config in my experience. However hopefully with the preparation and scripts above you shouldn’t run into these problems.</p>
+<p>Remember that you’ll need to add the <strong>SSH_PRIVATE_KEY</strong> Secret variable <strong>FOR EACH</strong> of your your projects - this caught me out a couple of times and hopefully should save you A LOT of time!</p>
+
+            
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/CI-CD/">CI/CD</a> <a class="tag tag--primary tag--small t-link" href="/tags/Devops/">Devops</a> <a class="tag tag--primary tag--small t-link" href="/tags/Gitlab/">Gitlab</a> <a class="tag tag--primary tag--small t-link" href="/tags/Laravel/">Laravel</a> <a class="tag tag--primary tag--small t-link" href="/tags/PHP/">PHP</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/blog/simple-push-to-deploy-with-gitlab-cicd/" data-tooltip="Simple push to deploy with Gitlab CI/CD" aria-label="PREVIOUS: Simple push to deploy with Gitlab CI/CD">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/blog/updating-a-satis-repository-on-git-push/" data-tooltip="Updating a Satis Repository on Git Push" aria-label="NEXT: Updating a Satis Repository on Git Push">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://talvbansal.me/blog/gitlab-ci-for-php-applications/" title="Share on Facebook">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://talvbansal.me/blog/gitlab-ci-for-php-applications/" title="Share on Twitter">
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://talvbansal.me/blog/gitlab-ci-for-php-applications/" title="Share on Google+">
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2018 Talv Bansal. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/blog/simple-push-to-deploy-with-gitlab-cicd/" data-tooltip="Simple push to deploy with Gitlab CI/CD" aria-label="PREVIOUS: Simple push to deploy with Gitlab CI/CD">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/blog/updating-a-satis-repository-on-git-push/" data-tooltip="Updating a Satis Repository on Git Push" aria-label="NEXT: Updating a Satis Repository on Git Push">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://talvbansal.me/blog/gitlab-ci-for-php-applications/" title="Share on Facebook">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://talvbansal.me/blog/gitlab-ci-for-php-applications/" title="Share on Twitter">
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://talvbansal.me/blog/gitlab-ci-for-php-applications/" title="Share on Google+">
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+    <i id="btn-close-shareoptions" class="fa fa-times"></i>
+    <ul class="share-options">
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://talvbansal.me/blog/gitlab-ci-for-php-applications/">
+                    <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https://talvbansal.me/blog/gitlab-ci-for-php-applications/">
+                    <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https://talvbansal.me/blog/gitlab-ci-for-php-applications/">
+                    <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                </a>
+            </li>
+        
+    </ul>
+</div>
+
+            
+        </div>
+        
+
+
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="https://www.gravatar.com/avatar/321065504328f47a4f9d8b57df0635f4?s=110" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Talv Bansal</h4>
+        
+            <div id="about-card-bio"><p>author.bio</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>author.job</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                Remote
+            </div>
+        
+    </div>
+</div>
+
+        
+            <div id="algolia-search-modal" class="modal-container">
+    <div class="modal">
+        <div class="modal-header">
+            <span class="close-button"><i class="fa fa-times"></i></span>
+            <a href="https://algolia.com" target="_blank" rel="noopener" class="searchby-algolia text-color-light link-unstyled">
+                <span class="searchby-algolia-text text-color-light text-small">by</span>
+                <img class="searchby-algolia-logo" src="https://www.algolia.com/static_assets/images/press/downloads/algolia-light.svg">
+            </a>
+            <i class="search-icon fa fa-search"></i>
+            <form id="algolia-search-form">
+                <input type="text" id="algolia-search-input" name="search"
+                    class="form-control input--large search-input" placeholder="Search "
+                    />
+            </form>
+        </div>
+        <div class="modal-body">
+            <div class="no-result text-color-light text-center">no post found</div>
+            <div class="results">
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a class="link-unstyled" href="https://talvbansal.me/blog/laravel-homestead-on-windows-10-with-bash-on-ubuntu/">
+                            <img class="media-image" src="https://talvbansal.me/blog/laravel-homestead-on-windows-10-with-bash-on-ubuntu/south-africa-lion-male.jpg" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a class="link-unstyled" href="https://talvbansal.me/blog/laravel-homestead-on-windows-10-with-bash-on-ubuntu/">
+                            <h3 class="media-heading">Laravel Homestead on Windows 10 with Bash On Ubuntu</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    Aug 11, 2016
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>In preparation for <a href="http://laracon.eu/2016/" target="_blank" rel="noopener">Laracon EU</a> in a couple of weeks i figured I’d need to take a device along with me - paper and pen would probably have been fine but Laracon looks to be huge and i dont want to be unprepared, plus you always see rows of silver lids and glowing apple symbols in the photos from developer conferences! </p>
+<p>I do almost all of my work on a Dell Precision 7710 which dual boots Ubuntu for development purposes and Windows for my photo editing. I also have a Surface Pro 4 which i use for note taking and photo editing on the go - <em>I’ll be writing about how I keep all of my photos in sync in a future post</em>!</p>
+<p>Neither of the above are Macbooks but whilst the Dell Precision runs Ubuntu and anything else I can throw at it, it is HUGE and not ideal to take well … anywhere! So I figured I’d try and get a development environment set up on my Surface Pro 4 instead. </p>
+<p>I’d heard of setups using Homestead / Vagrant / Virtualbox before, but since I was using Ubuntu, I’ve never had any need to explore it any further so this really is a guide for first timer noobs. The <a href="https://laravel.com/docs/5.2/homestead" target="_blank" rel="noopener">official Laravel Homestead guide</a> appears to be geared up mostly for Mac users, Windows users will need a bit more help which is where I’m hoping this post will help.</p>
+<p>Anyway by the end of this guide I’ll have a Surface Pro 4 running Laravel Homestead and fingers crossed you’ll have a Windows device doing the same thing too! This has been a really long introduction, lets get to it!</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a class="link-unstyled" href="https://talvbansal.me/blog/finally-contributing-to-open-source/">
+                            <img class="media-image" src="https://talvbansal.me/blog/finally-contributing-to-open-source/south-africa-penguins.jpg" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a class="link-unstyled" href="https://talvbansal.me/blog/finally-contributing-to-open-source/">
+                            <h3 class="media-heading">(Finally) Contributing to open source</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    Aug 16, 2016
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>I once read an article on the merits of contributing to open source projects, within it i remember the author saying that the even smallest things can make all the difference. They even went on to say that their first commit was fixing a one character spelling mistake.</p>
+<p>Open source software has provided me the tools to make my living as a software engineer over the past 9ish years, over that period I’ve always wanted to contribute back to the community to but for some reason I never actually have. Maybe I wasn’t looking in the right places, perhaps i was looking at the wrong projects when my skills weren’t where they needed who knows. I just knew that eventually I wanted to.</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a class="link-unstyled" href="https://talvbansal.me/blog/looking-back-on-laracon-eu-2016/">
+                            <img class="media-image" src="https://talvbansal.me/blog/looking-back-on-laracon-eu-2016/laracon-2016-stage.jpg" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a class="link-unstyled" href="https://talvbansal.me/blog/looking-back-on-laracon-eu-2016/">
+                            <h3 class="media-heading">Looking back on Laracon EU 2016</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    Aug 30, 2016
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>Earlier this week I attended my first “Big” Conference - <strong><a href="http://laracon.eu/2016/" target="_blank" rel="noopener">Laracon EU 2016</a></strong>. I’ve been to other tech conferences before but by comparison Laracon EU was <strong>HUGE</strong>, there were 650 people in attendance in one of the most incredible venues I’ve seen. I sent pictures back to my friends and home who said that it looked like a club night more than a conference!<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a class="link-unstyled" href="https://talvbansal.me/blog/setting-up-a-private-gitlab-server-on-ubuntu-1604/">
+                            <img class="media-image" src="https://talvbansal.me/blog/setting-up-a-private-gitlab-server-on-ubuntu-1604/st-basils-moscow.jpg" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a class="link-unstyled" href="https://talvbansal.me/blog/setting-up-a-private-gitlab-server-on-ubuntu-1604/">
+                            <h3 class="media-heading">Setting up a private GitLab server on Ubuntu 16.04</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    Sep 16, 2016
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>Where I work, we’ve been using an Ubuntu Server running <a href="http://gitolite.com/gitolite/index.html" target="_blank" rel="noopener">gitolite</a> to act as our “Source control server” and manage permissions and access. Its worked well, and after some initial configuration (which I recall being pretty tricky) looking after the gitolite instance has been pretty easy and could easily continue to serve our needs as a small business well.</p>
+<p>Adding new users required you to get an ssh key from the new user, add it to an “administration repository” and then add their name to a config file within that repository. The same config file could then be used to determine which access rights they had to repositories as well as defining new repositories.</p>
+<p>We also use a <a href="https://getcomposer.org/doc/articles/handling-private-packages-with-satis.md" target="_blank" rel="noopener">satis</a> install to act as a private composer for our internal private packages.</p>
+<p>One of the things gitolite doesn’t provide you with is any sort of front end at all, everything has to be done through the terminal. It also requires you to have all of the following tools separately:</p>
+<ul>
+<li>Issue tracker</li>
+<li>File browser</li>
+<li>Activity stream</li>
+<li>Pull request management</li>
+</ul>
+<p>Which are all features that github has built in natively. </p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a class="link-unstyled" href="https://talvbansal.me/blog/updating-a-satis-repository-on-git-push/">
+                            <img class="media-image" src="https://talvbansal.me/blog/updating-a-satis-repository-on-git-push/santorini-domes.jpg" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a class="link-unstyled" href="https://talvbansal.me/blog/updating-a-satis-repository-on-git-push/">
+                            <h3 class="media-heading">Updating a Satis Repository on Git Push</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    Sep 27, 2016
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p><strong>Update May 2017, looks like with the Gitab update to V9, which uses a new Gitlab API v4, Packages will not let you enable new repositories</strong></p>
+<p>I’ve made amendments to the necessary files and packages on this fork:</p>
+<p><a href="https://github.com/talvbansal/packages" target="_blank" rel="noopener">https://github.com/talvbansal/packages</a> on the “gitlab” branch.</p>
+<p>As long as you change step 2 in the guide below everything should work as expected:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/talvbansal/packages</span><br><span class="line">cd packages</span><br><span class="line">git checkout gitlab</span><br><span class="line">composer install -o --no-dev</span><br></pre></td></tr></table></figure>
+<hr>
+
+<p>After moving our source control server from <strong><a href="http://gitolite.com/gitolite/index.html" target="_blank" rel="noopener">gitolite</a></strong> to a privately hosted <strong><a href="https://about.gitlab.com" target="_blank" rel="noopener">gitlab</a></strong> instance the next thing I wanted to do was get our internal <strong><a href="https://github.com/composer/satis" target="_blank" rel="noopener">Satis</a></strong> server to automatically update whenever code was pushed to a repository.<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a class="link-unstyled" href="https://talvbansal.me/blog/gitlab-ci-for-php-applications/">
+                            <img class="media-image" src="https://talvbansal.me/blog/gitlab-ci-for-php-applications/cancun-sunset.jpg" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a class="link-unstyled" href="https://talvbansal.me/blog/gitlab-ci-for-php-applications/">
+                            <h3 class="media-heading">Gitlab CI for PHP applications</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    Feb 24, 2017
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>Gitlab provides some good documentation on getting build runners for your projects set up which can be found <a href="https://about.gitlab.com/2016/03/01/gitlab-runner-with-docker/" target="_blank" rel="noopener">here</a>. However I haven’t found a good article on setting up Gitlab CI for PHP applications yet. </p>
+<p>This article is not going to discuss setting up shared runners on Gitlab since I felt the documentation provided by them in the link above was easy enough to follow, what this I am going to focus on is the <code>.gitlab-ci.yml</code> configuration that I’m currently using in my projects to do the following: </p>
+<ul>
+<li>Run PHP CS against our code base to ensure that it conforms to PSR-2</li>
+<li>Run PHPUnit against our code base to ensure that our unit tests pass against different versions of PHP (5.6, 7.0, 7.1)</li>
+</ul></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a class="link-unstyled" href="https://talvbansal.me/blog/simple-push-to-deploy-with-gitlab-cicd/">
+                            <img class="media-image" src="https://talvbansal.me/blog/simple-push-to-deploy-with-gitlab-cicd/westminister-sunset.jpg" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a class="link-unstyled" href="https://talvbansal.me/blog/simple-push-to-deploy-with-gitlab-cicd/">
+                            <h3 class="media-heading">Simple push to deploy with Gitlab CI/CD</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    May 24, 2017
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>This article follows directly on from my <a href="https://talvbansal.me/blog/gitlab-ci-for-php-applications">previous article</a> on adding gitlab’s CI to my PHP projects.</p>
+<p>Once we’re happy with our code being automatically tested we might want it to be automatically deployed to a testing server / environment or maybe even production.<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a class="link-unstyled" href="https://talvbansal.me/blog/rsync-ing-data-between-servers/">
+                            <img class="media-image" src="https://talvbansal.me/blog/rsync-ing-data-between-servers/new-york-skyline.jpg" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a class="link-unstyled" href="https://talvbansal.me/blog/rsync-ing-data-between-servers/">
+                            <h3 class="media-heading">RSync-ing Data Between Servers</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    Aug 20, 2017
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>After moving to NYC this week, I’ve found the need to move sets of data from my local machine to a server I have back at home in the UK.</p>
+<p>Whilst I use <a href="https://www.resilio.com/" target="_blank" rel="noopener">Resilio sync</a> to keep things that i use regularly in sync between a number of devices this was more of a one off type deal so I decided to use the trusty command line tool rsync.<br></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a class="link-unstyled" href="https://talvbansal.me/blog/jquery-to-vue/">
+                            <img class="media-image" src="https://talvbansal.me/blog/jquery-to-vue/nyc-from-empire-state.jpg" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a class="link-unstyled" href="https://talvbansal.me/blog/jquery-to-vue/">
+                            <h3 class="media-heading">jQuery to Vue</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    Jan 15, 2018
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>Recently I spoke at <a href="http://vuejs.nyc/" target="_blank" rel="noopener">VueNYC</a> about my journey from the world of jQuery to Vue and some of the problems people may have along the way:</p>
+<p>Check it out below:</p>
+<div class="video-container"><iframe src="//www.youtube.com/embed/7YiWLXzXFh4" frameborder="0" allowfullscreen></iframe></div>
+<p>If you’re in NYC they have monthly meetups that you can sign up for over here : <a href="https://www.meetup.com/vueJsNYC" target="_blank" rel="noopener">VueNYC</a>. </p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-left">
+                        <a class="link-unstyled" href="https://talvbansal.me/blog/adding-eslint-to-your-laravel-application/">
+                            <img class="media-image" src="https://talvbansal.me/blog/adding-eslint-to-your-laravel-application/portugal-tram.jpg" width="90" height="90"/>
+                        </a>
+                    </div>
+                    
+                    <div class="media-body">
+                        <a class="link-unstyled" href="https://talvbansal.me/blog/adding-eslint-to-your-laravel-application/">
+                            <h3 class="media-heading">Adding eslint to your Laravel application</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    Feb 4, 2018
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>My latest projects at work have evolved from being PHP / Laravel applications with sprinklings of Vue JS on the front end to being almost entirely Vue JS components driving the frontend with Laravel backends.</p>
+<p>Whilst laravel ships with <a href="https://laravel.com/docs/master/mix" target="_blank" rel="noopener">Laravel-Mix</a> to make webpack / asset compilation easier it doesn’t ship with anyway to lint your javascript.</p>
+<p>Luckily adding <a href="https://eslint.org/" target="_blank" rel="noopener">eslint</a> and defining rules for your <code>.js</code> and <code>.vue</code> files to follow is pretty straight forward.</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+            </div>
+        </div>
+        <div class="modal-footer">
+            <p class="results-count text-medium"
+                data-message-zero="no post found"
+                data-message-one="1 post found"
+                data-message-other="{n} posts found">
+                12 posts found
+            </p>
+        </div>
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-vufjrm3fmbuttogo1hxuu0w9w0sesk5iyysjuguc2hdhufot9szxg8twijry.min.js"></script>
+<!--SCRIPTS END-->
+
+    
+        <script>
+             var disqus_config = function () {
+                 this.page.url = 'https://talvbansal.me/blog/gitlab-ci-for-php-applications/';
+                 
+                    this.page.identifier = 'blog/gitlab-ci-for-php-applications/';
+                 
+             };
+            (function() {
+                var d = document, s = d.createElement('script');
+                var disqus_shortname = 'TalvBansal';
+                s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment-with-locales.min.js"></script>
+    <script src="//cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
+    <script>
+        var algoliaClient = algoliasearch('CXJDW0GFV9', '17c6a414fdfe63fab45294772bf9a689');
+        var algoliaIndex = algoliaClient.initIndex('talvbansal.me');
+    </script>
+
+
+    </body>
+</html>
