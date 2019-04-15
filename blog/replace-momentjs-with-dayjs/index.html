@@ -15,7 +15,7 @@
         <link rel="icon" href="https://talvbansal.me/assets/images/favicon.ico">
     
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Talv Bansal","sameAs":["https://github.com/talvbansal","https://twitter.com/talv","https://instagram.com/iwantthewindowseat","https://www.linkedin.com/in/talvinder-bansal-5826594a","mailto:talvbansal@outlook.com"],"image":"https://www.gravatar.com/avatar/be14e67a41106fe8731f839b3bd46733"},"articleBody":"Earlier this year I blogged about reducing the file size of moment.js by stripping out additional locales. Whilst stripping the locales made a good saving in file size, really all I was using it for was to format dates within my user interfaces. So I set out on finding a lightweight alternative to do just that…\n\nIn my quest to reduce my bundle size I came across a few libraries and the easiest one I found to swap in was one called dayjs. It weighed in at 2kB and had the same (well very similar) API to that of moment.js.\nImplementing it was easy - first add it to your packages.json:\n1yarn add dayjs\nWith the library installed I set out to search for all of the references to moment within my project:\n1grep -i -r \"moment\" resources/js/\nAnd then replaced the relevant imports from moment to dayjs and the method calls from moment to dayjs.I did have to update a couple of the formatters as they weren’t exactly the same as moment.js’s but my test suite picked those errors up.\nFollowing a production build I was able to compare the bundle sizes between moment.js with locales remove and dayjs in the project I was working on:\n\n\n\nConfiguration\nBundle Size\n\n\n\n\nMedia-manager with moment.js\n468kB\n\n\nMedia-manager with moment.js and locales stripped\n281kB\n\n\nMedia-manager with dayjs\n237kB\n\n\n\nSo from using moment.js without any optimiation there a pretty huge file size saving of nearly 50%! After optimising moment by stripping out excess locales we’re still seeing a 44kB file size saving giving us an additional 15% saving on this particular bundle.\nAs well as givng a smaller bundle there was no longer any need to have additional configuration within my webpack.mix.js file!\nDon’t forget to remove momentjs from your packages.json file and run yarn to rebuild the lockfile.\n","dateCreated":"2018-10-02T19:01:00+01:00","dateModified":"2018-10-03T03:12:41+01:00","datePublished":"2018-10-02T19:01:00+01:00","description":"Earlier this year I blogged about reducing the file size of moment.js by stripping out additional locales. Whilst stripping the locales made a good saving in file size, really all I was using it for was to format dates within my user interfaces. So I set out on finding a lightweight alternative to do just that…","headline":"Replacing Moment.js With Dayjs","image":["mexico-city-bellas-artes.jpg","./mexico-city-bellas-artes.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://talvbansal.me/blog/replace-momentjs-with-dayjs/"},"publisher":{"@type":"Organization","name":"Talv Bansal","sameAs":["https://github.com/talvbansal","https://twitter.com/talv","https://instagram.com/iwantthewindowseat","https://www.linkedin.com/in/talvinder-bansal-5826594a","mailto:talvbansal@outlook.com"],"image":"https://www.gravatar.com/avatar/be14e67a41106fe8731f839b3bd46733","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/be14e67a41106fe8731f839b3bd46733"}},"url":"https://talvbansal.me/blog/replace-momentjs-with-dayjs/","keywords":"Laravel, Javascript, Ecmascript, Tooling, Moment.js, Day.js","thumbnailUrl":"mexico-city-bellas-artes.jpg"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Talv Bansal","sameAs":["https://github.com/talvbansal","https://twitter.com/talv","https://instagram.com/iwantthewindowseat","https://www.linkedin.com/in/talvinder-bansal-5826594a","mailto:talvbansal@outlook.com"],"image":"https://www.gravatar.com/avatar/be14e67a41106fe8731f839b3bd46733"},"articleBody":"Earlier this year I blogged about reducing the file size of moment.js by stripping out additional locales. Whilst stripping the locales made a good saving in file size, really all I was using it for was to format dates within my user interfaces. So I set out on finding a lightweight alternative to do just that…\n\nIn my quest to reduce my bundle size I came across a few libraries and the easiest one I found to swap in was one called dayjs. It weighed in at 2kB and had the same (well very similar) API to that of moment.js.\nImplementing it was easy - first add it to your packages.json:\n1yarn add dayjs\nWith the library installed I set out to search for all of the references to moment within my project:\n1grep -i -r \"moment\" resources/js/\nAnd then replaced the relevant imports from moment to dayjs and the method calls from moment to dayjs.I did have to update a couple of the formatters as they weren’t exactly the same as moment.js’s but my test suite picked those errors up.\nFollowing a production build I was able to compare the bundle sizes between moment.js with locales remove and dayjs in the project I was working on:\n\n\n\nConfiguration\nBundle Size\n\n\n\n\nMedia-manager with moment.js\n468kB\n\n\nMedia-manager with moment.js and locales stripped\n281kB\n\n\nMedia-manager with dayjs\n237kB\n\n\n\nSo from using moment.js without any optimiation there a pretty huge file size saving of nearly 50%! After optimising moment by stripping out excess locales we’re still seeing a 44kB file size saving giving us an additional 15% saving on this particular bundle.\nAs well as givng a smaller bundle there was no longer any need to have additional configuration within my webpack.mix.js file!\nDon’t forget to remove momentjs from your packages.json file and run yarn to rebuild the lockfile.\n","dateCreated":"2018-10-02T19:01:00+01:00","dateModified":"2019-04-15T19:24:27+01:00","datePublished":"2018-10-02T19:01:00+01:00","description":"Earlier this year I blogged about reducing the file size of moment.js by stripping out additional locales. Whilst stripping the locales made a good saving in file size, really all I was using it for was to format dates within my user interfaces. So I set out on finding a lightweight alternative to do just that…","headline":"Replacing Moment.js With Dayjs","image":["https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1555352638/posts/mexico-city-bellas-artes.jpg","https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_1600/v1555352638/posts/mexico-city-bellas-artes.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://talvbansal.me/blog/replace-momentjs-with-dayjs/"},"publisher":{"@type":"Organization","name":"Talv Bansal","sameAs":["https://github.com/talvbansal","https://twitter.com/talv","https://instagram.com/iwantthewindowseat","https://www.linkedin.com/in/talvinder-bansal-5826594a","mailto:talvbansal@outlook.com"],"image":"https://www.gravatar.com/avatar/be14e67a41106fe8731f839b3bd46733","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/be14e67a41106fe8731f839b3bd46733"}},"url":"https://talvbansal.me/blog/replace-momentjs-with-dayjs/","keywords":"Laravel, Javascript, Ecmascript, Tooling, Moment.js, Day.js","thumbnailUrl":"https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1555352638/posts/mexico-city-bellas-artes.jpg"}</script>
     <meta name="description" content="Earlier this year I blogged about reducing the file size of moment.js by stripping out additional locales. Whilst stripping the locales made a good saving in file size, really all I was using it for w">
 <meta name="keywords" content="Laravel,Javascript,Ecmascript,Tooling,Moment.js,Day.js">
 <meta property="og:type" content="blog">
@@ -24,7 +24,7 @@
 <meta property="og:site_name" content="TalvBansal.me">
 <meta property="og:description" content="Earlier this year I blogged about reducing the file size of moment.js by stripping out additional locales. Whilst stripping the locales made a good saving in file size, really all I was using it for w">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2018-10-03T02:12:41.004Z">
+<meta property="og:updated_time" content="2019-04-15T18:24:27.682Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Replacing Moment.js With Dayjs">
 <meta name="twitter:description" content="Earlier this year I blogged about reducing the file size of moment.js by stripping out additional locales. Whilst stripping the locales made a good saving in file size, really all I was using it for w">
@@ -37,12 +37,12 @@
         <meta property="og:image" content="https://www.gravatar.com/avatar/321065504328f47a4f9d8b57df0635f4?s=640"/>
     
     
-        <meta property="og:image" content="https://talvbansal.me/blog/replace-momentjs-with-dayjs/mexico-city-bellas-artes.jpg"/>
-        <meta class="swiftype" name="image" data-type="enum" content="https://talvbansal.me/blog/replace-momentjs-with-dayjs/mexico-city-bellas-artes.jpg" />
+        <meta property="og:image" content="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1555352638/posts/mexico-city-bellas-artes.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1555352638/posts/mexico-city-bellas-artes.jpg" />
     
     
-        <meta property="og:image" content="https://talvbansal.me/blog/replace-momentjs-with-dayjs/./mexico-city-bellas-artes.jpg"/>
-        <meta class="swiftype" name="image" data-type="enum" content="https://talvbansal.me/blog/replace-momentjs-with-dayjs/./mexico-city-bellas-artes.jpg" />
+        <meta property="og:image" content="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_1600/v1555352638/posts/mexico-city-bellas-artes.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_1600/v1555352638/posts/mexico-city-bellas-artes.jpg" />
     
     
     <!--STYLES-->
@@ -251,7 +251,7 @@
         <div class="post-header-cover
                     text-center
                     post-header-cover--partial"
-             style="background-image:url('/blog/replace-momentjs-with-dayjs/./mexico-city-bellas-artes.jpg');"
+             style="background-image:url('https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_1600/v1555352638/posts/mexico-city-bellas-artes.jpg');"
              data-behavior="4">
             
                 <div class="post-header main-content-wrap text-center">
@@ -599,7 +599,7 @@
                     
                     <div class="media-left">
                         <a class="link-unstyled" href="https://talvbansal.me/blog/laravel-homestead-on-windows-10-with-bash-on-ubuntu/">
-                            <img class="media-image" src="https://talvbansal.me/blog/laravel-homestead-on-windows-10-with-bash-on-ubuntu/south-africa-lion-male.jpg" width="90" height="90"/>
+                            <img class="media-image" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1555352306/posts/south-africa-lion-male.jpg" width="90" height="90"/>
                         </a>
                     </div>
                     
@@ -628,7 +628,7 @@
                     
                     <div class="media-left">
                         <a class="link-unstyled" href="https://talvbansal.me/blog/finally-contributing-to-open-source/">
-                            <img class="media-image" src="https://talvbansal.me/blog/finally-contributing-to-open-source/south-africa-penguins.jpg" width="90" height="90"/>
+                            <img class="media-image" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1555352082/posts/south-africa-penguins.jpg" width="90" height="90"/>
                         </a>
                     </div>
                     
@@ -654,7 +654,7 @@
                     
                     <div class="media-left">
                         <a class="link-unstyled" href="https://talvbansal.me/blog/looking-back-on-laracon-eu-2016/">
-                            <img class="media-image" src="https://talvbansal.me/blog/looking-back-on-laracon-eu-2016/laracon-2016-stage.jpg" width="90" height="90"/>
+                            <img class="media-image" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1555352383/posts/laracon-2016-stage.jpg" width="90" height="90"/>
                         </a>
                     </div>
                     
@@ -679,7 +679,7 @@
                     
                     <div class="media-left">
                         <a class="link-unstyled" href="https://talvbansal.me/blog/setting-up-a-private-gitlab-server-on-ubuntu-1604/">
-                            <img class="media-image" src="https://talvbansal.me/blog/setting-up-a-private-gitlab-server-on-ubuntu-1604/st-basils-moscow.jpg" width="90" height="90"/>
+                            <img class="media-image" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1555352729/posts/st-basils-moscow.jpg" width="90" height="90"/>
                         </a>
                     </div>
                     
@@ -714,7 +714,7 @@
                     
                     <div class="media-left">
                         <a class="link-unstyled" href="https://talvbansal.me/blog/updating-a-satis-repository-on-git-push/">
-                            <img class="media-image" src="https://talvbansal.me/blog/updating-a-satis-repository-on-git-push/santorini-domes.jpg" width="90" height="90"/>
+                            <img class="media-image" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1555352875/posts/santorini-domes.jpg" width="90" height="90"/>
                         </a>
                     </div>
                     
@@ -746,7 +746,7 @@
                     
                     <div class="media-left">
                         <a class="link-unstyled" href="https://talvbansal.me/blog/gitlab-ci-for-php-applications/">
-                            <img class="media-image" src="https://talvbansal.me/blog/gitlab-ci-for-php-applications/cancun-sunset.jpg" width="90" height="90"/>
+                            <img class="media-image" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1555352188/posts/cancun-sunset.jpg" width="90" height="90"/>
                         </a>
                     </div>
                     
@@ -776,7 +776,7 @@
                     
                     <div class="media-left">
                         <a class="link-unstyled" href="https://talvbansal.me/blog/simple-push-to-deploy-with-gitlab-cicd/">
-                            <img class="media-image" src="https://talvbansal.me/blog/simple-push-to-deploy-with-gitlab-cicd/westminister-sunset.jpg" width="90" height="90"/>
+                            <img class="media-image" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1555352778/posts/westminister-sunset.jpg" width="90" height="90"/>
                         </a>
                     </div>
                     
@@ -802,7 +802,7 @@
                     
                     <div class="media-left">
                         <a class="link-unstyled" href="https://talvbansal.me/blog/rsync-ing-data-between-servers/">
-                            <img class="media-image" src="https://talvbansal.me/blog/rsync-ing-data-between-servers/new-york-skyline.jpg" width="90" height="90"/>
+                            <img class="media-image" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1555352680/posts/new-york-skyline.jpg" width="90" height="90"/>
                         </a>
                     </div>
                     
@@ -828,7 +828,7 @@
                     
                     <div class="media-left">
                         <a class="link-unstyled" href="https://talvbansal.me/blog/jquery-to-vue/">
-                            <img class="media-image" src="https://talvbansal.me/blog/jquery-to-vue/nyc-from-empire-state.jpg" width="90" height="90"/>
+                            <img class="media-image" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1555352239/posts/nyc-from-empire-state.jpg" width="90" height="90"/>
                         </a>
                     </div>
                     
@@ -856,7 +856,7 @@
                     
                     <div class="media-left">
                         <a class="link-unstyled" href="https://talvbansal.me/blog/adding-eslint-to-your-laravel-application/">
-                            <img class="media-image" src="https://talvbansal.me/blog/adding-eslint-to-your-laravel-application/portugal-tram.jpg" width="90" height="90"/>
+                            <img class="media-image" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,h_280/v1555351960/posts/portugal-tram.jpg" width="90" height="90"/>
                         </a>
                     </div>
                     
@@ -894,7 +894,7 @@
 
         
         
-<div id="cover" style="background-image:url('https://res.cloudinary.com/www-talvbansal-me/image/upload/v1538530490/Blurred-Northern-Lights.jpg');"></div>
+<div id="cover" style="background-image:url('https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_1024/v1538530490/Blurred-Northern-Lights.jpg');"></div>
         <!--SCRIPTS-->
 <script src="/assets/js/script-vufjrm3fmbuttogo1hxuu0w9w0sesk5iyysjuguc2hdhufot9szxg8twijry.min.js"></script>
 <!--SCRIPTS END-->
