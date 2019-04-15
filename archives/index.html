@@ -255,13 +255,61 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/blog/unit-tests-with-json-columns-in-sqlite/">
+                            Unit tests with JSON columns in SQLite
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2019-04-15T01:59:08+01:00">
+	
+		    Apr 15, 2019
+    	
+    </time>
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <p>When doing any sort of development work I’ve always preferred working on an Ubuntu machine.<br>Doing so has helped me understand the servers that our production code has always been run on.</p>
+<p>Towards the end of last year I started work on a new project that made heavy use of <a href="https://github.com/spatie/laravel-event-projector" target="_blank" rel="noopener">Spatie’s Event Projector package</a>.<br>Without getting into the package too much, at its core it stores the payloads of all recorded events in a <code>JSON</code> column within a <code>stored_events</code> table. </p>
+<p>I hadn’t needed to use <code>JSON</code> columns before and since they were a part of MySQL 5.7 which was released in 2015 I had assumed there’d be no issues with unit testing them.</p>
+<p>For the most part I was right, writing unit tests with Laravel’s build in tools has made me come to love writing tests and made TDD part of my daily workflow.<br>However when I tried to run the same tests within Gitlabs CI/CD pipelines I saw the following:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">PHPUnit 7.5.6 by Sebastian Bergmann and contributors.</span><br><span class="line"></span><br><span class="line">Runtime:       PHP 7.2.15</span><br><span class="line">Configuration: /builds/secret-project/phpunit.xml</span><br><span class="line"></span><br><span class="line"> ==&gt; Tests\Unit\ExampleTest ✓ </span><br><span class="line"><span class="string">"&#123;"</span>errors<span class="string">":["</span>SQLSTATE[HY000]: General error: 1 no such <span class="keyword">function</span>: json_extract (SQL: select * from \<span class="string">"stored_events\" where \"event_class\" in (App\\Events\\ClaimReported, App\\Events\\ClaimUpdatedByApp, App\\Events\\ClaimCreated, App\\Events\\ClaimUpdated, App\\Events\\ClaimUploadCompleted) and \"id\" &lt; 1 and json_extract(\"event_properties\", '$.\"claimUuid\"') = 0dab4335-c5e8-3564-9a0a-d0537cd697f4 order by \"id\" desc limit 1)"</span>]&#125;<span class="string">"</span></span><br></pre></td></tr></table></figure>
+                    
+                        <a href="/blog/unit-tests-with-json-columns-in-sqlite/" class="postShorten-excerpt_link link">
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+            <a href="/blog/unit-tests-with-json-columns-in-sqlite/">
+                <div class="postShorten-thumbnailimg">
+                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,h_140/v1555344239/posts/jaipur-hawa-mahal.jpg"/>
+                </div>
+            </a>
+            
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-right">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/blog/replace-momentjs-with-dayjs/">
                             Replacing Moment.js With Dayjs
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2018-10-02T19:01:00-05:00">
+    <time datetime="2018-10-02T19:01:00+01:00">
 	
 		    Oct 02, 2018
     	
@@ -305,7 +353,7 @@
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2018-04-20T11:29:30-05:00">
+    <time datetime="2018-04-20T11:29:30+01:00">
 	
 		    Apr 20, 2018
     	
@@ -353,7 +401,7 @@
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2018-04-18T15:56:44-05:00">
+    <time datetime="2018-04-18T15:56:44+01:00">
 	
 		    Apr 18, 2018
     	
@@ -398,7 +446,7 @@
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2018-02-04T15:56:44-06:00">
+    <time datetime="2018-02-04T15:56:44+00:00">
 	
 		    Feb 04, 2018
     	
@@ -444,7 +492,7 @@
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2018-01-15T16:24:17-06:00">
+    <time datetime="2018-01-15T16:24:17+00:00">
 	
 		    Jan 15, 2018
     	
@@ -491,7 +539,7 @@
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2017-08-20T15:10:44-05:00">
+    <time datetime="2017-08-20T15:10:44+01:00">
 	
 		    Aug 20, 2017
     	
@@ -536,7 +584,7 @@
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2017-05-24T16:15:27-05:00">
+    <time datetime="2017-05-24T16:15:27+01:00">
 	
 		    May 24, 2017
     	
@@ -581,7 +629,7 @@
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2017-02-24T16:24:17-06:00">
+    <time datetime="2017-02-24T16:24:17+00:00">
 	
 		    Feb 24, 2017
     	
@@ -630,7 +678,7 @@
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2016-09-27T16:31:04-05:00">
+    <time datetime="2016-09-27T16:31:04+01:00">
 	
 		    Sep 27, 2016
     	
@@ -668,60 +716,6 @@
         
     </article>
     
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/setting-up-a-private-gitlab-server-on-ubuntu-1604/">
-                            Setting up a private GitLab server on Ubuntu 16.04
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2016-09-16T19:09:13-05:00">
-	
-		    Sep 16, 2016
-    	
-    </time>
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>Where I work, we’ve been using an Ubuntu Server running <a href="http://gitolite.com/gitolite/index.html" target="_blank" rel="noopener">gitolite</a> to act as our “Source control server” and manage permissions and access. Its worked well, and after some initial configuration (which I recall being pretty tricky) looking after the gitolite instance has been pretty easy and could easily continue to serve our needs as a small business well.</p>
-<p>Adding new users required you to get an ssh key from the new user, add it to an “administration repository” and then add their name to a config file within that repository. The same config file could then be used to determine which access rights they had to repositories as well as defining new repositories.</p>
-<p>We also use a <a href="https://getcomposer.org/doc/articles/handling-private-packages-with-satis.md" target="_blank" rel="noopener">satis</a> install to act as a private composer for our internal private packages.</p>
-<p>One of the things gitolite doesn’t provide you with is any sort of front end at all, everything has to be done through the terminal. It also requires you to have all of the following tools separately:</p>
-<ul>
-<li>Issue tracker</li>
-<li>File browser</li>
-<li>Activity stream</li>
-<li>Pull request management</li>
-</ul>
-<p>Which are all features that github has built in natively. </p>
-                    
-                        <a href="/blog/setting-up-a-private-gitlab-server-on-ubuntu-1604/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/blog/setting-up-a-private-gitlab-server-on-ubuntu-1604/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://talvbansal.me/blog/setting-up-a-private-gitlab-server-on-ubuntu-1604/st-basils-moscow.jpg"/>
-                </div>
-            </a>
-            
-        
-    </article>
-    
     <div class="pagination-bar">
     <ul class="pagination">
         
@@ -743,7 +737,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2018 Talv Bansal. All Rights Reserved.
+        Copyrights &copy; 2019 Talv Bansal. All Rights Reserved.
     </span>
 </footer>
 
@@ -1097,7 +1091,7 @@
                 data-message-zero="no post found"
                 data-message-one="1 post found"
                 data-message-other="{n} posts found">
-                13 posts found
+                14 posts found
             </p>
         </div>
     </div>

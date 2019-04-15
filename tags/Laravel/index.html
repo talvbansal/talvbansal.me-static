@@ -255,13 +255,61 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/blog/unit-tests-with-json-columns-in-sqlite/">
+                            Unit tests with JSON columns in SQLite
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2019-04-15T01:59:08+01:00">
+	
+		    Apr 15, 2019
+    	
+    </time>
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <p>When doing any sort of development work I’ve always preferred working on an Ubuntu machine.<br>Doing so has helped me understand the servers that our production code has always been run on.</p>
+<p>Towards the end of last year I started work on a new project that made heavy use of <a href="https://github.com/spatie/laravel-event-projector" target="_blank" rel="noopener">Spatie’s Event Projector package</a>.<br>Without getting into the package too much, at its core it stores the payloads of all recorded events in a <code>JSON</code> column within a <code>stored_events</code> table. </p>
+<p>I hadn’t needed to use <code>JSON</code> columns before and since they were a part of MySQL 5.7 which was released in 2015 I had assumed there’d be no issues with unit testing them.</p>
+<p>For the most part I was right, writing unit tests with Laravel’s build in tools has made me come to love writing tests and made TDD part of my daily workflow.<br>However when I tried to run the same tests within Gitlabs CI/CD pipelines I saw the following:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">PHPUnit 7.5.6 by Sebastian Bergmann and contributors.</span><br><span class="line"></span><br><span class="line">Runtime:       PHP 7.2.15</span><br><span class="line">Configuration: /builds/secret-project/phpunit.xml</span><br><span class="line"></span><br><span class="line"> ==&gt; Tests\Unit\ExampleTest ✓ </span><br><span class="line"><span class="string">"&#123;"</span>errors<span class="string">":["</span>SQLSTATE[HY000]: General error: 1 no such <span class="keyword">function</span>: json_extract (SQL: select * from \<span class="string">"stored_events\" where \"event_class\" in (App\\Events\\ClaimReported, App\\Events\\ClaimUpdatedByApp, App\\Events\\ClaimCreated, App\\Events\\ClaimUpdated, App\\Events\\ClaimUploadCompleted) and \"id\" &lt; 1 and json_extract(\"event_properties\", '$.\"claimUuid\"') = 0dab4335-c5e8-3564-9a0a-d0537cd697f4 order by \"id\" desc limit 1)"</span>]&#125;<span class="string">"</span></span><br></pre></td></tr></table></figure>
+                    
+                        <a href="/blog/unit-tests-with-json-columns-in-sqlite/" class="postShorten-excerpt_link link">
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+            <a href="/blog/unit-tests-with-json-columns-in-sqlite/">
+                <div class="postShorten-thumbnailimg">
+                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,h_140/v1555344239/posts/jaipur-hawa-mahal.jpg"/>
+                </div>
+            </a>
+            
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-right">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/blog/replace-momentjs-with-dayjs/">
                             Replacing Moment.js With Dayjs
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2018-10-02T19:01:00-05:00">
+    <time datetime="2018-10-02T19:01:00+01:00">
 	
 		    Oct 02, 2018
     	
@@ -305,7 +353,7 @@
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2018-04-18T15:56:44-05:00">
+    <time datetime="2018-04-18T15:56:44+01:00">
 	
 		    Apr 18, 2018
     	
@@ -350,7 +398,7 @@
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2018-02-04T15:56:44-06:00">
+    <time datetime="2018-02-04T15:56:44+00:00">
 	
 		    Feb 04, 2018
     	
@@ -396,7 +444,7 @@
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2018-01-15T16:24:17-06:00">
+    <time datetime="2018-01-15T16:24:17+00:00">
 	
 		    Jan 15, 2018
     	
@@ -443,7 +491,7 @@
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2017-05-24T16:15:27-05:00">
+    <time datetime="2017-05-24T16:15:27+01:00">
 	
 		    May 24, 2017
     	
@@ -488,7 +536,7 @@
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2017-02-24T16:24:17-06:00">
+    <time datetime="2017-02-24T16:24:17+00:00">
 	
 		    Feb 24, 2017
     	
@@ -537,7 +585,7 @@
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2016-09-16T19:09:13-05:00">
+    <time datetime="2016-09-16T19:09:13+01:00">
 	
 		    Sep 16, 2016
     	
@@ -591,7 +639,7 @@
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2016-08-30T19:14:25-05:00">
+    <time datetime="2016-08-30T19:14:25+01:00">
 	
 		    Aug 30, 2016
     	
@@ -635,7 +683,7 @@
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2016-08-16T19:24:17-05:00">
+    <time datetime="2016-08-16T19:24:17+01:00">
 	
 		    Aug 16, 2016
     	
@@ -667,59 +715,18 @@
         
     </article>
     
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/laravel-homestead-on-windows-10-with-bash-on-ubuntu/">
-                            Laravel Homestead on Windows 10 with Bash On Ubuntu
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2016-08-11T19:17:46-05:00">
-	
-		    Aug 11, 2016
-    	
-    </time>
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <p>In preparation for <a href="http://laracon.eu/2016/" target="_blank" rel="noopener">Laracon EU</a> in a couple of weeks i figured I’d need to take a device along with me - paper and pen would probably have been fine but Laracon looks to be huge and i dont want to be unprepared, plus you always see rows of silver lids and glowing apple symbols in the photos from developer conferences! </p>
-<p>I do almost all of my work on a Dell Precision 7710 which dual boots Ubuntu for development purposes and Windows for my photo editing. I also have a Surface Pro 4 which i use for note taking and photo editing on the go - <em>I’ll be writing about how I keep all of my photos in sync in a future post</em>!</p>
-<p>Neither of the above are Macbooks but whilst the Dell Precision runs Ubuntu and anything else I can throw at it, it is HUGE and not ideal to take well … anywhere! So I figured I’d try and get a development environment set up on my Surface Pro 4 instead. </p>
-<p>I’d heard of setups using Homestead / Vagrant / Virtualbox before, but since I was using Ubuntu, I’ve never had any need to explore it any further so this really is a guide for first timer noobs. The <a href="https://laravel.com/docs/5.2/homestead" target="_blank" rel="noopener">official Laravel Homestead guide</a> appears to be geared up mostly for Mac users, Windows users will need a bit more help which is where I’m hoping this post will help.</p>
-<p>Anyway by the end of this guide I’ll have a Surface Pro 4 running Laravel Homestead and fingers crossed you’ll have a Windows device doing the same thing too! This has been a really long introduction, lets get to it!</p>
-                    
-                        <a href="/blog/laravel-homestead-on-windows-10-with-bash-on-ubuntu/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/blog/laravel-homestead-on-windows-10-with-bash-on-ubuntu/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://talvbansal.me/blog/laravel-homestead-on-windows-10-with-bash-on-ubuntu/south-africa-lion-male.jpg"/>
-                </div>
-            </a>
-            
-        
-    </article>
-    
     <div class="pagination-bar">
     <ul class="pagination">
         
         
-        <li class="pagination-number">page 1 of 1</li>
+          <li class="pagination-next">
+            <a class="btn btn--default btn--small" href="/tags/Laravel/page/2/">
+              <span>OLDER POSTS</span>
+              <i class="fa fa-angle-right text-base icon-ml"></i>
+            </a>
+          </li>
+        
+        <li class="pagination-number">page 1 of 2</li>
     </ul>
 </div>
 
@@ -728,7 +735,7 @@
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2018 Talv Bansal. All Rights Reserved.
+        Copyrights &copy; 2019 Talv Bansal. All Rights Reserved.
     </span>
 </footer>
 
@@ -1082,7 +1089,7 @@
                 data-message-zero="no post found"
                 data-message-one="1 post found"
                 data-message-other="{n} posts found">
-                13 posts found
+                14 posts found
             </p>
         </div>
     </div>
