@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="TalvBansal.me">
-    <title>Tag: Conference - TalvBansal.me</title>
+    <title>Search and Replace with Slashes in MySQL - TalvBansal.me</title>
     <meta name="author" content="Talv Bansal">
     
         <meta name="keywords" content="hexo,gitlab,github,javascript,es6,laravel,php,vue,vue.js,development,full stack,CI/CD,">
@@ -15,18 +15,19 @@
         <link rel="icon" href="https://talvbansal.me/assets/images/favicon.ico">
     
     
-    <script type="application/ld+json">{}</script>
-    <meta name="description" content="Tales of a full stack developer">
-<meta name="keywords" content="hexo,gitlab,github,javascript,es6,laravel,php,vue,vue.js,development,full stack,CI&#x2F;CD">
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Talv Bansal","sameAs":["https://github.com/talvbansal","https://twitter.com/talv","https://instagram.com/iwantthewindowseat","https://www.linkedin.com/in/talvinder-bansal-5826594a","mailto:talvbansal@outlook.com"],"image":"https://www.gravatar.com/avatar/be14e67a41106fe8731f839b3bd46733"},"articleBody":"The project im currently working on makes use of Spaties Event Projector package. Recently the team at Spatie upgraded the package to Version 2. \nOne of the changes that was made was to separate all storable events from regular events by moving them from the App\\Events to a new App\\StorableEvents folder. In moving the new stored events a new namespace of App\\StorableEvents was created.\nWhilst this isn’t a mandatory change, all new events classes created get in this new namespace and for the sake of keeping code organised, I wanted to move all of our other storable events to this new folder.Light work until I wanted to replay my events. What I’d forgotten is that the fully qualified class names are stored on the stored_events table that the package uses. \nNo big deal I thought - ill just search for App\\Events\\% and replace with App\\StorableEvents\\%, how hard could that be in SQL? Turns out harder than I thought but not impossible…\n\nI wasn’t aware of a search and replace feature in MySQL, and whilst the app is still in development I could have dropped the table and started over fresh.However I had 100’s of rows of good (vs faker generated) test event data I’d put into the system and didn’t fancy starting fresh or updating each row by hand. There had to be a better way to do it. \nUsually when I’m not sure on how to do something in SQL is to reach out to my Brother Nash. Not only is he awesome with SQL hes a MySQL certified DBA too. He said he wasn’t aware of a search and replace function where you were searching and replacing a substring of a column but to look up the REPLACE function. And if that wasn’t fruitful he could always write me a quick stored procedure.\nWhilst the offer was appreciated I 100000% never want to see or use a stored procedure ever again after having to work with them on an old project for over 10 years! So I set about looking for my magical 1 liner to solve the problem.\nSo it turns out that after some googling the statement I wanted looked something like this:\n123UPDATE table SET column_name = REPLACE(column_name, old_string, new_string)WHERE column_name LIKE(old_string.'%')\nAfter plugging updating the query for my use case I had:\n123UPDATE stored_events SET event_class = REPLACE(event_class, 'App\\Events', 'App\\StorableEvents') WHERE event_class LIKE ('App\\Events%');\nEasy AF. \nExcept it wasn’t.\nBecause of annoying escape characters in MySQL. The updated query with backslashes escaped looked like:\n123UPDATE stored_events SET event_class = REPLACE(event_class, 'App\\\\Events', 'App\\\\StorableEvents') WHERE event_class LIKE ('App\\\\Events%');\nStill no luck.\nI decided at this point to check if I was selecting anything at all with that WHERE LIKE query.\n1SELECT * FROM  stored_events WHERE event_class LIKE ('App\\\\Events%');\nNothing.\nMore googling later and it seemed a comical amount of backslashes were needed to escape a backslash in MySQL.\nFor the string App\\Events I needed 6 backslashes?!?!?!?! 6!!!! Good thing I could get away without searching for App\\Events\\!\n 1SELECT * FROM  stored_events WHERE event_class LIKE ('App\\\\\\\\\\\\Events%');\nUpdating this query would now return results.\nWith the new magic number of 6, it seemed fair to assume that 6 slashes would be needed for all backslashes. Finally I could update the storable_events table:\n123UPDATE stored_events SET event_class = REPLACE(event_class, 'App\\\\\\\\\\\\Events', 'App\\\\\\\\\\\\StorableEvents') WHERE event_class LIKE ('App\\\\\\\\\\\\Events%');\nNope.\nRows found, None changed.\nIt turns out that within REPLACE a backslash only needs to be escaped once, so \\\\ or 2 backslashes would suffice.\n123UPDATE stored_events SET event_class = REPLACE(event_class, 'App\\\\Events', 'App\\\\StorableEvents') WHERE event_class LIKE ('App\\\\\\\\\\\\Events%');\nFinally I actually had the query I was looking for, and it worked!\nIn fairness I spent probably far to long for something I probably could have done in PHP with using Laravel Tinker. That being said its always cool to dig into some of the lesser used day to day features of a technology you use regularly. \nI learned something, and hopefully this time waste will help someone else out down the road at some point too!\n","dateCreated":"2019-04-30T01:29:26+01:00","dateModified":"2019-05-01T01:49:25+01:00","datePublished":"2019-04-30T01:29:26+01:00","description":"The project im currently working on makes use of Spaties Event Projector package. Recently the team at Spatie upgraded the package to Version 2. \nOne of the changes that was made was to separate all storable events from regular events by moving them from the App\\Events to a new App\\StorableEvents folder. In moving the new stored events a new namespace of App\\StorableEvents was created.\nWhilst this isn’t a mandatory change, all new events classes created get in this new namespace and for the sake of keeping code organised, I wanted to move all of our other storable events to this new folder.Light work until I wanted to replay my events. What I’d forgotten is that the fully qualified class names are stored on the stored_events table that the package uses. \nNo big deal I thought - ill just search for App\\Events\\% and replace with App\\StorableEvents\\%, how hard could that be in SQL? Turns out harder than I thought but not impossible…","headline":"Search and Replace with Slashes in MySQL","image":["https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1556584444/posts/manhattan-skyline.jpg","https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_1600/v1556584444/posts/manhattan-skyline.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://talvbansal.me/blog/search-and-replace-with-slashes-in-mysql/"},"publisher":{"@type":"Organization","name":"Talv Bansal","sameAs":["https://github.com/talvbansal","https://twitter.com/talv","https://instagram.com/iwantthewindowseat","https://www.linkedin.com/in/talvinder-bansal-5826594a","mailto:talvbansal@outlook.com"],"image":"https://www.gravatar.com/avatar/be14e67a41106fe8731f839b3bd46733","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/be14e67a41106fe8731f839b3bd46733"}},"url":"https://talvbansal.me/blog/search-and-replace-with-slashes-in-mysql/","keywords":"Laravel, MySQL","thumbnailUrl":"https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1556584444/posts/manhattan-skyline.jpg"}</script>
+    <meta name="description" content="The project im currently working on makes use of Spaties Event Projector package. Recently the team at Spatie upgraded the package to Version 2.  One of the changes that was made was to separate all s">
+<meta name="keywords" content="Laravel,MySQL">
 <meta property="og:type" content="blog">
-<meta property="og:title" content="TalvBansal.me">
-<meta property="og:url" content="https://talvbansal.me/tags/Conference/index.html">
+<meta property="og:title" content="Search and Replace with Slashes in MySQL">
+<meta property="og:url" content="https://talvbansal.me/blog/search-and-replace-with-slashes-in-mysql/index.html">
 <meta property="og:site_name" content="TalvBansal.me">
-<meta property="og:description" content="Tales of a full stack developer">
+<meta property="og:description" content="The project im currently working on makes use of Spaties Event Projector package. Recently the team at Spatie upgraded the package to Version 2.  One of the changes that was made was to separate all s">
 <meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-05-01T00:49:25.118Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="TalvBansal.me">
-<meta name="twitter:description" content="Tales of a full stack developer">
+<meta name="twitter:title" content="Search and Replace with Slashes in MySQL">
+<meta name="twitter:description" content="The project im currently working on makes use of Spaties Event Projector package. Recently the team at Spatie upgraded the package to Version 2.  One of the changes that was made was to separate all s">
 <meta name="twitter:creator" content="@talv">
     
     
@@ -36,6 +37,12 @@
         <meta property="og:image" content="https://www.gravatar.com/avatar/321065504328f47a4f9d8b57df0635f4?s=640"/>
     
     
+        <meta property="og:image" content="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1556584444/posts/manhattan-skyline.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1556584444/posts/manhattan-skyline.jpg" />
+    
+    
+        <meta property="og:image" content="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_1600/v1556584444/posts/manhattan-skyline.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_1600/v1556584444/posts/manhattan-skyline.jpg" />
     
     
     <!--STYLES-->
@@ -65,7 +72,7 @@
         
     
 
-<header id="header" data-behavior="1">
+<header id="header" data-behavior="4">
     <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
     <div class="header-title">
         <a class="header-title-link" href="/ ">TalvBansal.me</a>
@@ -87,7 +94,7 @@
 
     
 
-<nav id="sidebar" data-behavior="1">
+<nav id="sidebar" data-behavior="4">
     <div class="sidebar-container">
         
             <div class="sidebar-profile">
@@ -241,66 +248,176 @@
 </nav>
 
             
-            <div id="main" data-behavior="1"
-                 class="
-                        hasCoverMetaIn
-                        ">
-                
-    <section class="postShorten-group main-content-wrap">
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
+        <div class="post-header-cover
+                    text-center
+                    post-header-cover--partial"
+             style="background-image:url('https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_1600/v1556584444/posts/manhattan-skyline.jpg');"
+             data-behavior="4">
             
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/looking-back-on-laracon-eu-2016/">
-                            Looking back on Laracon EU 2016
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2016-08-30T19:14:25+01:00">
+                <div class="post-header main-content-wrap text-center">
+    
+        <h1 class="post-title">
+            Search and Replace with Slashes in MySQL
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2019-04-30T01:29:26+01:00">
 	
-		    Aug 30, 2016
+		    Apr 30, 2019
     	
     </time>
     
 </div>
 
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <p>Earlier this week I attended my first “Big” Conference - <strong><a href="http://laracon.eu/2016/" target="_blank" rel="noopener">Laracon EU 2016</a></strong>. I’ve been to other tech conferences before but by comparison Laracon EU was <strong>HUGE</strong>, there were 650 people in attendance in one of the most incredible venues I’ve seen. I sent pictures back to my friends and home who said that it looked like a club night more than a conference!<br>
-                    
-                        <a href="/blog/looking-back-on-laracon-eu-2016/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
+    
+</div>
+
             
         </div>
+
+            <div id="main" data-behavior="4"
+                 class="hasCover
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>The project im currently working on makes use of Spaties <a href="https://github.com/spatie/laravel-event-projector" target="_blank" rel="noopener">Event Projector package</a>. Recently the team at Spatie upgraded the package to Version 2. </p>
+<p>One of the changes that was made was to separate all storable events from regular events by moving them from the <code>App\Events</code> to a new <code>App\StorableEvents</code> folder. In moving the new stored events a new namespace of <code>App\StorableEvents</code> was created.</p>
+<p>Whilst this isn’t a mandatory change, all new events classes created get in this new namespace and for the sake of keeping code organised, I wanted to move all of our other storable events to this new folder.<br>Light work until I wanted to replay my events. What I’d forgotten is that the fully qualified class names are stored on the <code>stored_events</code> table that the package uses. </p>
+<p>No big deal I thought - ill just search for <code>App\Events\%</code> and replace with <code>App\StorableEvents\%</code>, how hard could that be in SQL? Turns out harder than I thought but not impossible…</p>
+<a id="more"></a>
+<p>I wasn’t aware of a search and replace feature in MySQL, and whilst the app is still in development I could have dropped the table and started over fresh.<br>However I had 100’s of rows of good <a href="https://github.com/fzaninotto/Faker" target="_blank" rel="noopener">(vs faker generated)</a> test event data I’d put into the system and didn’t fancy starting fresh or updating each row by hand. There had to be a better way to do it. </p>
+<p>Usually when I’m not sure on how to do something in SQL is to reach out to my Brother <a href="https://twitter.com/trashpants" target="_blank" rel="noopener">Nash</a>. Not only is he awesome with SQL hes a MySQL certified DBA too. He said he wasn’t aware of a search and replace function where you were searching and replacing a substring of a column but to look up the <code>REPLACE</code> function. And if that wasn’t fruitful he could always write me a quick stored procedure.</p>
+<p>Whilst the offer was appreciated I 100000% never want to see or use a stored procedure ever again after having to work with them on an old project for over 10 years! So I set about looking for my magical 1 liner to solve the problem.</p>
+<p>So it turns out that after some googling the statement I wanted looked something like this:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">UPDATE</span> <span class="keyword">table</span> </span><br><span class="line"><span class="keyword">SET</span> column_name = <span class="keyword">REPLACE</span>(column_name, old_string, new_string)</span><br><span class="line"><span class="keyword">WHERE</span> column_name <span class="keyword">LIKE</span>(old_string.<span class="string">'%'</span>)</span><br></pre></td></tr></table></figure>
+<p>After plugging updating the query for my use case I had:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">UPDATE</span> stored_events </span><br><span class="line"><span class="keyword">SET</span> event_class = <span class="keyword">REPLACE</span>(event_class, <span class="string">'App\Events'</span>, <span class="string">'App\StorableEvents'</span>) </span><br><span class="line"><span class="keyword">WHERE</span> event_class <span class="keyword">LIKE</span> (<span class="string">'App\Events%'</span>);</span><br></pre></td></tr></table></figure>
+<p>Easy AF. </p>
+<p>Except it wasn’t.</p>
+<p>Because of annoying escape characters in MySQL. The updated query with backslashes escaped looked like:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">UPDATE</span> stored_events </span><br><span class="line"><span class="keyword">SET</span> event_class = <span class="keyword">REPLACE</span>(event_class, <span class="string">'App\\Events'</span>, <span class="string">'App\\StorableEvents'</span>) </span><br><span class="line"><span class="keyword">WHERE</span> event_class <span class="keyword">LIKE</span> (<span class="string">'App\\Events%'</span>);</span><br></pre></td></tr></table></figure>
+<p>Still no luck.</p>
+<p>I decided at this point to check if I was selecting anything at all with that WHERE LIKE query.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span>  stored_events <span class="keyword">WHERE</span> event_class <span class="keyword">LIKE</span> (<span class="string">'App\\Events%'</span>);</span><br></pre></td></tr></table></figure>
+<p>Nothing.</p>
+<p>More googling later and it seemed a comical amount of backslashes were needed to escape a backslash in MySQL.</p>
+<p>For the string <code>App\Events</code> I needed 6 backslashes?!?!?!?! 6!!!! Good thing I could get away without searching for <code>App\Events\</code>!</p>
+ <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span>  stored_events <span class="keyword">WHERE</span> event_class <span class="keyword">LIKE</span> (<span class="string">'App\\\\\\Events%'</span>);</span><br></pre></td></tr></table></figure>
+<p>Updating this query would now return results.</p>
+<p>With the new magic number of 6, it seemed fair to assume that 6 slashes would be needed for all backslashes. Finally I could update the <code>storable_events</code> table:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">UPDATE</span> stored_events </span><br><span class="line"><span class="keyword">SET</span> event_class = <span class="keyword">REPLACE</span>(event_class, <span class="string">'App\\\\\\Events'</span>, <span class="string">'App\\\\\\StorableEvents'</span>) </span><br><span class="line"><span class="keyword">WHERE</span> event_class <span class="keyword">LIKE</span> (<span class="string">'App\\\\\\Events%'</span>);</span><br></pre></td></tr></table></figure>
+<p>Nope.</p>
+<p>Rows found, None changed.</p>
+<p>It turns out that within <code>REPLACE</code> a backslash only needs to be escaped once, so <code>\\</code> or 2 backslashes would suffice.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">UPDATE</span> stored_events </span><br><span class="line"><span class="keyword">SET</span> event_class = <span class="keyword">REPLACE</span>(event_class, <span class="string">'App\\Events'</span>, <span class="string">'App\\StorableEvents'</span>) </span><br><span class="line"><span class="keyword">WHERE</span> event_class <span class="keyword">LIKE</span> (<span class="string">'App\\\\\\Events%'</span>);</span><br></pre></td></tr></table></figure>
+<p>Finally I actually had the query I was looking for, and it worked!</p>
+<p>In fairness I spent probably far to long for something I probably could have done in PHP with using Laravel Tinker. That being said its always cool to dig into some of the lesser used day to day features of a technology you use regularly. </p>
+<p>I learned something, and hopefully this time waste will help someone else out down the road at some point too!</p>
+
+            
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
         
-            <a href="/blog/looking-back-on-laracon-eu-2016/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1555352383/posts/laracon-2016-stage.jpg"/>
-                </div>
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/Laravel/">Laravel</a> <a class="tag tag--primary tag--small t-link" href="/tags/MySQL/">MySQL</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--disabled">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/blog/unit-tests-with-json-columns-in-sqlite/" data-tooltip="Unit tests with JSON columns in SQLite" aria-label="NEXT: Unit tests with JSON columns in SQLite">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://talvbansal.me/blog/search-and-replace-with-slashes-in-mysql/" title="Share on Facebook">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://talvbansal.me/blog/search-and-replace-with-slashes-in-mysql/" title="Share on Twitter">
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://talvbansal.me/blog/search-and-replace-with-slashes-in-mysql/" title="Share on Google+">
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
             
         
-    </article>
-    
-    <div class="pagination-bar">
-    <ul class="pagination">
-        
-        
-        <li class="pagination-number">page 1 of 1</li>
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
     </ul>
 </div>
 
-</section>
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
 
 
                 <footer id="footer" class="main-content-wrap">
@@ -310,6 +427,113 @@
 </footer>
 
             </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--disabled">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/blog/unit-tests-with-json-columns-in-sqlite/" data-tooltip="Unit tests with JSON columns in SQLite" aria-label="NEXT: Unit tests with JSON columns in SQLite">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://talvbansal.me/blog/search-and-replace-with-slashes-in-mysql/" title="Share on Facebook">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://talvbansal.me/blog/search-and-replace-with-slashes-in-mysql/" title="Share on Twitter">
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://talvbansal.me/blog/search-and-replace-with-slashes-in-mysql/" title="Share on Google+">
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+    <i id="btn-close-shareoptions" class="fa fa-times"></i>
+    <ul class="share-options">
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://talvbansal.me/blog/search-and-replace-with-slashes-in-mysql/">
+                    <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https://talvbansal.me/blog/search-and-replace-with-slashes-in-mysql/">
+                    <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https://talvbansal.me/blog/search-and-replace-with-slashes-in-mysql/">
+                    <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                </a>
+            </li>
+        
+    </ul>
+</div>
+
             
         </div>
         
@@ -671,6 +895,25 @@
         <!--SCRIPTS-->
 <script src="/assets/js/script-vufjrm3fmbuttogo1hxuu0w9w0sesk5iyysjuguc2hdhufot9szxg8twijry.min.js"></script>
 <!--SCRIPTS END-->
+
+    
+        <script>
+             var disqus_config = function () {
+                 this.page.url = 'https://talvbansal.me/blog/search-and-replace-with-slashes-in-mysql/';
+                 
+                    this.page.identifier = 'blog/search-and-replace-with-slashes-in-mysql/';
+                 
+             };
+            (function() {
+                var d = document, s = d.createElement('script');
+                var disqus_shortname = 'talvbansalblog';
+                s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment-with-locales.min.js"></script>

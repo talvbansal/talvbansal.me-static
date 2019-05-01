@@ -254,6 +254,53 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/blog/search-and-replace-with-slashes-in-mysql/">
+                            Search and Replace with Slashes in MySQL
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2019-04-30T01:29:26+01:00">
+	
+		    Apr 30, 2019
+    	
+    </time>
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <p>The project im currently working on makes use of Spaties <a href="https://github.com/spatie/laravel-event-projector" target="_blank" rel="noopener">Event Projector package</a>. Recently the team at Spatie upgraded the package to Version 2. </p>
+<p>One of the changes that was made was to separate all storable events from regular events by moving them from the <code>App\Events</code> to a new <code>App\StorableEvents</code> folder. In moving the new stored events a new namespace of <code>App\StorableEvents</code> was created.</p>
+<p>Whilst this isn’t a mandatory change, all new events classes created get in this new namespace and for the sake of keeping code organised, I wanted to move all of our other storable events to this new folder.<br>Light work until I wanted to replay my events. What I’d forgotten is that the fully qualified class names are stored on the <code>stored_events</code> table that the package uses. </p>
+<p>No big deal I thought - ill just search for <code>App\Events\%</code> and replace with <code>App\StorableEvents\%</code>, how hard could that be in SQL? Turns out harder than I thought but not impossible…</p>
+                    
+                        <a href="/blog/search-and-replace-with-slashes-in-mysql/" class="postShorten-excerpt_link link">
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+            <a href="/blog/search-and-replace-with-slashes-in-mysql/">
+                <div class="postShorten-thumbnailimg">
+                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1556584444/posts/manhattan-skyline.jpg"/>
+                </div>
+            </a>
+            
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-right">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/blog/unit-tests-with-json-columns-in-sqlite/">
                             Unit tests with JSON columns in SQLite
                         </a>
@@ -664,57 +711,6 @@
         
     </article>
     
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/updating-a-satis-repository-on-git-push/">
-                            Updating a Satis Repository on Git Push
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2016-09-27T16:31:04+01:00">
-	
-		    Sep 27, 2016
-    	
-    </time>
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <p><strong>Update May 2017, looks like with the Gitab update to V9, which uses a new Gitlab API v4, Packages will not let you enable new repositories</strong></p>
-<p>I’ve made amendments to the necessary files and packages on this fork:</p>
-<p><a href="https://github.com/talvbansal/packages" target="_blank" rel="noopener">https://github.com/talvbansal/packages</a> on the “gitlab” branch.</p>
-<p>As long as you change step 2 in the guide below everything should work as expected:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/talvbansal/packages</span><br><span class="line">cd packages</span><br><span class="line">git checkout gitlab</span><br><span class="line">composer install -o --no-dev</span><br></pre></td></tr></table></figure>
-<hr>
-
-<p>After moving our source control server from <strong><a href="http://gitolite.com/gitolite/index.html" target="_blank" rel="noopener">gitolite</a></strong> to a privately hosted <strong><a href="https://about.gitlab.com" target="_blank" rel="noopener">gitlab</a></strong> instance the next thing I wanted to do was get our internal <strong><a href="https://github.com/composer/satis" target="_blank" rel="noopener">Satis</a></strong> server to automatically update whenever code was pushed to a repository.<br>
-                    
-                        <a href="/blog/updating-a-satis-repository-on-git-push/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/blog/updating-a-satis-repository-on-git-push/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1555352875/posts/santorini-domes.jpg"/>
-                </div>
-            </a>
-            
-        
-    </article>
-    
     <div class="pagination-bar">
     <ul class="pagination">
         
@@ -1089,7 +1085,7 @@
                 data-message-zero="no post found"
                 data-message-one="1 post found"
                 data-message-other="{n} posts found">
-                14 posts found
+                15 posts found
             </p>
         </div>
     </div>
