@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="TalvBansal.me">
-    <title>Tag: Moment.js - TalvBansal.me</title>
+    <title>Cleaning unused CSS with Purgecss Laravel Mix - TalvBansal.me</title>
     <meta name="author" content="Talv Bansal">
     
         <meta name="keywords" content="hexo,gitlab,github,javascript,es6,laravel,php,vue,vue.js,development,full stack,CI/CD,">
@@ -15,18 +15,19 @@
         <link rel="icon" href="https://talvbansal.me/assets/images/favicon.ico">
     
     
-    <script type="application/ld+json">{}</script>
-    <meta name="description" content="Tales of a full stack developer">
-<meta name="keywords" content="hexo,gitlab,github,javascript,es6,laravel,php,vue,vue.js,development,full stack,CI&#x2F;CD">
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Talv Bansal","sameAs":["https://github.com/talvbansal","https://twitter.com/talv","https://instagram.com/iwantthewindowseat","https://www.linkedin.com/in/talvinder-bansal-5826594a","mailto:talvbansal@outlook.com"],"image":"https://www.gravatar.com/avatar/be14e67a41106fe8731f839b3bd46733"},"articleBody":"I’m always looking for easy wins to optimise my development workflow and improve the end user experience, so figured after hearing about Purgecss I’d look into it and see how I could integrate it into my work flow. \n\n“Purgecss is a tool to remove unused CSS”\n\nWith frameworks like Bootstrap and Zurb providing so many CSS classes that often don’t get used, this looked like it really would be an easy win situation!\n\nThis week I deployed my first site over at Netlify for the new company I’m working at. \nThe site I’d been working on is written in Laravel and  as it didn’t have a backend it was a great candidate for extracting it out to a static site. Converting a laravel app to a static site is now totally doable using the new Laravel Export package from the excellent folks over at Spatie. I figured this would also be a great candidate for trying out Purgecss.\nFirst lets look at the processes already in place and the filesize being output.\nAs this is a Laravel app it makes sense that the project would use Laravel Mix for its asset bundling.\nWith an out of the box Laravel 5.8 config our webpack.mix.js file looks like this:\n1234const mix = require('laravel-mix');mix.js('resources/js/app.js', 'public/js').sass('resources/sass/app.scss', 'public/css');\nAfter building the site this config built assets of the following sizes in dev and production mode.\n\n\n\nFile\nDev Size\nProd Size\n\n\n\n\n/css/app.CSS\n183 KiB\n147 KiB\n\n\n/js/app.js\n1.39 MiB\n432 KiB\n\n\n\nWe’re not going to interested in the size of the JS file since we’d expect Purgecss to only impact the outputted CSS files.\nAdding Purgecss to the site was even easier than I’d expected, the team at Spatie had built a plugin for laravel-mix.\n1yarn add -D laravel-mix-purgecss\nOr if you use npm1npm install laravel-mix-purgecss --save-dev\nUpdate webpack.mix.js to use the new plugin:\n123456const mix = require('laravel-mix');require('laravel-mix-purgecss');mix.js('resources/js/app.js', 'public/js')   .sass('resources/sass/app.scss', 'public/css')   .purgeCss();\nRe-running the build process gave us the following size for our CSS file:\n\n\n\nFile\nDev Size\nProd Size\n\n\n\n\n/css/app.CSS\n183 KiB\n16.5 KiB\n\n\n\nThe Purgecss plugin is only run during production builds but the size of the production file is tiny in comparison. 147kb down to 16.5kb.That’s an 88.7% file size saving just from running one command and adding 2 lines of code.\nI did find one problem with the outputted CSS, the cookie banner package we’d been using had a custom theme that wasn’t being detected and thus leaving our cookie banner unstyled.So I had to make a minor change to the config and add a whitelist rule for the generated classes:\n123456mix.js('resources/js/app.js', 'public/js')    .sass('resources/sass/app.scss', 'public/css')   .purgeCss(&#123;        whitelistPatterns: [/Cookie--nx-theme$/],        whitelistPatternsChildren: [/Cookie--nx-theme$/]    &#125;);\nThe final CSS file generated was 22kb and after the browser gzipping the file only 5.18kb of data is actually sent down the wire.Compared with the 24kb gzipped file that was being sent prior to using Purgecss.\nWait, the gzipped file being sent originally was bigger than the actual file after using Purgecss? \nThis really is an easy win!\n","dateCreated":"2019-05-06T19:48:07+01:00","dateModified":"2019-05-09T12:57:01+01:00","datePublished":"2019-05-06T19:48:07+01:00","description":"I’m always looking for easy wins to optimise my development workflow and improve the end user experience, so figured after hearing about Purgecss I’d look into it and see how I could integrate it into my work flow. \n\n“Purgecss is a tool to remove unused CSS”\n\nWith frameworks like Bootstrap and Zurb providing so many CSS classes that often don’t get used, this looked like it really would be an easy win situation!","headline":"Cleaning unused CSS with Purgecss Laravel Mix","image":["https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1557168888/posts/joburg-graffiti.jpg","https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_1600/v1557168888/posts/joburg-graffiti.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://talvbansal.me/blog/cleaning-unused-css-with-purge-css-laravel-mix/"},"publisher":{"@type":"Organization","name":"Talv Bansal","sameAs":["https://github.com/talvbansal","https://twitter.com/talv","https://instagram.com/iwantthewindowseat","https://www.linkedin.com/in/talvinder-bansal-5826594a","mailto:talvbansal@outlook.com"],"image":"https://www.gravatar.com/avatar/be14e67a41106fe8731f839b3bd46733","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/be14e67a41106fe8731f839b3bd46733"}},"url":"https://talvbansal.me/blog/cleaning-unused-css-with-purge-css-laravel-mix/","keywords":"Laravel, Javascript, Tooling, Laravel Mix, CSS","thumbnailUrl":"https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1557168888/posts/joburg-graffiti.jpg"}</script>
+    <meta name="description" content="I’m always looking for easy wins to optimise my development workflow and improve the end user experience, so figured after hearing about Purgecss I’d look into it and see how I could integrate it into">
+<meta name="keywords" content="Laravel,Javascript,Tooling,Laravel Mix,CSS">
 <meta property="og:type" content="blog">
-<meta property="og:title" content="TalvBansal.me">
-<meta property="og:url" content="https://talvbansal.me/tags/Moment-js/index.html">
+<meta property="og:title" content="Cleaning unused CSS with Purgecss Laravel Mix">
+<meta property="og:url" content="https://talvbansal.me/blog/cleaning-unused-css-with-purge-css-laravel-mix/index.html">
 <meta property="og:site_name" content="TalvBansal.me">
-<meta property="og:description" content="Tales of a full stack developer">
+<meta property="og:description" content="I’m always looking for easy wins to optimise my development workflow and improve the end user experience, so figured after hearing about Purgecss I’d look into it and see how I could integrate it into">
 <meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-05-09T11:57:01.413Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="TalvBansal.me">
-<meta name="twitter:description" content="Tales of a full stack developer">
+<meta name="twitter:title" content="Cleaning unused CSS with Purgecss Laravel Mix">
+<meta name="twitter:description" content="I’m always looking for easy wins to optimise my development workflow and improve the end user experience, so figured after hearing about Purgecss I’d look into it and see how I could integrate it into">
 <meta name="twitter:creator" content="@talv">
     
     
@@ -36,6 +37,12 @@
         <meta property="og:image" content="https://www.gravatar.com/avatar/321065504328f47a4f9d8b57df0635f4?s=640"/>
     
     
+        <meta property="og:image" content="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1557168888/posts/joburg-graffiti.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1557168888/posts/joburg-graffiti.jpg" />
+    
+    
+        <meta property="og:image" content="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_1600/v1557168888/posts/joburg-graffiti.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum" content="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_1600/v1557168888/posts/joburg-graffiti.jpg" />
     
     
     <!--STYLES-->
@@ -65,7 +72,7 @@
         
     
 
-<header id="header" data-behavior="1">
+<header id="header" data-behavior="4">
     <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
     <div class="header-title">
         <a class="header-title-link" href="/ ">TalvBansal.me</a>
@@ -87,7 +94,7 @@
 
     
 
-<nav id="sidebar" data-behavior="1">
+<nav id="sidebar" data-behavior="4">
     <div class="sidebar-container">
         
             <div class="sidebar-profile">
@@ -241,111 +248,206 @@
 </nav>
 
             
-            <div id="main" data-behavior="1"
-                 class="
+        <div class="post-header-cover
+                    text-center
+                    post-header-cover--partial"
+             style="background-image:url('https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_1600/v1557168888/posts/joburg-graffiti.jpg');"
+             data-behavior="4">
+            
+                <div class="post-header main-content-wrap text-center">
+    
+        <h1 class="post-title">
+            Cleaning unused CSS with Purgecss Laravel Mix
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2019-05-06T19:48:07+01:00">
+	
+		    May 06, 2019
+    	
+    </time>
+    
+</div>
+
+    
+</div>
+
+            
+        </div>
+
+            <div id="main" data-behavior="4"
+                 class="hasCover
                         hasCoverMetaIn
                         ">
                 
-    <section class="postShorten-group main-content-wrap">
+<article class="post">
     
     
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>I’m always looking for easy wins to optimise my development workflow and improve the end user experience, so figured after hearing about <a href="https://www.purgecss.com/" target="_blank" rel="noopener">Purgecss</a> I’d look into it and see how I could integrate it into my work flow. </p>
+<blockquote>
+<p>“Purgecss is a tool to remove unused CSS”</p>
+</blockquote>
+<p>With frameworks like <a href="https://getbootstrap.com/" target="_blank" rel="noopener">Bootstrap</a> and <a href="https://foundation.zurb.com/sites/docs/" target="_blank" rel="noopener">Zurb</a> providing so many CSS classes that often don’t get used, this looked like it really would be an easy win situation!</p>
+<a id="more"></a>
+<p>This week I deployed my first site over at <a href="https://www.netlify.com/" target="_blank" rel="noopener">Netlify</a> for the <a href="https://nx-technology.com" target="_blank" rel="noopener">new company I’m working at</a>. </p>
+<p>The site I’d been working on is written in Laravel and  as it didn’t have a backend it was a great candidate for extracting it out to a static site. Converting a laravel app to a static site is now totally doable using the new <a href="https://github.com/spatie/laravel-export" target="_blank" rel="noopener">Laravel Export</a> package from the excellent folks over at <a href="https://spatie.be/" target="_blank" rel="noopener">Spatie</a>. I figured this would also be a great candidate for trying out Purgecss.</p>
+<p>First lets look at the processes already in place and the filesize being output.</p>
+<p>As this is a Laravel app it makes sense that the project would use Laravel Mix for its asset bundling.</p>
+<p>With an out of the box Laravel 5.8 config our <code>webpack.mix.js</code> file looks like this:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> mix = <span class="built_in">require</span>(<span class="string">'laravel-mix'</span>);</span><br><span class="line"></span><br><span class="line">mix.js(<span class="string">'resources/js/app.js'</span>, <span class="string">'public/js'</span>)</span><br><span class="line">.sass(<span class="string">'resources/sass/app.scss'</span>, <span class="string">'public/css'</span>);</span><br></pre></td></tr></table></figure>
+<p>After building the site this config built assets of the following sizes in dev and production mode.</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th style="text-align:center">Dev Size</th>
+<th style="text-align:center">Prod Size</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>/css/app.CSS</td>
+<td style="text-align:center">183 KiB</td>
+<td style="text-align:center">147 KiB</td>
+</tr>
+<tr>
+<td>/js/app.js</td>
+<td style="text-align:center">1.39 MiB</td>
+<td style="text-align:center">432 KiB</td>
+</tr>
+</tbody>
+</table>
+<p>We’re not going to interested in the size of the JS file since we’d expect Purgecss to only impact the outputted CSS files.</p>
+<p>Adding Purgecss to the site was even easier than I’d expected, the team at Spatie had built a plugin for laravel-mix.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yarn add -D laravel-mix-purgecss</span><br></pre></td></tr></table></figure>
+<p>Or if you use npm<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install laravel-mix-purgecss --save-dev</span><br></pre></td></tr></table></figure></p>
+<p>Update <code>webpack.mix.js</code> to use the new plugin:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> mix = <span class="built_in">require</span>(<span class="string">'laravel-mix'</span>);</span><br><span class="line"><span class="built_in">require</span>(<span class="string">'laravel-mix-purgecss'</span>);</span><br><span class="line"></span><br><span class="line">mix.js(<span class="string">'resources/js/app.js'</span>, <span class="string">'public/js'</span>)</span><br><span class="line">   .sass(<span class="string">'resources/sass/app.scss'</span>, <span class="string">'public/css'</span>)</span><br><span class="line">   .purgeCss();</span><br></pre></td></tr></table></figure>
+<p>Re-running the build process gave us the following size for our CSS file:</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th style="text-align:center">Dev Size</th>
+<th style="text-align:center">Prod Size</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>/css/app.CSS</td>
+<td style="text-align:center">183 KiB</td>
+<td style="text-align:center">16.5 KiB</td>
+</tr>
+</tbody>
+</table>
+<p>The Purgecss plugin is only run during production builds but the size of the production file is tiny in comparison. 147kb down to 16.5kb.<br>That’s an 88.7% file size saving just from running one command and adding 2 lines of code.</p>
+<p>I did find one problem with the outputted CSS, the <a href="https://apertureless.github.io/vue-cookie-law/" target="_blank" rel="noopener">cookie banner package</a> we’d been using had a custom theme that wasn’t being detected and thus leaving our cookie banner unstyled.<br>So I had to make a minor change to the config and add a whitelist rule for the generated classes:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">mix.js(<span class="string">'resources/js/app.js'</span>, <span class="string">'public/js'</span>)</span><br><span class="line">    .sass(<span class="string">'resources/sass/app.scss'</span>, <span class="string">'public/css'</span>)</span><br><span class="line">   .purgeCss(&#123;</span><br><span class="line">        whitelistPatterns: [<span class="regexp">/Cookie--nx-theme$/</span>],</span><br><span class="line">        whitelistPatternsChildren: [<span class="regexp">/Cookie--nx-theme$/</span>]</span><br><span class="line">    &#125;);</span><br></pre></td></tr></table></figure>
+<p>The final CSS file generated was 22kb and after the browser gzipping the file only 5.18kb of data is actually sent down the wire.<br>Compared with the 24kb gzipped file that was being sent prior to using Purgecss.</p>
+<p>Wait, the gzipped file being sent originally was bigger than the actual file after using Purgecss? </p>
+<p>This really is an easy win!</p>
+
             
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/replace-momentjs-with-dayjs/">
-                            Replacing Moment.js With Dayjs
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-10-02T19:01:00+01:00">
-	
-		    Oct 02, 2018
-    	
-    </time>
-    
-</div>
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/CSS/">CSS</a> <a class="tag tag--primary tag--small t-link" href="/tags/Javascript/">Javascript</a> <a class="tag tag--primary tag--small t-link" href="/tags/Laravel/">Laravel</a> <a class="tag tag--primary tag--small t-link" href="/tags/Laravel-Mix/">Laravel Mix</a> <a class="tag tag--primary tag--small t-link" href="/tags/Tooling/">Tooling</a>
 
             </div>
-            
-                <div class="postShorten-excerpt">
-                    <p>Earlier this year I blogged about reducing the file size of moment.js by stripping out additional locales. Whilst stripping the locales made a good saving in file size, really all I was using it for was to format dates within my user interfaces. So I set out on finding a lightweight alternative to do just that…</p>
-                    
-                        <a href="/blog/replace-momentjs-with-dayjs/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
         
-            <a href="/blog/replace-momentjs-with-dayjs/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1555352638/posts/mexico-city-bellas-artes.jpg"/>
-                </div>
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--disabled">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/blog/search-and-replace-with-slashes-in-mysql/" data-tooltip="Search and Replace with Slashes in MySQL" aria-label="NEXT: Search and Replace with Slashes in MySQL">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://talvbansal.me/blog/cleaning-unused-css-with-purge-css-laravel-mix/" title="Share on Facebook">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://talvbansal.me/blog/cleaning-unused-css-with-purge-css-laravel-mix/" title="Share on Twitter">
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://talvbansal.me/blog/cleaning-unused-css-with-purge-css-laravel-mix/" title="Share on Google+">
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
             
         
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
+        <li class="post-action">
             
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/optimising-moment-js-with-laravel-mix/">
-                            Optimising Moment.js with Laravel Mix
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-04-18T15:56:44+01:00">
-	
-		    Apr 18, 2018
-    	
-    </time>
-    
-</div>
-
-            </div>
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
             
-                <div class="postShorten-excerpt">
-                    <p>The PHP library <a href="https://carbon.nesbot.com/docs/" target="_blank" rel="noopener">Carbon</a> is hands down my favourite way to work with dates within PHP.<br>When using Javascript the closes thing ive found to it is a library called <a href="https://momentjs.com" target="_blank" rel="noopener">Moment.js</a>.</p>
-<p>By default Moment.js is bundled with a plethora of locales which might not all be relavent to you or your users. In this article I want to look at how much of a size reduction we can use by stripping out unwanted locales using <a href="https://webpack.js.org" target="_blank" rel="noopener">webpack</a> via <a href="https://github.com/JeffreyWay/laravel-mix/tree/master/docs#readme" target="_blank" rel="noopener">Laravel-Mix</a>.</p>
-                    
-                        <a href="/blog/optimising-moment-js-with-laravel-mix/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/blog/optimising-moment-js-with-laravel-mix/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1555352452/posts/mexico-city-street-art.jpg"/>
-                </div>
+                <i class="fa fa-list" aria-hidden="true"></i>
             </a>
-            
-        
-    </article>
-    
-    <div class="pagination-bar">
-    <ul class="pagination">
-        
-        
-        <li class="pagination-number">page 1 of 1</li>
+        </li>
     </ul>
 </div>
 
-</section>
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
 
 
                 <footer id="footer" class="main-content-wrap">
@@ -355,6 +457,113 @@
 </footer>
 
             </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--disabled">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/blog/search-and-replace-with-slashes-in-mysql/" data-tooltip="Search and Replace with Slashes in MySQL" aria-label="NEXT: Search and Replace with Slashes in MySQL">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://talvbansal.me/blog/cleaning-unused-css-with-purge-css-laravel-mix/" title="Share on Facebook">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://talvbansal.me/blog/cleaning-unused-css-with-purge-css-laravel-mix/" title="Share on Twitter">
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://talvbansal.me/blog/cleaning-unused-css-with-purge-css-laravel-mix/" title="Share on Google+">
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+    <i id="btn-close-shareoptions" class="fa fa-times"></i>
+    <ul class="share-options">
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://talvbansal.me/blog/cleaning-unused-css-with-purge-css-laravel-mix/">
+                    <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https://talvbansal.me/blog/cleaning-unused-css-with-purge-css-laravel-mix/">
+                    <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https://talvbansal.me/blog/cleaning-unused-css-with-purge-css-laravel-mix/">
+                    <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                </a>
+            </li>
+        
+    </ul>
+</div>
+
             
         </div>
         
@@ -716,6 +925,25 @@
         <!--SCRIPTS-->
 <script src="/assets/js/script-vufjrm3fmbuttogo1hxuu0w9w0sesk5iyysjuguc2hdhufot9szxg8twijry.min.js"></script>
 <!--SCRIPTS END-->
+
+    
+        <script>
+             var disqus_config = function () {
+                 this.page.url = 'https://talvbansal.me/blog/cleaning-unused-css-with-purge-css-laravel-mix/';
+                 
+                    this.page.identifier = 'blog/cleaning-unused-css-with-purge-css-laravel-mix/';
+                 
+             };
+            (function() {
+                var d = document, s = d.createElement('script');
+                var disqus_shortname = 'talvbansalblog';
+                s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment-with-locales.min.js"></script>
