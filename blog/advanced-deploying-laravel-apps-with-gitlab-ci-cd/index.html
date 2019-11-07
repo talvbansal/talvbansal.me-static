@@ -7,26 +7,34 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="generator" content="TalvBansal.me" />
-  <title>Tag: Gitlab - TalvBansal.me</title>
+  <title>Advanced building and deploying Laravel apps with Gitlab CI/CD - TalvBansal.me</title>
   <meta name="author" content="Talv Bansal" />
   
   <meta name="keywords" content="hexo,gitlab,github,javascript,es6,laravel,php,vue,vue.js,development,full stack,CI/CD," />
    
   <link rel="icon" href="https://talvbansal.me/assets/images/favicon.ico" />
-    <script type="application/ld+json">{}</script> <meta name="description" content="Tales of a full stack developer">
-<meta name="keywords" content="hexo,gitlab,github,javascript,es6,laravel,php,vue,vue.js,development,full stack,CI&#x2F;CD">
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Talv Bansal","sameAs":["https://github.com/talvbansal","https://twitter.com/talv","https://instagram.com/iwantthewindowseat","https://www.linkedin.com/in/talvinder-bansal-5826594a","mailto:talvbansal@outlook.com"],"image":"https://www.gravatar.com/avatar/be14e67a41106fe8731f839b3bd46733"},"articleBody":"Introduction\nPrepare\nLint\nTest\nDeploy\nHorizon reload\nRestart FPM\nRestart tasks without sudo\n\n\n","dateCreated":"2019-08-16T10:13:49+01:00","dateModified":"2019-08-16T10:17:32+01:00","datePublished":"2019-08-16T10:13:49+01:00","description":"Introduction\nPrepare\nLint\nTest\nDeploy\nHorizon reload\nRestart FPM\nRestart tasks without sudo\n","headline":"Advanced building and deploying Laravel apps with Gitlab CI/CD","image":["https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1555352188/posts/cancun-sunset.jpg","https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_1600/v1555352188/posts/cancun-sunset.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://talvbansal.me/blog/advanced-deploying-laravel-apps-with-gitlab-ci-cd/"},"publisher":{"@type":"Organization","name":"Talv Bansal","sameAs":["https://github.com/talvbansal","https://twitter.com/talv","https://instagram.com/iwantthewindowseat","https://www.linkedin.com/in/talvinder-bansal-5826594a","mailto:talvbansal@outlook.com"],"image":"https://www.gravatar.com/avatar/be14e67a41106fe8731f839b3bd46733","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/be14e67a41106fe8731f839b3bd46733"}},"url":"https://talvbansal.me/blog/advanced-deploying-laravel-apps-with-gitlab-ci-cd/","keywords":"Laravel, Gitlab, CI/CD, PHP, Devops","thumbnailUrl":"https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1555352188/posts/cancun-sunset.jpg"}</script> <meta name="description" content="Introduction Prepare Lint Test Deploy Horizon reload Restart FPM Restart tasks without sudo">
+<meta name="keywords" content="Laravel,Gitlab,CI&#x2F;CD,PHP,Devops">
 <meta property="og:type" content="blog">
-<meta property="og:title" content="TalvBansal.me">
-<meta property="og:url" content="https://talvbansal.me/tags/Gitlab/index.html">
+<meta property="og:title" content="Advanced building and deploying Laravel apps with Gitlab CI&#x2F;CD">
+<meta property="og:url" content="https://talvbansal.me/blog/advanced-deploying-laravel-apps-with-gitlab-ci-cd/index.html">
 <meta property="og:site_name" content="TalvBansal.me">
-<meta property="og:description" content="Tales of a full stack developer">
+<meta property="og:description" content="Introduction Prepare Lint Test Deploy Horizon reload Restart FPM Restart tasks without sudo">
 <meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-08-16T09:17:32.672Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="TalvBansal.me">
-<meta name="twitter:description" content="Tales of a full stack developer">
+<meta name="twitter:title" content="Advanced building and deploying Laravel apps with Gitlab CI&#x2F;CD">
+<meta name="twitter:description" content="Introduction Prepare Lint Test Deploy Horizon reload Restart FPM Restart tasks without sudo">
 <meta name="twitter:creator" content="@talv">     
   <meta property="og:image" content="https://www.gravatar.com/avatar/321065504328f47a4f9d8b57df0635f4?s=640" />
-     
+   
+  <meta property="og:image" content="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1555352188/posts/cancun-sunset.jpg" />
+  <meta class="swiftype" name="image" data-type="enum"
+    content="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1555352188/posts/cancun-sunset.jpg" />
+   
+  <meta property="og:image" content="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_1600/v1555352188/posts/cancun-sunset.jpg" />
+  <meta class="swiftype" name="image" data-type="enum" content="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_1600/v1555352188/posts/cancun-sunset.jpg" />
+   
   <!--STYLES-->
   <link rel="stylesheet" href="/assets/css/style-du2xmrqdqrl2ollgeiw050kpl6l4nbyz7bumjuurjgsxyopifvukebxc9lqe.min.css">
   <!--STYLES END-->
@@ -55,7 +63,7 @@
         
     
 
-<header id="header" data-behavior="1">
+<header id="header" data-behavior="4">
     <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
     <div class="header-title">
         <a class="header-title-link" href="/ ">TalvBansal.me</a>
@@ -77,7 +85,7 @@
 
     
 
-<nav id="sidebar" data-behavior="1">
+<nav id="sidebar" data-behavior="4">
     <div class="sidebar-container">
         
             <div class="sidebar-profile">
@@ -231,26 +239,20 @@
 </nav>
 
             
-            <div id="main" data-behavior="1"
-                 class="
-                        hasCoverMetaIn
-                        ">
-                
-    <section class="postShorten-group main-content-wrap">
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
+        <div class="post-header-cover
+                    text-center
+                    post-header-cover--partial"
+             style="background-image:url('https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_1600/v1555352188/posts/cancun-sunset.jpg');"
+             data-behavior="4">
             
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/advanced-deploying-laravel-apps-with-gitlab-ci-cd/">
-                            Advanced building and deploying Laravel apps with Gitlab CI/CD
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
+                <div class="post-header main-content-wrap text-center">
+    
+        <h1 class="post-title">
+            Advanced building and deploying Laravel apps with Gitlab CI/CD
+        </h1>
+    
+    
+        <div class="post-meta">
     <time datetime="2019-08-16T10:13:49+01:00">
 	
 		    Aug 16, 2019
@@ -259,10 +261,23 @@
     
 </div>
 
-            </div>
+    
+</div>
+
             
-                <div class="postShorten-excerpt">
-                    <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><ul>
+        </div>
+
+            <div id="main" data-behavior="4"
+                 class="hasCover
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><ul>
 <li>Prepare</li>
 <li>Lint</li>
 <li>Test</li>
@@ -271,375 +286,106 @@
 <li>Restart FPM</li>
 <li>Restart tasks without sudo</li>
 </ul>
-                    
-                        <a href="/blog/advanced-deploying-laravel-apps-with-gitlab-ci-cd/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
+<a id="more"></a>
+
             
+
         </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
         
-            <a href="/blog/advanced-deploying-laravel-apps-with-gitlab-ci-cd/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1555352188/posts/cancun-sunset.jpg"/>
-                </div>
-            </a>
-            
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/unit-tests-with-json-columns-in-sqlite/">
-                            Unit tests with JSON columns in SQLite
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-04-15T01:59:08+01:00">
-	
-		    Apr 15, 2019
-    	
-    </time>
-    
-</div>
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/CI-CD/">CI/CD</a> <a class="tag tag--primary tag--small t-link" href="/tags/Devops/">Devops</a> <a class="tag tag--primary tag--small t-link" href="/tags/Gitlab/">Gitlab</a> <a class="tag tag--primary tag--small t-link" href="/tags/Laravel/">Laravel</a> <a class="tag tag--primary tag--small t-link" href="/tags/PHP/">PHP</a>
 
             </div>
-            
-                <div class="postShorten-excerpt">
-                    <p>When doing any sort of development work I’ve always preferred working on an Ubuntu machine.<br>Doing so has helped me understand the servers that our production code has always been run on.</p>
-<p>Towards the end of last year I started work on a new project that made heavy use of <a href="https://github.com/spatie/laravel-event-projector" target="_blank" rel="noopener">Spatie’s Event Projector package</a>.<br>Without getting into the package too much, at its core it stores the payloads of all recorded events in a <code>JSON</code> column within a <code>stored_events</code> table. </p>
-<p>I hadn’t needed to use <code>JSON</code> columns before and since they were a part of MySQL 5.7 which was released in 2015 I had assumed there’d be no issues with using them.</p>
-<p>For the most part I was right, writing unit tests with Laravel’s build in tools has made me come to love writing tests and made TDD part of my daily workflow.<br>However when I tried to run the same tests within Gitlabs CI/CD pipelines I saw the following:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">PHPUnit 7.5.6 by Sebastian Bergmann and contributors.</span><br><span class="line"></span><br><span class="line">Runtime:       PHP 7.2.15</span><br><span class="line">Configuration: /builds/secret-project/phpunit.xml</span><br><span class="line"></span><br><span class="line"> ==&gt; Tests\Unit\ExampleTest ✓ </span><br><span class="line"><span class="string">"&#123;"</span>errors<span class="string">":["</span>SQLSTATE[HY000]: General error: 1 no such <span class="keyword">function</span>: json_extract (SQL: select * from \<span class="string">"stored_events\" where \"event_class\" in (App\\Events\\ClaimReported, App\\Events\\ClaimUpdatedByApp, App\\Events\\ClaimCreated, App\\Events\\ClaimUpdated, App\\Events\\ClaimUploadCompleted) and \"id\" &lt; 1 and json_extract(\"event_properties\", '$.\"claimUuid\"') = 0dab4335-c5e8-3564-9a0a-d0537cd697f4 order by \"id\" desc limit 1)"</span>]&#125;<span class="string">"</span></span><br></pre></td></tr></table></figure>
-                    
-                        <a href="/blog/unit-tests-with-json-columns-in-sqlite/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
         
-            <a href="/blog/unit-tests-with-json-columns-in-sqlite/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,h_280/v1555344239/posts/jaipur-hawa-mahal.jpg"/>
-                </div>
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--disabled">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/blog/human-readable-dates-with-dayjs-in-vue-js/" data-tooltip="Human readable dates with Dayjs in Vue" aria-label="NEXT: Human readable dates with Dayjs in Vue">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://talvbansal.me/blog/advanced-deploying-laravel-apps-with-gitlab-ci-cd/" title="Share on Facebook">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://talvbansal.me/blog/advanced-deploying-laravel-apps-with-gitlab-ci-cd/" title="Share on Twitter">
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://talvbansal.me/blog/advanced-deploying-laravel-apps-with-gitlab-ci-cd/" title="Share on Google+">
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
             
         
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
+        <li class="post-action">
             
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/testing-gitlab-ci-config-locally/">
-                            Testing your Gitlab CI config locally
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-04-20T11:29:30+01:00">
-	
-		    Apr 20, 2018
-    	
-    </time>
-    
-</div>
-
-            </div>
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
             
-                <div class="postShorten-excerpt">
-                    <h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>Recently at work we started using PHP7.2 for all of our new projects. We’d previously been using the <a href="https://github.com/TetraWeb/docker" target="_blank" rel="noopener">TetraWeb docker images</a> for our Gitlab CI needs, however they only (at the time of writing) have a docker images for versions up to PHP7.1.</p>
-<p>I tasked one of the junior members of my team with upgrading one of our projects and came back to our repositories commit history looking like this:</p>
-<p><img src="/blog/testing-gitlab-ci-config-locally/gitlab-commit-history.png" alt="Gitlab commit history"></p>
-<p>Kind of ugly and not so useful when scanning our commit history. </p>
-<p>In this article I want to show how we can test our Gitlab CI config locally whilst we’re working out how to set it up properly before we push it to Gitlab as well as keep our commit history cleaner in the process.</p>
-                    
-                        <a href="/blog/testing-gitlab-ci-config-locally/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/blog/testing-gitlab-ci-config-locally/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1555352830/posts/mexico-monument.jpg"/>
-                </div>
+                <i class="fa fa-list" aria-hidden="true"></i>
             </a>
-            
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/adding-eslint-to-your-laravel-application/">
-                            Adding eslint to your Laravel application
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-02-04T15:56:44+00:00">
-	
-		    Feb 04, 2018
-    	
-    </time>
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>My latest projects at work have evolved from being PHP / Laravel applications with sprinklings of Vue JS on the front end to being almost entirely Vue JS components driving the frontend with Laravel backends.</p>
-<p>Whilst laravel ships with <a href="https://laravel.com/docs/master/mix" target="_blank" rel="noopener">Laravel-Mix</a> to make webpack / asset compilation easier it doesn’t ship with anyway to lint your javascript.</p>
-<p>Luckily adding <a href="https://eslint.org/" target="_blank" rel="noopener">eslint</a> and defining rules for your <code>.js</code> and <code>.vue</code> files to follow is pretty straight forward.</p>
-                    
-                        <a href="/blog/adding-eslint-to-your-laravel-application/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/blog/adding-eslint-to-your-laravel-application/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,h_280/v1555351960/posts/portugal-tram.jpg"/>
-                </div>
-            </a>
-            
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/simple-push-to-deploy-with-gitlab-cicd/">
-                            Simple push to deploy with Gitlab CI/CD
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2017-05-24T16:15:27+01:00">
-	
-		    May 24, 2017
-    	
-    </time>
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>This article follows directly on from my <a href="https://talvbansal.me/blog/gitlab-ci-for-php-applications">previous article</a> on adding gitlab’s CI to my PHP projects.</p>
-<p>Once we’re happy with our code being automatically tested we might want it to be automatically deployed to a testing server / environment or maybe even production.<br>
-                    
-                        <a href="/blog/simple-push-to-deploy-with-gitlab-cicd/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/blog/simple-push-to-deploy-with-gitlab-cicd/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1555352778/posts/westminister-sunset.jpg"/>
-                </div>
-            </a>
-            
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/gitlab-ci-for-php-applications/">
-                            Gitlab CI for PHP applications
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2017-02-24T16:24:17+00:00">
-	
-		    Feb 24, 2017
-    	
-    </time>
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>Gitlab provides some good documentation on getting build runners for your projects set up which can be found <a href="https://about.gitlab.com/2016/03/01/gitlab-runner-with-docker/" target="_blank" rel="noopener">here</a>. However I haven’t found a good article on setting up Gitlab CI for PHP applications yet. </p>
-<p>This article is not going to discuss setting up shared runners on Gitlab since I felt the documentation provided by them in the link above was easy enough to follow, what this I am going to focus on is the <code>.gitlab-ci.yml</code> configuration that I’m currently using in my projects to do the following: </p>
-<ul>
-<li>Run PHP CS against our code base to ensure that it conforms to PSR-2</li>
-<li>Run PHPUnit against our code base to ensure that our unit tests pass against different versions of PHP (5.6, 7.0, 7.1)</li>
-</ul>
-                    
-                        <a href="/blog/gitlab-ci-for-php-applications/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/blog/gitlab-ci-for-php-applications/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1555352188/posts/cancun-sunset.jpg"/>
-                </div>
-            </a>
-            
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/updating-a-satis-repository-on-git-push/">
-                            Updating a Satis Repository on Git Push
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2016-09-27T16:31:04+01:00">
-	
-		    Sep 27, 2016
-    	
-    </time>
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <p><strong>Update May 2017, looks like with the Gitab update to V9, which uses a new Gitlab API v4, Packages will not let you enable new repositories</strong></p>
-<p>I’ve made amendments to the necessary files and packages on this fork:</p>
-<p><a href="https://github.com/talvbansal/packages" target="_blank" rel="noopener">https://github.com/talvbansal/packages</a> on the “gitlab” branch.</p>
-<p>As long as you change step 2 in the guide below everything should work as expected:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/talvbansal/packages</span><br><span class="line">cd packages</span><br><span class="line">git checkout gitlab</span><br><span class="line">composer install -o --no-dev</span><br></pre></td></tr></table></figure>
-<hr>
-
-<p>After moving our source control server from <strong><a href="http://gitolite.com/gitolite/index.html" target="_blank" rel="noopener">gitolite</a></strong> to a privately hosted <strong><a href="https://about.gitlab.com" target="_blank" rel="noopener">gitlab</a></strong> instance the next thing I wanted to do was get our internal <strong><a href="https://github.com/composer/satis" target="_blank" rel="noopener">Satis</a></strong> server to automatically update whenever code was pushed to a repository.<br>
-                    
-                        <a href="/blog/updating-a-satis-repository-on-git-push/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/blog/updating-a-satis-repository-on-git-push/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1555352875/posts/santorini-domes.jpg"/>
-                </div>
-            </a>
-            
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/setting-up-a-private-gitlab-server-on-ubuntu-1604/">
-                            Setting up a private GitLab server on Ubuntu 16.04
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2016-09-16T19:09:13+01:00">
-	
-		    Sep 16, 2016
-    	
-    </time>
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>Where I work, we’ve been using an Ubuntu Server running <a href="http://gitolite.com/gitolite/index.html" target="_blank" rel="noopener">gitolite</a> to act as our “Source control server” and manage permissions and access. Its worked well, and after some initial configuration (which I recall being pretty tricky) looking after the gitolite instance has been pretty easy and could easily continue to serve our needs as a small business well.</p>
-<p>Adding new users required you to get an ssh key from the new user, add it to an “administration repository” and then add their name to a config file within that repository. The same config file could then be used to determine which access rights they had to repositories as well as defining new repositories.</p>
-<p>We also use a <a href="https://getcomposer.org/doc/articles/handling-private-packages-with-satis.md" target="_blank" rel="noopener">satis</a> install to act as a private composer for our internal private packages.</p>
-<p>One of the things gitolite doesn’t provide you with is any sort of front end at all, everything has to be done through the terminal. It also requires you to have all of the following tools separately:</p>
-<ul>
-<li>Issue tracker</li>
-<li>File browser</li>
-<li>Activity stream</li>
-<li>Pull request management</li>
-</ul>
-<p>Which are all features that github has built in natively. </p>
-                    
-                        <a href="/blog/setting-up-a-private-gitlab-server-on-ubuntu-1604/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/blog/setting-up-a-private-gitlab-server-on-ubuntu-1604/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1555352729/posts/st-basils-moscow.jpg"/>
-                </div>
-            </a>
-            
-        
-    </article>
-    
-    <div class="pagination-bar">
-    <ul class="pagination">
-        
-        
-        <li class="pagination-number">page 1 of 1</li>
+        </li>
     </ul>
 </div>
 
-</section>
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
 
 
                 <footer id="footer" class="main-content-wrap">
@@ -649,6 +395,113 @@
 </footer>
 
             </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--disabled">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/blog/human-readable-dates-with-dayjs-in-vue-js/" data-tooltip="Human readable dates with Dayjs in Vue" aria-label="NEXT: Human readable dates with Dayjs in Vue">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://talvbansal.me/blog/advanced-deploying-laravel-apps-with-gitlab-ci-cd/" title="Share on Facebook">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://talvbansal.me/blog/advanced-deploying-laravel-apps-with-gitlab-ci-cd/" title="Share on Twitter">
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://talvbansal.me/blog/advanced-deploying-laravel-apps-with-gitlab-ci-cd/" title="Share on Google+">
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+    <i id="btn-close-shareoptions" class="fa fa-times"></i>
+    <ul class="share-options">
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://talvbansal.me/blog/advanced-deploying-laravel-apps-with-gitlab-ci-cd/">
+                    <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https://talvbansal.me/blog/advanced-deploying-laravel-apps-with-gitlab-ci-cd/">
+                    <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https://talvbansal.me/blog/advanced-deploying-laravel-apps-with-gitlab-ci-cd/">
+                    <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                </a>
+            </li>
+        
+    </ul>
+</div>
+
             
         </div>
         
@@ -1010,6 +863,25 @@
         <!--SCRIPTS-->
 <script src="/assets/js/script-vufjrm3fmbuttogo1hxuu0w9w0sesk5iyysjuguc2hdhufot9szxg8twijry.min.js"></script>
 <!--SCRIPTS END-->
+
+    
+        <script>
+             var disqus_config = function () {
+                 this.page.url = 'https://talvbansal.me/blog/advanced-deploying-laravel-apps-with-gitlab-ci-cd/';
+                 
+                    this.page.identifier = 'blog/advanced-deploying-laravel-apps-with-gitlab-ci-cd/';
+                 
+             };
+            (function() {
+                var d = document, s = d.createElement('script');
+                var disqus_shortname = 'talvbansalblog';
+                s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment-with-locales.min.js"></script>
