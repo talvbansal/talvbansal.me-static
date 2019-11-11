@@ -7,26 +7,36 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="generator" content="TalvBansal.me" />
-  <title>Tag: Laravel - TalvBansal.me</title>
+  <title>Maximizing Gitlab&#39;s CI&#39;s Free Tier - TalvBansal.me</title>
   <meta name="author" content="Talv Bansal" />
   
   <meta name="keywords" content="hexo,gitlab,github,javascript,es6,laravel,php,vue,vue.js,development,full stack,CI/CD," />
    
   <link rel="icon" href="https://talvbansal.me/assets/images/favicon.ico" />
-    <script type="application/ld+json">{}</script> <meta name="description" content="Tales of a full stack developer">
-<meta name="keywords" content="hexo,gitlab,github,javascript,es6,laravel,php,vue,vue.js,development,full stack,CI&#x2F;CD">
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Talv Bansal","sameAs":["https://github.com/talvbansal","https://twitter.com/talv","https://instagram.com/iwantthewindowseat","https://www.linkedin.com/in/talvinder-bansal-5826594a","mailto:talvbansal@outlook.com"],"image":"https://www.gravatar.com/avatar/be14e67a41106fe8731f839b3bd46733"},"articleBody":"Last year I began working at a new startup - NX Technology. \nAs a start up with limited funding we’re constantly looking for efficiencies and ways to get the most out of what we already have whether that be in hardware or software. \nWhilst previously I’ve set up and self hosted a gitlab instance at NX we needed to get things up and running asap so we decided to use the gitlabs free tier.\nAt the time of writing the bronze tier comes with unlimited private repositories and 2000 gitlab ci minutes using gitlab’s shared runners.\nOne of the things I love about this is that once those minutes are up you can either pay for more or use your own runners to process jobs for your projects.\nWe have an old -nothing special- server which we’ve set up a gitlab runner on that will handle jobs for us along with gitlab’s shared runners and when our free minutes run out all jobs will run through that server.\nSince most of the time when you’re pushing code to gitlab your laptop will be on, you can use your development laptop to help out too!\n\nTLDRInstall and configure a gitlab runner on any spare hardware including your development device so that once your Gitlab CI/CD minutes run out your hardware can pick up jobs and keep your projects continuously deployed.\nPreparation and installationI’ve almost always worked on a Ubuntu machine for my development - tried a mac for a year came back to a dual boot Windows and Ubuntu for a number of reasons that deserve their own blog post. \nAs part of the build scripts I used to build my machine I installed a gitlab runner in the exact same way I did when I built the self hosted gitlab instance.\nFor our purposes we made all of our runners shared for the business’ gitlab group so that any runner could be used for any project. You can of course set runners per project but given the scale of our business at  \nYou can navigate to your group’s setup page from the group list url.\nAfter selecting your group, in the sidebar select “Settings” -&gt; “CI / CD”, then expand the “Runners” section. \nYou’ll see a section called “Set up a group Runner manually”, here are 2 pieces of information you’ll need to set up your runner.\n\nhttps://gitlab.com/\nA runner registration token\n\nYou’ll need these for the runner registration in the following steps as well as picking the docker executor when asked.\nIf you’re on Ubuntu you’ll need to run the following to get up and running:\n12345678910# Install Docker...curl -fsSL https://get.docker.com -o get-docker.shsh get-docker.sh# Install Gitlab Runner...sudo wget -O /usr/local/bin/gitlab-runner https://gitlab-runner-downloads.s3.amazonaws.com/latest/binaries/gitlab-runner-linux-amd64sudo chmod +x /usr/local/bin/gitlab-runnersudo useradd --comment 'GitLab Runner' --create-home gitlab-runner --shell /bin/bashsudo gitlab-runner install --user=gitlab-runner --working-directory=/home/gitlab-runnersudo gitlab-runner start\nIf you’re on OSX the command differ slightly. Install docker for mac first.12345sudo curl --output /usr/local/bin/gitlab-runner https://gitlab-runner-downloads.s3.amazonaws.com/latest/binaries/gitlab-runner-darwin-amd64sudo chmod +x /usr/local/bin/gitlab-runnercd ~gitlab-runner installgitlab-runner start\nAt this point you should have a runner registered and running on your system.The runner itself should be visible on the “Group” -&gt; “Settings” -&gt; “CI \\ CD”  page and hopefully listed as online (green light next to it).\nRunning multiple concurrent jobsBy default a runner registered this way will be set up to run a single job at a time. If you want to allow for multiple concurrent jobs you can edit the runners config file:\n1sudo nano /etc/gitlab-runner/config.toml\nChange the concurrent value on the first line from 1 to whatever number you’re happy with.I keep my laptop at 1 and honestly can’t notice when the runner is actually being used. We have another small machine thats set to run 4 concurrent jobs.\nYou’ll also be able to see the information we entered when creating the runner in this file so if you decide to change anything in future here’s where that would happen.\nAfter saving an exiting you’ll need to restart the gitlab-runner service\n1sudo systemctl restart gitlab-runner\nGotchasRaspberry Pi. Don’t.\nWe have a Pi Hole running on our network and I figured that if you could install a gitlab-runner on the pi that would be the ultimate low cost, low maintenance device.So I went about installing and configuring the Pi to do just that. \nEverything looked good, it was registered and running however when it was actually handed a job this happened:\n\nIt turns out that docker images are architecture specific, so this cryptic error:\n1standard_init_linux.go:211: exec user process caused \"exec format error\"\nmeant that the docker image that had been built for x86_64 and therefore could not be run on the Pi’s architecture. \nThe sad part for me was this, in the aim of being proactive I wrote this blog post originally to show of all my learnings on how to get a runner configured and optimised for the raspberry pi!\n","dateCreated":"2019-11-11T17:07:30+00:00","dateModified":"2019-11-11T22:25:36+00:00","datePublished":"2019-11-11T17:07:30+00:00","description":"Last year I began working at a new startup - NX Technology. \nAs a start up with limited funding we’re constantly looking for efficiencies and ways to get the most out of what we already have whether that be in hardware or software. \nWhilst previously I’ve set up and self hosted a gitlab instance at NX we needed to get things up and running asap so we decided to use the gitlabs free tier.\nAt the time of writing the bronze tier comes with unlimited private repositories and 2000 gitlab ci minutes using gitlab’s shared runners.\nOne of the things I love about this is that once those minutes are up you can either pay for more or use your own runners to process jobs for your projects.\nWe have an old -nothing special- server which we’ve set up a gitlab runner on that will handle jobs for us along with gitlab’s shared runners and when our free minutes run out all jobs will run through that server.\nSince most of the time when you’re pushing code to gitlab your laptop will be on, you can use your development laptop to help out too!","headline":"Maximizing Gitlab's CI's Free Tier","image":["https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1573492411/posts/welvegonden-lion.jpg","https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_1600/v1573492411/posts/welvegonden-lion.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://talvbansal.me/blog/maximising-gitlab-ci-s-free-tier/"},"publisher":{"@type":"Organization","name":"Talv Bansal","sameAs":["https://github.com/talvbansal","https://twitter.com/talv","https://instagram.com/iwantthewindowseat","https://www.linkedin.com/in/talvinder-bansal-5826594a","mailto:talvbansal@outlook.com"],"image":"https://www.gravatar.com/avatar/be14e67a41106fe8731f839b3bd46733","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/be14e67a41106fe8731f839b3bd46733"}},"url":"https://talvbansal.me/blog/maximising-gitlab-ci-s-free-tier/","keywords":"Gitlab, CI/CD, Devops, Ubuntu, Raspberry Pi","thumbnailUrl":"https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1573492411/posts/welvegonden-lion.jpg"}</script> <meta name="description" content="Last year I began working at a new startup - NX Technology.  As a start up with limited funding we’re constantly looking for efficiencies and ways to get the most out of what we already have whether t">
+<meta name="keywords" content="Gitlab,CI&#x2F;CD,Devops,Ubuntu,Raspberry Pi">
 <meta property="og:type" content="blog">
-<meta property="og:title" content="TalvBansal.me">
-<meta property="og:url" content="https://talvbansal.me/tags/Laravel/page/2/index.html">
+<meta property="og:title" content="Maximizing Gitlab&#39;s CI&#39;s Free Tier">
+<meta property="og:url" content="https://talvbansal.me/blog/maximising-gitlab-ci-s-free-tier/index.html">
 <meta property="og:site_name" content="TalvBansal.me">
-<meta property="og:description" content="Tales of a full stack developer">
+<meta property="og:description" content="Last year I began working at a new startup - NX Technology.  As a start up with limited funding we’re constantly looking for efficiencies and ways to get the most out of what we already have whether t">
 <meta property="og:locale" content="en">
+<meta property="og:image" content="https://res.cloudinary.com/www-talvbansal-me/image/upload/v1573510511/posts/failed-arm-job.png">
+<meta property="og:updated_time" content="2019-11-11T22:25:36.305Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="TalvBansal.me">
-<meta name="twitter:description" content="Tales of a full stack developer">
+<meta name="twitter:title" content="Maximizing Gitlab&#39;s CI&#39;s Free Tier">
+<meta name="twitter:description" content="Last year I began working at a new startup - NX Technology.  As a start up with limited funding we’re constantly looking for efficiencies and ways to get the most out of what we already have whether t">
+<meta name="twitter:image" content="https://res.cloudinary.com/www-talvbansal-me/image/upload/v1573510511/posts/failed-arm-job.png">
 <meta name="twitter:creator" content="@talv">     
   <meta property="og:image" content="https://www.gravatar.com/avatar/321065504328f47a4f9d8b57df0635f4?s=640" />
-     
+   
+  <meta property="og:image" content="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1573492411/posts/welvegonden-lion.jpg" />
+  <meta class="swiftype" name="image" data-type="enum"
+    content="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1573492411/posts/welvegonden-lion.jpg" />
+   
+  <meta property="og:image" content="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_1600/v1573492411/posts/welvegonden-lion.jpg" />
+  <meta class="swiftype" name="image" data-type="enum" content="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_1600/v1573492411/posts/welvegonden-lion.jpg" />
+   
   <!--STYLES-->
   <link rel="stylesheet" href="/assets/css/style-du2xmrqdqrl2ollgeiw050kpl6l4nbyz7bumjuurjgsxyopifvukebxc9lqe.min.css">
   <!--STYLES END-->
@@ -55,7 +65,7 @@
         
     
 
-<header id="header" data-behavior="1">
+<header id="header" data-behavior="4">
     <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
     <div class="header-title">
         <a class="header-title-link" href="/ ">TalvBansal.me</a>
@@ -77,7 +87,7 @@
 
     
 
-<nav id="sidebar" data-behavior="1">
+<nav id="sidebar" data-behavior="4">
     <div class="sidebar-container">
         
             <div class="sidebar-profile">
@@ -231,220 +241,181 @@
 </nav>
 
             
-            <div id="main" data-behavior="1"
-                 class="
+        <div class="post-header-cover
+                    text-center
+                    post-header-cover--partial"
+             style="background-image:url('https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_1600/v1573492411/posts/welvegonden-lion.jpg');"
+             data-behavior="4">
+            
+                <div class="post-header main-content-wrap text-center">
+    
+        <h1 class="post-title">
+            Maximizing Gitlab&#39;s CI&#39;s Free Tier
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2019-11-11T17:07:30+00:00">
+	
+		    Nov 11, 2019
+    	
+    </time>
+    
+</div>
+
+    
+</div>
+
+            
+        </div>
+
+            <div id="main" data-behavior="4"
+                 class="hasCover
                         hasCoverMetaIn
                         ">
                 
-    <section class="postShorten-group main-content-wrap">
+<article class="post">
     
     
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/setting-up-a-private-gitlab-server-on-ubuntu-1604/">
-                            Setting up a private GitLab server on Ubuntu 16.04
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2016-09-16T19:09:13+01:00">
-	
-		    Sep 16, 2016
-    	
-    </time>
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>Where I work, we’ve been using an Ubuntu Server running <a href="http://gitolite.com/gitolite/index.html" target="_blank" rel="noopener">gitolite</a> to act as our “Source control server” and manage permissions and access. Its worked well, and after some initial configuration (which I recall being pretty tricky) looking after the gitolite instance has been pretty easy and could easily continue to serve our needs as a small business well.</p>
-<p>Adding new users required you to get an ssh key from the new user, add it to an “administration repository” and then add their name to a config file within that repository. The same config file could then be used to determine which access rights they had to repositories as well as defining new repositories.</p>
-<p>We also use a <a href="https://getcomposer.org/doc/articles/handling-private-packages-with-satis.md" target="_blank" rel="noopener">satis</a> install to act as a private composer for our internal private packages.</p>
-<p>One of the things gitolite doesn’t provide you with is any sort of front end at all, everything has to be done through the terminal. It also requires you to have all of the following tools separately:</p>
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>Last year I began working at a new startup - <a href="https://nx-technology.com" target="_blank" rel="noopener">NX Technology</a>. </p>
+<p>As a start up with limited funding we’re constantly looking for efficiencies and ways to get the most out of what we already have whether that be in hardware or software. </p>
+<p>Whilst previously I’ve set up and <a href="/blog/setting-up-a-private-gitlab-server-on-ubuntu-1604/">self hosted a gitlab instance</a> at NX we needed to get things up and running asap so we decided to use the gitlabs free tier.</p>
+<p>At the time of writing the bronze tier comes with unlimited private repositories and 2000 gitlab ci minutes using gitlab’s shared runners.</p>
+<p>One of the things I love about this is that once those minutes are up you can either <a href="https://customers.gitlab.com/plans" target="_blank" rel="noopener">pay for more</a> or use your own runners to process jobs for your projects.</p>
+<p>We have an old -nothing special- server which we’ve set up a gitlab runner on that will handle jobs for us along with gitlab’s shared runners and when our free minutes run out all jobs will run through that server.</p>
+<p>Since most of the time when you’re pushing code to gitlab your laptop will be on, you can use your development laptop to help out too!</p>
+<a id="more"></a>
+<h3 id="TLDR"><a href="#TLDR" class="headerlink" title="TLDR"></a>TLDR</h3><p>Install and configure a gitlab runner on any spare hardware including your development device so that once your Gitlab CI/CD minutes run out your hardware can pick up jobs and keep your projects continuously deployed.</p>
+<h3 id="Preparation-and-installation"><a href="#Preparation-and-installation" class="headerlink" title="Preparation and installation"></a>Preparation and installation</h3><p>I’ve almost always worked on a Ubuntu machine for my development - tried a mac for a year came back to a dual boot Windows and Ubuntu for a number of reasons that deserve their own blog post. </p>
+<p>As part of the build scripts I used to build my machine I installed a gitlab runner in the exact same way I did when I built the self hosted gitlab instance.</p>
+<p>For our purposes we made all of our runners shared for the business’ gitlab group so that any runner could be used for any project. You can of course set runners per project but given the scale of our business at  </p>
+<p>You can navigate to your group’s setup page from the <a href="https://gitlab.com/dashboard/groups" target="_blank" rel="noopener">group list url</a>.</p>
+<p>After selecting your group, in the sidebar select “Settings” -&gt; “CI / CD”, then expand the “Runners” section. </p>
+<p>You’ll see a section called “Set up a group Runner manually”, here are 2 pieces of information you’ll need to set up your runner.</p>
 <ul>
-<li>Issue tracker</li>
-<li>File browser</li>
-<li>Activity stream</li>
-<li>Pull request management</li>
+<li><a href="https://gitlab.com/" target="_blank" rel="noopener">https://gitlab.com/</a></li>
+<li>A runner registration token</li>
 </ul>
-<p>Which are all features that github has built in natively. </p>
-                    
-                        <a href="/blog/setting-up-a-private-gitlab-server-on-ubuntu-1604/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
+<p>You’ll need these for the runner registration in the following steps as well as picking the docker executor when asked.</p>
+<p>If you’re on Ubuntu you’ll need to run the following to get up and running:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Install Docker...</span></span><br><span class="line">curl -fsSL https://get.docker.com -o get-docker.sh</span><br><span class="line">sh get-docker.sh</span><br><span class="line"></span><br><span class="line"><span class="comment"># Install Gitlab Runner...</span></span><br><span class="line">sudo wget -O /usr/<span class="built_in">local</span>/bin/gitlab-runner https://gitlab-runner-downloads.s3.amazonaws.com/latest/binaries/gitlab-runner-linux-amd64</span><br><span class="line">sudo chmod +x /usr/<span class="built_in">local</span>/bin/gitlab-runner</span><br><span class="line">sudo useradd --comment <span class="string">'GitLab Runner'</span> --create-home gitlab-runner --shell /bin/bash</span><br><span class="line">sudo gitlab-runner install --user=gitlab-runner --working-directory=/home/gitlab-runner</span><br><span class="line">sudo gitlab-runner start</span><br></pre></td></tr></table></figure>
+<p>If you’re on OSX the command differ slightly. Install docker for mac first.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo curl --output /usr/<span class="built_in">local</span>/bin/gitlab-runner https://gitlab-runner-downloads.s3.amazonaws.com/latest/binaries/gitlab-runner-darwin-amd64</span><br><span class="line">sudo chmod +x /usr/<span class="built_in">local</span>/bin/gitlab-runner</span><br><span class="line"><span class="built_in">cd</span> ~</span><br><span class="line">gitlab-runner install</span><br><span class="line">gitlab-runner start</span><br></pre></td></tr></table></figure></p>
+<p>At this point you should have a runner registered and running on your system.<br>The runner itself should be visible on the “Group” -&gt; “Settings” -&gt; “CI \ CD”  page and hopefully listed as online (green light next to it).</p>
+<h3 id="Running-multiple-concurrent-jobs"><a href="#Running-multiple-concurrent-jobs" class="headerlink" title="Running multiple concurrent jobs"></a>Running multiple concurrent jobs</h3><p>By default a runner registered this way will be set up to run a single job at a time. If you want to allow for multiple concurrent jobs you can edit the runners config file:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo nano /etc/gitlab-runner/config.toml</span><br></pre></td></tr></table></figure>
+<p>Change the <code>concurrent</code> value on the first line from 1 to whatever number you’re happy with.<br>I keep my laptop at 1 and honestly can’t notice when the runner is actually being used. We have another small machine thats set to run 4 concurrent jobs.</p>
+<p>You’ll also be able to see the information we entered when creating the runner in this file so if you decide to change anything in future here’s where that would happen.</p>
+<p>After saving an exiting you’ll need to restart the gitlab-runner service</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl restart gitlab-runner</span><br></pre></td></tr></table></figure>
+<h3 id="Gotchas"><a href="#Gotchas" class="headerlink" title="Gotchas"></a>Gotchas</h3><p>Raspberry Pi. Don’t.</p>
+<p>We have a Pi Hole running on our network and I figured that if you could install a gitlab-runner on the pi that would be the ultimate low cost, low maintenance device.<br>So I went about installing and configuring the Pi to do just that. </p>
+<p>Everything looked good, it was registered and running however when it was actually handed a job this happened:</p>
+<p><img src="https://res.cloudinary.com/www-talvbansal-me/image/upload/v1573510511/posts/failed-arm-job.png" alt="gitlab arm failure"></p>
+<p>It turns out that docker images are architecture specific, so this cryptic error:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">standard_init_linux.go:211: <span class="built_in">exec</span> user process caused <span class="string">"exec format error"</span></span><br></pre></td></tr></table></figure>
+<p>meant that the docker image that had been built for x86_64 and therefore could not be run on the Pi’s architecture. </p>
+<p>The sad part for me was this, in the aim of being proactive I wrote this blog post originally to show of all my learnings on how to get a runner configured and optimised for the raspberry pi!</p>
+
             
+
         </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
         
-            <a href="/blog/setting-up-a-private-gitlab-server-on-ubuntu-1604/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1555352729/posts/st-basils-moscow.jpg"/>
-                </div>
-            </a>
-            
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/looking-back-on-laracon-eu-2016/">
-                            Looking back on Laracon EU 2016
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2016-08-30T19:14:25+01:00">
-	
-		    Aug 30, 2016
-    	
-    </time>
-    
-</div>
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/CI-CD/">CI/CD</a> <a class="tag tag--primary tag--small t-link" href="/tags/Devops/">Devops</a> <a class="tag tag--primary tag--small t-link" href="/tags/Gitlab/">Gitlab</a> <a class="tag tag--primary tag--small t-link" href="/tags/Raspberry-Pi/">Raspberry Pi</a> <a class="tag tag--primary tag--small t-link" href="/tags/Ubuntu/">Ubuntu</a>
 
             </div>
-            
-                <div class="postShorten-excerpt">
-                    <p>Earlier this week I attended my first “Big” Conference - <strong><a href="http://laracon.eu/2016/" target="_blank" rel="noopener">Laracon EU 2016</a></strong>. I’ve been to other tech conferences before but by comparison Laracon EU was <strong>HUGE</strong>, there were 650 people in attendance in one of the most incredible venues I’ve seen. I sent pictures back to my friends and home who said that it looked like a club night more than a conference!<br>
-                    
-                        <a href="/blog/looking-back-on-laracon-eu-2016/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
         
-            <a href="/blog/looking-back-on-laracon-eu-2016/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1555352383/posts/laracon-2016-stage.jpg"/>
-                </div>
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--disabled">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/blog/human-readable-dates-with-dayjs-in-vue-js/" data-tooltip="Human readable dates with Dayjs in Vue" aria-label="NEXT: Human readable dates with Dayjs in Vue">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://talvbansal.me/blog/maximising-gitlab-ci-s-free-tier/" title="Share on Facebook">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://talvbansal.me/blog/maximising-gitlab-ci-s-free-tier/" title="Share on Twitter">
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://talvbansal.me/blog/maximising-gitlab-ci-s-free-tier/" title="Share on Google+">
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
             
         
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
+        <li class="post-action">
             
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/finally-contributing-to-open-source/">
-                            (Finally) Contributing to open source
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2016-08-16T19:24:17+01:00">
-	
-		    Aug 16, 2016
-    	
-    </time>
-    
-</div>
-
-            </div>
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
             
-                <div class="postShorten-excerpt">
-                    <p>I once read an article on the merits of contributing to open source projects, within it i remember the author saying that the even smallest things can make all the difference. They even went on to say that their first commit was fixing a one character spelling mistake.</p>
-<p>Open source software has provided me the tools to make my living as a software engineer over the past 9ish years, over that period I’ve always wanted to contribute back to the community to but for some reason I never actually have. Maybe I wasn’t looking in the right places, perhaps i was looking at the wrong projects when my skills weren’t where they needed who knows. I just knew that eventually I wanted to.</p>
-                    
-                        <a href="/blog/finally-contributing-to-open-source/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/blog/finally-contributing-to-open-source/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1555352082/posts/south-africa-penguins.jpg"/>
-                </div>
+                <i class="fa fa-list" aria-hidden="true"></i>
             </a>
-            
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/laravel-homestead-on-windows-10-with-bash-on-ubuntu/">
-                            Laravel Homestead on Windows 10 with Bash On Ubuntu
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2016-08-11T19:17:46+01:00">
-	
-		    Aug 11, 2016
-    	
-    </time>
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <p>In preparation for <a href="http://laracon.eu/2016/" target="_blank" rel="noopener">Laracon EU</a> in a couple of weeks i figured I’d need to take a device along with me - paper and pen would probably have been fine but Laracon looks to be huge and i dont want to be unprepared, plus you always see rows of silver lids and glowing apple symbols in the photos from developer conferences! </p>
-<p>I do almost all of my work on a Dell Precision 7710 which dual boots Ubuntu for development purposes and Windows for my photo editing. I also have a Surface Pro 4 which i use for note taking and photo editing on the go - <em>I’ll be writing about how I keep all of my photos in sync in a future post</em>!</p>
-<p>Neither of the above are Macbooks but whilst the Dell Precision runs Ubuntu and anything else I can throw at it, it is HUGE and not ideal to take well … anywhere! So I figured I’d try and get a development environment set up on my Surface Pro 4 instead. </p>
-<p>I’d heard of setups using Homestead / Vagrant / Virtualbox before, but since I was using Ubuntu, I’ve never had any need to explore it any further so this really is a guide for first timer noobs. The <a href="https://laravel.com/docs/5.2/homestead" target="_blank" rel="noopener">official Laravel Homestead guide</a> appears to be geared up mostly for Mac users, Windows users will need a bit more help which is where I’m hoping this post will help.</p>
-<p>Anyway by the end of this guide I’ll have a Surface Pro 4 running Laravel Homestead and fingers crossed you’ll have a Windows device doing the same thing too! This has been a really long introduction, lets get to it!</p>
-                    
-                        <a href="/blog/laravel-homestead-on-windows-10-with-bash-on-ubuntu/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/blog/laravel-homestead-on-windows-10-with-bash-on-ubuntu/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1555352306/posts/south-africa-lion-male.jpg"/>
-                </div>
-            </a>
-            
-        
-    </article>
-    
-    <div class="pagination-bar">
-    <ul class="pagination">
-        
-          <li class="pagination-prev">
-            <a class="btn btn--default btn--small" href="/tags/Laravel/">
-              <i class="fa fa-angle-left text-base icon-mr"></i>
-              <span>NEWER POSTS</span>
-            </a>
-          </li>
-        
-        
-        <li class="pagination-number">page 2 of 2</li>
+        </li>
     </ul>
 </div>
 
-</section>
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
 
 
                 <footer id="footer" class="main-content-wrap">
@@ -454,6 +425,113 @@
 </footer>
 
             </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--disabled">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/blog/human-readable-dates-with-dayjs-in-vue-js/" data-tooltip="Human readable dates with Dayjs in Vue" aria-label="NEXT: Human readable dates with Dayjs in Vue">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://talvbansal.me/blog/maximising-gitlab-ci-s-free-tier/" title="Share on Facebook">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://talvbansal.me/blog/maximising-gitlab-ci-s-free-tier/" title="Share on Twitter">
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://talvbansal.me/blog/maximising-gitlab-ci-s-free-tier/" title="Share on Google+">
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+    <i id="btn-close-shareoptions" class="fa fa-times"></i>
+    <ul class="share-options">
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://talvbansal.me/blog/maximising-gitlab-ci-s-free-tier/">
+                    <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https://talvbansal.me/blog/maximising-gitlab-ci-s-free-tier/">
+                    <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https://talvbansal.me/blog/maximising-gitlab-ci-s-free-tier/">
+                    <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                </a>
+            </li>
+        
+    </ul>
+</div>
+
             
         </div>
         
@@ -815,6 +893,25 @@
         <!--SCRIPTS-->
 <script src="/assets/js/script-vufjrm3fmbuttogo1hxuu0w9w0sesk5iyysjuguc2hdhufot9szxg8twijry.min.js"></script>
 <!--SCRIPTS END-->
+
+    
+        <script>
+             var disqus_config = function () {
+                 this.page.url = 'https://talvbansal.me/blog/maximising-gitlab-ci-s-free-tier/';
+                 
+                    this.page.identifier = 'blog/maximising-gitlab-ci-s-free-tier/';
+                 
+             };
+            (function() {
+                var d = document, s = d.createElement('script');
+                var disqus_shortname = 'talvbansalblog';
+                s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment-with-locales.min.js"></script>

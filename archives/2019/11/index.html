@@ -7,7 +7,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="generator" content="TalvBansal.me" />
-  <title>Tag: Laravel - TalvBansal.me</title>
+  <title>Archives: 2019/11 - TalvBansal.me</title>
   <meta name="author" content="Talv Bansal" />
   
   <meta name="keywords" content="hexo,gitlab,github,javascript,es6,laravel,php,vue,vue.js,development,full stack,CI/CD," />
@@ -17,7 +17,7 @@
 <meta name="keywords" content="hexo,gitlab,github,javascript,es6,laravel,php,vue,vue.js,development,full stack,CI&#x2F;CD">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="TalvBansal.me">
-<meta property="og:url" content="https://talvbansal.me/tags/Laravel/page/2/index.html">
+<meta property="og:url" content="https://talvbansal.me/archives/2019/11/index.html">
 <meta property="og:site_name" content="TalvBansal.me">
 <meta property="og:description" content="Tales of a full stack developer">
 <meta property="og:locale" content="en">
@@ -245,15 +245,15 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/blog/setting-up-a-private-gitlab-server-on-ubuntu-1604/">
-                            Setting up a private GitLab server on Ubuntu 16.04
+                        <a class="link-unstyled" href="/blog/maximising-gitlab-ci-s-free-tier/">
+                            Maximizing Gitlab&#39;s CI&#39;s Free Tier
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2016-09-16T19:09:13+01:00">
+    <time datetime="2019-11-11T17:07:30+00:00">
 	
-		    Sep 16, 2016
+		    Nov 11, 2019
     	
     </time>
     
@@ -262,19 +262,15 @@
             </div>
             
                 <div class="postShorten-excerpt">
-                    <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>Where I work, we’ve been using an Ubuntu Server running <a href="http://gitolite.com/gitolite/index.html" target="_blank" rel="noopener">gitolite</a> to act as our “Source control server” and manage permissions and access. Its worked well, and after some initial configuration (which I recall being pretty tricky) looking after the gitolite instance has been pretty easy and could easily continue to serve our needs as a small business well.</p>
-<p>Adding new users required you to get an ssh key from the new user, add it to an “administration repository” and then add their name to a config file within that repository. The same config file could then be used to determine which access rights they had to repositories as well as defining new repositories.</p>
-<p>We also use a <a href="https://getcomposer.org/doc/articles/handling-private-packages-with-satis.md" target="_blank" rel="noopener">satis</a> install to act as a private composer for our internal private packages.</p>
-<p>One of the things gitolite doesn’t provide you with is any sort of front end at all, everything has to be done through the terminal. It also requires you to have all of the following tools separately:</p>
-<ul>
-<li>Issue tracker</li>
-<li>File browser</li>
-<li>Activity stream</li>
-<li>Pull request management</li>
-</ul>
-<p>Which are all features that github has built in natively. </p>
+                    <p>Last year I began working at a new startup - <a href="https://nx-technology.com" target="_blank" rel="noopener">NX Technology</a>. </p>
+<p>As a start up with limited funding we’re constantly looking for efficiencies and ways to get the most out of what we already have whether that be in hardware or software. </p>
+<p>Whilst previously I’ve set up and <a href="/blog/setting-up-a-private-gitlab-server-on-ubuntu-1604/">self hosted a gitlab instance</a> at NX we needed to get things up and running asap so we decided to use the gitlabs free tier.</p>
+<p>At the time of writing the bronze tier comes with unlimited private repositories and 2000 gitlab ci minutes using gitlab’s shared runners.</p>
+<p>One of the things I love about this is that once those minutes are up you can either <a href="https://customers.gitlab.com/plans" target="_blank" rel="noopener">pay for more</a> or use your own runners to process jobs for your projects.</p>
+<p>We have an old -nothing special- server which we’ve set up a gitlab runner on that will handle jobs for us along with gitlab’s shared runners and when our free minutes run out all jobs will run through that server.</p>
+<p>Since most of the time when you’re pushing code to gitlab your laptop will be on, you can use your development laptop to help out too!</p>
                     
-                        <a href="/blog/setting-up-a-private-gitlab-server-on-ubuntu-1604/" class="postShorten-excerpt_link link">
+                        <a href="/blog/maximising-gitlab-ci-s-free-tier/" class="postShorten-excerpt_link link">
                             Continue reading
                         </a>
                         
@@ -283,146 +279,9 @@
             
         </div>
         
-            <a href="/blog/setting-up-a-private-gitlab-server-on-ubuntu-1604/">
+            <a href="/blog/maximising-gitlab-ci-s-free-tier/">
                 <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1555352729/posts/st-basils-moscow.jpg"/>
-                </div>
-            </a>
-            
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/looking-back-on-laracon-eu-2016/">
-                            Looking back on Laracon EU 2016
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2016-08-30T19:14:25+01:00">
-	
-		    Aug 30, 2016
-    	
-    </time>
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <p>Earlier this week I attended my first “Big” Conference - <strong><a href="http://laracon.eu/2016/" target="_blank" rel="noopener">Laracon EU 2016</a></strong>. I’ve been to other tech conferences before but by comparison Laracon EU was <strong>HUGE</strong>, there were 650 people in attendance in one of the most incredible venues I’ve seen. I sent pictures back to my friends and home who said that it looked like a club night more than a conference!<br>
-                    
-                        <a href="/blog/looking-back-on-laracon-eu-2016/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/blog/looking-back-on-laracon-eu-2016/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1555352383/posts/laracon-2016-stage.jpg"/>
-                </div>
-            </a>
-            
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/finally-contributing-to-open-source/">
-                            (Finally) Contributing to open source
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2016-08-16T19:24:17+01:00">
-	
-		    Aug 16, 2016
-    	
-    </time>
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <p>I once read an article on the merits of contributing to open source projects, within it i remember the author saying that the even smallest things can make all the difference. They even went on to say that their first commit was fixing a one character spelling mistake.</p>
-<p>Open source software has provided me the tools to make my living as a software engineer over the past 9ish years, over that period I’ve always wanted to contribute back to the community to but for some reason I never actually have. Maybe I wasn’t looking in the right places, perhaps i was looking at the wrong projects when my skills weren’t where they needed who knows. I just knew that eventually I wanted to.</p>
-                    
-                        <a href="/blog/finally-contributing-to-open-source/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/blog/finally-contributing-to-open-source/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1555352082/posts/south-africa-penguins.jpg"/>
-                </div>
-            </a>
-            
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/laravel-homestead-on-windows-10-with-bash-on-ubuntu/">
-                            Laravel Homestead on Windows 10 with Bash On Ubuntu
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2016-08-11T19:17:46+01:00">
-	
-		    Aug 11, 2016
-    	
-    </time>
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <p>In preparation for <a href="http://laracon.eu/2016/" target="_blank" rel="noopener">Laracon EU</a> in a couple of weeks i figured I’d need to take a device along with me - paper and pen would probably have been fine but Laracon looks to be huge and i dont want to be unprepared, plus you always see rows of silver lids and glowing apple symbols in the photos from developer conferences! </p>
-<p>I do almost all of my work on a Dell Precision 7710 which dual boots Ubuntu for development purposes and Windows for my photo editing. I also have a Surface Pro 4 which i use for note taking and photo editing on the go - <em>I’ll be writing about how I keep all of my photos in sync in a future post</em>!</p>
-<p>Neither of the above are Macbooks but whilst the Dell Precision runs Ubuntu and anything else I can throw at it, it is HUGE and not ideal to take well … anywhere! So I figured I’d try and get a development environment set up on my Surface Pro 4 instead. </p>
-<p>I’d heard of setups using Homestead / Vagrant / Virtualbox before, but since I was using Ubuntu, I’ve never had any need to explore it any further so this really is a guide for first timer noobs. The <a href="https://laravel.com/docs/5.2/homestead" target="_blank" rel="noopener">official Laravel Homestead guide</a> appears to be geared up mostly for Mac users, Windows users will need a bit more help which is where I’m hoping this post will help.</p>
-<p>Anyway by the end of this guide I’ll have a Surface Pro 4 running Laravel Homestead and fingers crossed you’ll have a Windows device doing the same thing too! This has been a really long introduction, lets get to it!</p>
-                    
-                        <a href="/blog/laravel-homestead-on-windows-10-with-bash-on-ubuntu/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/blog/laravel-homestead-on-windows-10-with-bash-on-ubuntu/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1555352306/posts/south-africa-lion-male.jpg"/>
+                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1573492411/posts/welvegonden-lion.jpg"/>
                 </div>
             </a>
             
@@ -432,19 +291,13 @@
     <div class="pagination-bar">
     <ul class="pagination">
         
-          <li class="pagination-prev">
-            <a class="btn btn--default btn--small" href="/tags/Laravel/">
-              <i class="fa fa-angle-left text-base icon-mr"></i>
-              <span>NEWER POSTS</span>
-            </a>
-          </li>
         
-        
-        <li class="pagination-number">page 2 of 2</li>
+        <li class="pagination-number">page 1 of 1</li>
     </ul>
 </div>
 
 </section>
+
 
 
                 <footer id="footer" class="main-content-wrap">
