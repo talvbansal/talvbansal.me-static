@@ -7,7 +7,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="generator" content="TalvBansal.me" />
-  <title>Archives: 2018/1 - TalvBansal.me</title>
+  <title>Tag: Queues - TalvBansal.me</title>
   <meta name="author" content="Talv Bansal" />
   
   <meta name="keywords" content="hexo,gitlab,github,javascript,es6,laravel,php,vue,vue.js,development,full stack,CI/CD," />
@@ -17,7 +17,7 @@
 <meta name="keywords" content="hexo,gitlab,github,javascript,es6,laravel,php,vue,vue.js,development,full stack,CI&#x2F;CD">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="TalvBansal.me">
-<meta property="og:url" content="https://talvbansal.me/archives/2018/01/index.html">
+<meta property="og:url" content="https://talvbansal.me/tags/Queues/index.html">
 <meta property="og:site_name" content="TalvBansal.me">
 <meta property="og:description" content="Tales of a full stack developer">
 <meta property="og:locale" content="en">
@@ -245,15 +245,15 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/blog/jquery-to-vue/">
-                            jQuery to Vue
+                        <a class="link-unstyled" href="/blog/throttling-notifications-for-failed-jobs-in-laravel/">
+                            Throttling Notifications For Failed Jobs In Laravel
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2018-01-15T16:24:17+00:00">
+    <time datetime="2019-11-19T16:20:18+00:00">
 	
-		    Jan 15, 2018
+		    Nov 19, 2019
     	
     </time>
     
@@ -262,12 +262,22 @@
             </div>
             
                 <div class="postShorten-excerpt">
-                    <p>Recently I spoke at <a href="http://vuejs.nyc/" target="_blank" rel="noopener">VueNYC</a> about my journey from the world of jQuery to Vue and some of the problems people may have along the way:</p>
-<p>Check it out below:</p>
-<div class="video-container"><iframe src="//www.youtube.com/embed/7YiWLXzXFh4" frameborder="0" allowfullscreen></iframe></div>
-<p>If you’re in NYC they have monthly meetups that you can sign up for over here : <a href="https://www.meetup.com/vueJsNYC" target="_blank" rel="noopener">VueNYC</a>. </p>
+                    <p>One of the projects I’ve been working recently has involved writing a system to communicate with a Clients pre-existing Legacy system. The system doesn’t have the ability to “talk out” but can be queried using a SOAP service. </p>
+<p>The legacy system is:</p>
+<ul>
+<li>Slow to interact with</li>
+<li>Prone to crashing regularly</li>
+</ul>
+<p>Here’s how we dealt with those 2 issues:</p>
+<p>Since we don’t want to impact our end users experience the project has been set up to make use of Laravel queuing system with Redis and those queues are configured with Laravel Horizon.</p>
+<p>When these jobs failed for whatever reason - including the clients system going down we wanted to be notified so that someone could look into what was happening.</p>
+<p>The team at <a href="https://spatie.be/" target="_blank" rel="noopener">spatie.be</a> created a great <a href="https://github.com/spatie/laravel-failed-job-monitor" target="_blank" rel="noopener">package to do that</a> handle notifying us when a failed job occurred.</p>
+<p>However have multiple jobs concurrently that run as frequently as every minute in some cases to check for things like data changes on their server. Which mean’t that once the legacy system went down we would receive multiple notifications until the system came back up, (In some cases this has been hours - not ideal). </p>
+<p>After a while being flooded with these sorts of notifications makes them become an annoyance rather than useful and you begin to start ignoring them.</p>
+<p>So I set out to write something that gave me everything the Spatie package did but also allowed me to throttle how frequently notification of a given type would be sent to us.</p>
+<p><a href="https://github.com/talvbansal/laravel-throttled-failed-jobs" target="_blank" rel="noopener">Laravel throttled failed jobs!</a></p>
                     
-                        <a href="/blog/jquery-to-vue/" class="postShorten-excerpt_link link">
+                        <a href="/blog/throttling-notifications-for-failed-jobs-in-laravel/" class="postShorten-excerpt_link link">
                             Continue reading
                         </a>
                         
@@ -276,9 +286,9 @@
             
         </div>
         
-            <a href="/blog/jquery-to-vue/">
+            <a href="/blog/throttling-notifications-for-failed-jobs-in-laravel/">
                 <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1555352239/posts/nyc-from-empire-state.jpg"/>
+                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1574185225/posts/south-africa-zebra-back.jpg"/>
                 </div>
             </a>
             
@@ -294,7 +304,6 @@
 </div>
 
 </section>
-
 
 
                 <footer id="footer" class="main-content-wrap">

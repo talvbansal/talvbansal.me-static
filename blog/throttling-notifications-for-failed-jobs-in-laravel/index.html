@@ -7,26 +7,34 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="generator" content="TalvBansal.me" />
-  <title>Archives: 2018/1 - TalvBansal.me</title>
+  <title>Throttling Notifications For Failed Jobs In Laravel - TalvBansal.me</title>
   <meta name="author" content="Talv Bansal" />
   
   <meta name="keywords" content="hexo,gitlab,github,javascript,es6,laravel,php,vue,vue.js,development,full stack,CI/CD," />
    
   <link rel="icon" href="https://talvbansal.me/assets/images/favicon.ico" />
-    <script type="application/ld+json">{}</script> <meta name="description" content="Tales of a full stack developer">
-<meta name="keywords" content="hexo,gitlab,github,javascript,es6,laravel,php,vue,vue.js,development,full stack,CI&#x2F;CD">
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Talv Bansal","sameAs":["https://github.com/talvbansal","https://twitter.com/talv","https://instagram.com/iwantthewindowseat","https://www.linkedin.com/in/talvinder-bansal-5826594a","mailto:talvbansal@outlook.com"],"image":"https://www.gravatar.com/avatar/be14e67a41106fe8731f839b3bd46733"},"articleBody":"One of the projects I’ve been working recently has involved writing a system to communicate with a Clients pre-existing Legacy system. The system doesn’t have the ability to “talk out” but can be queried using a SOAP service. \nThe legacy system is:\n\nSlow to interact with\nProne to crashing regularly\n\nHere’s how we dealt with those 2 issues:\nSince we don’t want to impact our end users experience the project has been set up to make use of Laravel queuing system with Redis and those queues are configured with Laravel Horizon.\nWhen these jobs failed for whatever reason - including the clients system going down we wanted to be notified so that someone could look into what was happening.\nThe team at spatie.be created a great package to do that handle notifying us when a failed job occurred.\nHowever have multiple jobs concurrently that run as frequently as every minute in some cases to check for things like data changes on their server. Which mean’t that once the legacy system went down we would receive multiple notifications until the system came back up, (In some cases this has been hours - not ideal). \nAfter a while being flooded with these sorts of notifications makes them become an annoyance rather than useful and you begin to start ignoring them.\nSo I set out to write something that gave me everything the Spatie package did but also allowed me to throttle how frequently notification of a given type would be sent to us.\nLaravel throttled failed jobs!\n\nThe package is effectively a mash up of the Spatie package, this gist and then made to work with Laravel 6.x.\nSetting the package up is easy:\n12composer require talvbansal/laravel-throttled-failed-jobsphp artisan vendor:publish --provider=\"TalvBansal\\ThrottledFailedJobMonitor\\FailedThrottledJobsServiceProvider\"\nThis will install everything needed and publish a config file config/throttled-failed-jobs.php- that’s it! \nAt this point restart your queue worker and your throttled failed jobs should start working (as long as you have failed jobs of course!).\nIn the config file you’ll need to choose how you send notifications to yourself, by default the package handles mail, slack and ms-teams or you can use another of the laravel notification channels.\nIf its another of the channels you’ll need to extend the default notifiable class \\TalvBansal\\ThrottledFailedJobMonitor\\Notifiable::class and add a routeNotificationFor{channel} method.\nNext you might want to change the throttle delay. By default its set to 10 minutes. The idea being here that we should only see a given type of failed job once every x minutes.\nSo in the example of the sync job we have running every minute if the client system went down we would see at least 60 notifications per hour that’s not counting any retried job that we might have set up.\nAdd in multiple jobs failing as a result of a third party being unavailable and you’ll quickly want to throw your phone / laptop / self out of a window. \nThe throttling part of this package should reduce those to a maximum of 1 notification for the sync job including job retries every 10 minutes until the failures cease. \nSo in 10 minutes instead of seeing 10 failures + 10 retry notifications we’d just see 1.If there were 3 different jobs all running on a 1 minute sync instead of 3 job types x 10 minutes x 2 one extra retry = 60 notifications we’d just see 3.\nThis has made our notifications useful again and reduced our stress levels greatly! Hopefully it’ll help you too!\n","dateCreated":"2019-11-19T16:20:18+00:00","dateModified":"2019-11-19T18:14:01+00:00","datePublished":"2019-11-19T16:20:18+00:00","description":"One of the projects I’ve been working recently has involved writing a system to communicate with a Clients pre-existing Legacy system. The system doesn’t have the ability to “talk out” but can be queried using a SOAP service. \nThe legacy system is:\n\nSlow to interact with\nProne to crashing regularly\n\nHere’s how we dealt with those 2 issues:\nSince we don’t want to impact our end users experience the project has been set up to make use of Laravel queuing system with Redis and those queues are configured with Laravel Horizon.\nWhen these jobs failed for whatever reason - including the clients system going down we wanted to be notified so that someone could look into what was happening.\nThe team at spatie.be created a great package to do that handle notifying us when a failed job occurred.\nHowever have multiple jobs concurrently that run as frequently as every minute in some cases to check for things like data changes on their server. Which mean’t that once the legacy system went down we would receive multiple notifications until the system came back up, (In some cases this has been hours - not ideal). \nAfter a while being flooded with these sorts of notifications makes them become an annoyance rather than useful and you begin to start ignoring them.\nSo I set out to write something that gave me everything the Spatie package did but also allowed me to throttle how frequently notification of a given type would be sent to us.\nLaravel throttled failed jobs!","headline":"Throttling Notifications For Failed Jobs In Laravel","image":["https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1574185225/posts/south-africa-zebra-back.jpg","https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_1600/v1574185225/posts/south-africa-zebra-back.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://talvbansal.me/blog/throttling-notifications-for-failed-jobs-in-laravel/"},"publisher":{"@type":"Organization","name":"Talv Bansal","sameAs":["https://github.com/talvbansal","https://twitter.com/talv","https://instagram.com/iwantthewindowseat","https://www.linkedin.com/in/talvinder-bansal-5826594a","mailto:talvbansal@outlook.com"],"image":"https://www.gravatar.com/avatar/be14e67a41106fe8731f839b3bd46733","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/be14e67a41106fe8731f839b3bd46733"}},"url":"https://talvbansal.me/blog/throttling-notifications-for-failed-jobs-in-laravel/","keywords":"Laravel, MS Teams, Microsoft Teams, Notifications, Queues, Jobs, Failed Jobs, Throttle, Throttling","thumbnailUrl":"https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1574185225/posts/south-africa-zebra-back.jpg"}</script> <meta name="description" content="One of the projects I’ve been working recently has involved writing a system to communicate with a Clients pre-existing Legacy system. The system doesn’t have the ability to “talk out” but can be quer">
+<meta name="keywords" content="Laravel,MS Teams,Microsoft Teams,Notifications,Queues,Jobs,Failed Jobs,Throttle,Throttling">
 <meta property="og:type" content="blog">
-<meta property="og:title" content="TalvBansal.me">
-<meta property="og:url" content="https://talvbansal.me/archives/2018/01/index.html">
+<meta property="og:title" content="Throttling Notifications For Failed Jobs In Laravel">
+<meta property="og:url" content="https://talvbansal.me/blog/throttling-notifications-for-failed-jobs-in-laravel/index.html">
 <meta property="og:site_name" content="TalvBansal.me">
-<meta property="og:description" content="Tales of a full stack developer">
+<meta property="og:description" content="One of the projects I’ve been working recently has involved writing a system to communicate with a Clients pre-existing Legacy system. The system doesn’t have the ability to “talk out” but can be quer">
 <meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-11-19T18:14:01.353Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="TalvBansal.me">
-<meta name="twitter:description" content="Tales of a full stack developer">
+<meta name="twitter:title" content="Throttling Notifications For Failed Jobs In Laravel">
+<meta name="twitter:description" content="One of the projects I’ve been working recently has involved writing a system to communicate with a Clients pre-existing Legacy system. The system doesn’t have the ability to “talk out” but can be quer">
 <meta name="twitter:creator" content="@talv">     
   <meta property="og:image" content="https://www.gravatar.com/avatar/321065504328f47a4f9d8b57df0635f4?s=640" />
-     
+   
+  <meta property="og:image" content="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1574185225/posts/south-africa-zebra-back.jpg" />
+  <meta class="swiftype" name="image" data-type="enum"
+    content="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1574185225/posts/south-africa-zebra-back.jpg" />
+   
+  <meta property="og:image" content="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_1600/v1574185225/posts/south-africa-zebra-back.jpg" />
+  <meta class="swiftype" name="image" data-type="enum" content="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_1600/v1574185225/posts/south-africa-zebra-back.jpg" />
+   
   <!--STYLES-->
   <link rel="stylesheet" href="/assets/css/style-du2xmrqdqrl2ollgeiw050kpl6l4nbyz7bumjuurjgsxyopifvukebxc9lqe.min.css">
   <!--STYLES END-->
@@ -55,7 +63,7 @@
         
     
 
-<header id="header" data-behavior="1">
+<header id="header" data-behavior="4">
     <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
     <div class="header-title">
         <a class="header-title-link" href="/ ">TalvBansal.me</a>
@@ -77,7 +85,7 @@
 
     
 
-<nav id="sidebar" data-behavior="1">
+<nav id="sidebar" data-behavior="4">
     <div class="sidebar-container">
         
             <div class="sidebar-profile">
@@ -231,69 +239,170 @@
 </nav>
 
             
-            <div id="main" data-behavior="1"
-                 class="
-                        hasCoverMetaIn
-                        ">
-                
-    <section class="postShorten-group main-content-wrap">
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
+        <div class="post-header-cover
+                    text-center
+                    post-header-cover--partial"
+             style="background-image:url('https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_1600/v1574185225/posts/south-africa-zebra-back.jpg');"
+             data-behavior="4">
             
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/jquery-to-vue/">
-                            jQuery to Vue
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-01-15T16:24:17+00:00">
+                <div class="post-header main-content-wrap text-center">
+    
+        <h1 class="post-title">
+            Throttling Notifications For Failed Jobs In Laravel
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2019-11-19T16:20:18+00:00">
 	
-		    Jan 15, 2018
+		    Nov 19, 2019
     	
     </time>
     
 </div>
 
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <p>Recently I spoke at <a href="http://vuejs.nyc/" target="_blank" rel="noopener">VueNYC</a> about my journey from the world of jQuery to Vue and some of the problems people may have along the way:</p>
-<p>Check it out below:</p>
-<div class="video-container"><iframe src="//www.youtube.com/embed/7YiWLXzXFh4" frameborder="0" allowfullscreen></iframe></div>
-<p>If you’re in NYC they have monthly meetups that you can sign up for over here : <a href="https://www.meetup.com/vueJsNYC" target="_blank" rel="noopener">VueNYC</a>. </p>
-                    
-                        <a href="/blog/jquery-to-vue/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
+    
+</div>
+
             
         </div>
+
+            <div id="main" data-behavior="4"
+                 class="hasCover
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>One of the projects I’ve been working recently has involved writing a system to communicate with a Clients pre-existing Legacy system. The system doesn’t have the ability to “talk out” but can be queried using a SOAP service. </p>
+<p>The legacy system is:</p>
+<ul>
+<li>Slow to interact with</li>
+<li>Prone to crashing regularly</li>
+</ul>
+<p>Here’s how we dealt with those 2 issues:</p>
+<p>Since we don’t want to impact our end users experience the project has been set up to make use of Laravel queuing system with Redis and those queues are configured with Laravel Horizon.</p>
+<p>When these jobs failed for whatever reason - including the clients system going down we wanted to be notified so that someone could look into what was happening.</p>
+<p>The team at <a href="https://spatie.be/" target="_blank" rel="noopener">spatie.be</a> created a great <a href="https://github.com/spatie/laravel-failed-job-monitor" target="_blank" rel="noopener">package to do that</a> handle notifying us when a failed job occurred.</p>
+<p>However have multiple jobs concurrently that run as frequently as every minute in some cases to check for things like data changes on their server. Which mean’t that once the legacy system went down we would receive multiple notifications until the system came back up, (In some cases this has been hours - not ideal). </p>
+<p>After a while being flooded with these sorts of notifications makes them become an annoyance rather than useful and you begin to start ignoring them.</p>
+<p>So I set out to write something that gave me everything the Spatie package did but also allowed me to throttle how frequently notification of a given type would be sent to us.</p>
+<p><a href="https://github.com/talvbansal/laravel-throttled-failed-jobs" target="_blank" rel="noopener">Laravel throttled failed jobs!</a></p>
+<a id="more"></a>
+<p>The package is effectively a mash up of the Spatie package, <a href="https://gist.github.com/scottwakefield/81da8c00e63101a20fe6ea3735c21f02#file-routesthrottlednotifications-php" target="_blank" rel="noopener">this gist</a> and then made to work with Laravel 6.x.</p>
+<p>Setting the package up is easy:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">composer <span class="keyword">require</span> talvbansal/laravel-throttled-failed-jobs</span><br><span class="line">php artisan vendor:publish --provider=<span class="string">"TalvBansal\ThrottledFailedJobMonitor\FailedThrottledJobsServiceProvider"</span></span><br></pre></td></tr></table></figure>
+<p>This will install everything needed and publish a config file <code>config/throttled-failed-jobs.php</code>- that’s it! </p>
+<p>At this point restart your queue worker and your throttled failed jobs should start working (as long as you have failed jobs of course!).</p>
+<p>In the config file you’ll need to choose how you send notifications to yourself, by default the package handles mail, slack and <a href="/blog/send-notifications-to-ms-teams-with-laravel">ms-teams</a> or you can use another of the <a href="https://laravel-notification-channels.com" target="_blank" rel="noopener">laravel notification channels</a>.</p>
+<p>If its another of the channels you’ll need to extend the default notifiable class <code>\TalvBansal\ThrottledFailedJobMonitor\Notifiable::class</code> and add a <code>routeNotificationFor{channel}</code> method.</p>
+<p>Next you might want to change the throttle delay. By default its set to 10 minutes. The idea being here that we should only see a given type of failed job once every x minutes.</p>
+<p>So in the example of the sync job we have running every minute if the client system went down we would see at least 60 notifications per hour that’s not counting any retried job that we might have set up.</p>
+<p>Add in multiple jobs failing as a result of a third party being unavailable and you’ll quickly want to throw your phone / laptop / self out of a window. </p>
+<p>The throttling part of this package should reduce those to a maximum of 1 notification for the sync job including job retries every 10 minutes until the failures cease. </p>
+<p>So in 10 minutes instead of seeing 10 failures + 10 retry notifications we’d just see 1.<br>If there were 3 different jobs all running on a 1 minute sync instead of 3 job types x 10 minutes x 2 one extra retry = 60 notifications we’d just see 3.</p>
+<p>This has made our notifications useful again and reduced our stress levels greatly! Hopefully it’ll help you too!</p>
+
+            
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
         
-            <a href="/blog/jquery-to-vue/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1555352239/posts/nyc-from-empire-state.jpg"/>
-                </div>
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/Failed-Jobs/">Failed Jobs</a> <a class="tag tag--primary tag--small t-link" href="/tags/Jobs/">Jobs</a> <a class="tag tag--primary tag--small t-link" href="/tags/Laravel/">Laravel</a> <a class="tag tag--primary tag--small t-link" href="/tags/MS-Teams/">MS Teams</a> <a class="tag tag--primary tag--small t-link" href="/tags/Microsoft-Teams/">Microsoft Teams</a> <a class="tag tag--primary tag--small t-link" href="/tags/Notifications/">Notifications</a> <a class="tag tag--primary tag--small t-link" href="/tags/Queues/">Queues</a> <a class="tag tag--primary tag--small t-link" href="/tags/Throttle/">Throttle</a> <a class="tag tag--primary tag--small t-link" href="/tags/Throttling/">Throttling</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--disabled">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/blog/send-notifications-to-ms-teams-with-laravel/" data-tooltip="Send notifications to Microsoft Teams with Laravel" aria-label="NEXT: Send notifications to Microsoft Teams with Laravel">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://talvbansal.me/blog/throttling-notifications-for-failed-jobs-in-laravel/" title="Share on Facebook">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://talvbansal.me/blog/throttling-notifications-for-failed-jobs-in-laravel/" title="Share on Twitter">
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://talvbansal.me/blog/throttling-notifications-for-failed-jobs-in-laravel/" title="Share on Google+">
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
             
         
-    </article>
-    
-    <div class="pagination-bar">
-    <ul class="pagination">
-        
-        
-        <li class="pagination-number">page 1 of 1</li>
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
     </ul>
 </div>
 
-</section>
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
 
 
 
@@ -304,6 +413,113 @@
 </footer>
 
             </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--disabled">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/blog/send-notifications-to-ms-teams-with-laravel/" data-tooltip="Send notifications to Microsoft Teams with Laravel" aria-label="NEXT: Send notifications to Microsoft Teams with Laravel">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://talvbansal.me/blog/throttling-notifications-for-failed-jobs-in-laravel/" title="Share on Facebook">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://talvbansal.me/blog/throttling-notifications-for-failed-jobs-in-laravel/" title="Share on Twitter">
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://talvbansal.me/blog/throttling-notifications-for-failed-jobs-in-laravel/" title="Share on Google+">
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+    <i id="btn-close-shareoptions" class="fa fa-times"></i>
+    <ul class="share-options">
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://talvbansal.me/blog/throttling-notifications-for-failed-jobs-in-laravel/">
+                    <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https://talvbansal.me/blog/throttling-notifications-for-failed-jobs-in-laravel/">
+                    <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https://talvbansal.me/blog/throttling-notifications-for-failed-jobs-in-laravel/">
+                    <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                </a>
+            </li>
+        
+    </ul>
+</div>
+
             
         </div>
         
@@ -665,6 +881,25 @@
         <!--SCRIPTS-->
 <script src="/assets/js/script-vufjrm3fmbuttogo1hxuu0w9w0sesk5iyysjuguc2hdhufot9szxg8twijry.min.js"></script>
 <!--SCRIPTS END-->
+
+    
+        <script>
+             var disqus_config = function () {
+                 this.page.url = 'https://talvbansal.me/blog/throttling-notifications-for-failed-jobs-in-laravel/';
+                 
+                    this.page.identifier = 'blog/throttling-notifications-for-failed-jobs-in-laravel/';
+                 
+             };
+            (function() {
+                var d = document, s = d.createElement('script');
+                var disqus_shortname = 'talvbansalblog';
+                s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment-with-locales.min.js"></script>
