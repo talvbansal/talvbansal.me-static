@@ -7,7 +7,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="generator" content="TalvBansal.me" />
-  <title>Archives: 2019/11 - TalvBansal.me</title>
+  <title>Tag: Rules - TalvBansal.me</title>
   <meta name="author" content="Talv Bansal" />
   
   <meta name="keywords" content="hexo,gitlab,github,javascript,es6,laravel,php,vue,vue.js,development,full stack,CI/CD," />
@@ -17,7 +17,7 @@
 <meta name="keywords" content="hexo,gitlab,github,javascript,es6,laravel,php,vue,vue.js,development,full stack,CI&#x2F;CD">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="TalvBansal.me">
-<meta property="og:url" content="https://talvbansal.me/archives/2019/11/index.html">
+<meta property="og:url" content="https://talvbansal.me/tags/Rules/index.html">
 <meta property="og:site_name" content="TalvBansal.me">
 <meta property="og:description" content="Tales of a full stack developer">
 <meta property="og:locale" content="en">
@@ -289,218 +289,6 @@
         
     </article>
     
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/using-sshuttle-to-solve-static-ip-issues-when-remote-working/">
-                            Using sshuttle to Solve Static IP Issues When Remote Working
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-11-21T15:51:28+00:00">
-	
-		    Nov 21, 2019
-    	
-    </time>
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <h3 id="Introduction-and-Prerequisites"><a href="#Introduction-and-Prerequisites" class="headerlink" title="Introduction and Prerequisites"></a>Introduction and Prerequisites</h3><p>I’ve been remote working full time for over 3 years now. </p>
-<p>In that time I’ve had to work with a number of clients who restrict access to their internal systems via IP Address whitelisting.</p>
-<p>As a developer who often works from different locations and countries this can quickly become problematic. </p>
-<p>A paid for solution is to purchase a Dedicated Static IP VPN from a reputable provider like <a href="https://nordvpn.com/features/dedicated-ip/" target="_blank" rel="noopener">NordVPN.</a>  and ask the clients IT team to whitelist your new Dedicated Static IP.</p>
-<p>This is something I’ve been doing for a while and whilst the initial set up is a little fiddly, (You have to set up 2 accounts and get their team to link them together) its worked flawlessly for me.</p>
-<p>However if you have the following:</p>
-<ul>
-<li>SSH access to a device in a location with a Static IP (Perhaps you get one from your ISP or your office has one)</li>
-<li>You use Linux or OSX (Sorry windows guys I don’t think even with WSL this will work). </li>
-</ul>
-<p>Then you can use the super handy command line tool <a href="https://github.com/sshuttle/sshuttle" target="_blank" rel="noopener">SSHUTTLE</a> to route all (or some) of your traffic through that device.</p>
-<p>Lets take a look at getting it working…</p>
-                    
-                        <a href="/blog/using-sshuttle-to-solve-static-ip-issues-when-remote-working/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/blog/using-sshuttle-to-solve-static-ip-issues-when-remote-working/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1574239597/posts/tribeca-manhattan-nyc.jpg"/>
-                </div>
-            </a>
-            
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/throttling-notifications-for-failed-jobs-in-laravel/">
-                            Throttling Notifications For Failed Jobs In Laravel
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-11-19T16:20:18+00:00">
-	
-		    Nov 19, 2019
-    	
-    </time>
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <p>One of the projects I’ve been working recently has involved writing a system to communicate with a Clients pre-existing Legacy system. The system doesn’t have the ability to “talk out” but can be queried using a SOAP service. </p>
-<p>The legacy system is:</p>
-<ul>
-<li>Slow to interact with</li>
-<li>Prone to crashing regularly</li>
-</ul>
-<p>Here’s how we dealt with those 2 issues:</p>
-<p>Since we don’t want to impact our end users experience the project has been set up to make use of Laravel queuing system with Redis and those queues are configured with Laravel Horizon.</p>
-<p>When these jobs failed for whatever reason - including the clients system going down we wanted to be notified so that someone could look into what was happening.</p>
-<p>The team at <a href="https://spatie.be/" target="_blank" rel="noopener">spatie.be</a> created a great <a href="https://github.com/spatie/laravel-failed-job-monitor" target="_blank" rel="noopener">package to do that</a> handle notifying us when a failed job occurred.</p>
-<p>However there are multiple jobs being run concurrently that run as frequently as every minute to check for things on their server. Which mean’t that once the legacy system went down we would receive multiple notifications until the system came back up, (In some cases this has been hours - not ideal). </p>
-<p>After a while being flooded with these sorts of notifications makes them become an annoyance rather than useful and you begin to start ignoring them.</p>
-<p>So I set out to write something that gave me everything the Spatie package did but also allowed me to throttle how frequently notification of a given type would be sent to us.</p>
-<p><a href="https://github.com/talvbansal/laravel-throttled-failed-jobs" target="_blank" rel="noopener">Laravel throttled failed jobs!</a></p>
-                    
-                        <a href="/blog/throttling-notifications-for-failed-jobs-in-laravel/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/blog/throttling-notifications-for-failed-jobs-in-laravel/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1574185225/posts/south-africa-zebra-back.jpg"/>
-                </div>
-            </a>
-            
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/send-notifications-to-ms-teams-with-laravel/">
-                            Send notifications to Microsoft Teams with Laravel
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-11-12T19:47:20+00:00">
-	
-		    Nov 12, 2019
-    	
-    </time>
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <p>Today at work we switched away from Telegram to using MS Teams for our company messenger. </p>
-<p>Since we we’re already paying for it it made sense to plus it offers a lot more than just a messenger such as custom wiki functionality.</p>
-<p>One of the things we were making use of was telegram bots for our applications to sent us updates on key events of interest. </p>
-<p>I’ve only recently started to make use of <a href="https://laravel.com/docs/master/notifications" target="_blank" rel="noopener">Laravels notifications</a> in the projects I’ve been working on and to send messages via telegram I’d been using <a href="https://github.com/laravel-notification-channels/telegram" target="_blank" rel="noopener">this package</a>.</p>
-<p>However whilst I’d found documentation that said that sending messages to MS Teams was possible there didn’t seem to be a notification channel for laravel.</p>
-<p>So I went about building a basic one today:</p>
-<h3 id="Laravel-Notifications-for-Microsoft-Teams"><a href="#Laravel-Notifications-for-Microsoft-Teams" class="headerlink" title="Laravel Notifications for Microsoft Teams"></a><a href="https://github.com/talvbansal/laravel-ms-teams-notification-channel" target="_blank" rel="noopener">Laravel Notifications for Microsoft Teams</a></h3>
-                    
-                        <a href="/blog/send-notifications-to-ms-teams-with-laravel/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/blog/send-notifications-to-ms-teams-with-laravel/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1573588975/posts/south-africa-lilac-breasted-roller.jpg"/>
-                </div>
-            </a>
-            
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/maximising-gitlab-ci-s-free-tier/">
-                            Maximizing Gitlab&#39;s CI&#39;s Free Tier
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-11-11T17:07:30+00:00">
-	
-		    Nov 11, 2019
-    	
-    </time>
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <p>Last year I began working at a new startup - <a href="https://nx-technology.com" target="_blank" rel="noopener">NX Technology</a>. </p>
-<p>As a start up with limited funding we’re constantly looking for efficiencies and ways to get the most out of what we already have whether that be in hardware or software. </p>
-<p>Whilst previously I’ve set up and <a href="/blog/setting-up-a-private-gitlab-server-on-ubuntu-1604/">self hosted a gitlab instance</a> at NX we needed to get things up and running asap so we decided to use the gitlabs free tier.</p>
-<p>At the time of writing the bronze tier comes with unlimited private repositories and 2000 gitlab ci minutes using gitlab’s shared runners.</p>
-<p>One of the things I love about this is that once those minutes are up you can either <a href="https://customers.gitlab.com/plans" target="_blank" rel="noopener">pay for more</a> or use your own runners to process jobs for your projects.</p>
-<p>We have an old -nothing special- server which we’ve set up a gitlab runner on that will handle jobs for us along with gitlab’s shared runners and when our free minutes run out all jobs will run through that server.</p>
-<p>Since most of the time when you’re pushing code to gitlab your laptop will be on, you can use your development laptop to help out too!</p>
-                    
-                        <a href="/blog/maximising-gitlab-ci-s-free-tier/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/blog/maximising-gitlab-ci-s-free-tier/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1573492411/posts/welvegonden-lion.jpg"/>
-                </div>
-            </a>
-            
-        
-    </article>
-    
     <div class="pagination-bar">
     <ul class="pagination">
         
@@ -510,7 +298,6 @@
 </div>
 
 </section>
-
 
 
                 <footer id="footer" class="main-content-wrap">
