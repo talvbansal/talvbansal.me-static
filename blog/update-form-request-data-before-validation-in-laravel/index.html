@@ -7,23 +7,26 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="generator" content="TalvBansal.me" />
-  <title>Tag: Dayjs - TalvBansal.me</title>
+  <title>Updating Form Request Data Before Validation in Laravel - TalvBansal.me</title>
   <meta name="author" content="Talv Bansal" />
   
   <meta name="keywords" content="hexo,gitlab,github,javascript,es6,laravel,php,vue,vue.js,development,full stack,CI/CD," />
    
   <link rel="icon" href="https://talvbansal.me/assets/images/favicon.ico" />
-    <script type="application/ld+json">{}</script> <meta name="description" content="Tales of a full stack developer">
-<meta name="keywords" content="hexo,gitlab,github,javascript,es6,laravel,php,vue,vue.js,development,full stack,CI&#x2F;CD">
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Talv Bansal","sameAs":["https://github.com/talvbansal","https://twitter.com/talv","https://instagram.com/iwantthewindowseat","https://www.linkedin.com/in/talvinder-bansal-5826594a","mailto:talvbansal@outlook.com"],"image":"https://www.gravatar.com/avatar/be14e67a41106fe8731f839b3bd46733"},"articleBody":"IntroductionLaravel’s Form Requests are a great way of removing validation logic from your controllers. \nThere are times were it can be useful to update or change the request data before it is passed to the validator for example formatting postcodes, removing invalid characters or providing default values to data.\nThe official documentation shows how we can perform additional logic after the rule sets have been run but not before hand.\nDigging through the Form Request api there is mention of a method called prepareForValidation which is an empty method that is called before the actual validation rules are run as can be seen in implementation:\n\nHeres a link to the above code\n\nSo given that the method is empty how do we use it and go about updating the form request data?\n\nSolution and example of implementationThe merge method on the same class is how.\nHere’s an example of something I was working on recently. \nWe had built a Laravel app that is accessed by a React Native application. Our client realised post launch that they needed to only run certain validation against driving licences from Great Britain only. They said that almost all of their clients have GB licences but they still need to be able to accommodate others.\nSo we amended the validation rules for this particular request to accommodate this new indicator:12345678// Form request class...    public function rules()    &#123;        return [            ...            'gb_licence' =&gt; ['required', 'bool'],        ];    &#125;\nHowever it takes time apps to get reviewed and published into their respective app stores and even then being in the app store doesn’t ensure that all clients are using the latest version of that app.\nSo rolling this code out would break our existing clients since they would fail the required rule. \nWe could have versioned off the API so that old versions of the app call the old code but newer build call a new route with this new validation, however for such a minor change it felt like overkill. Also it would still mean we’d have to create a default value for older clients otherwise we’d end up with not null errors with our database.\nSo for the following reasons we opted to create a default value for this gb_licence indicator. \n\nWe could continue to use the existing API (didn’t require the API to be versioned)\nWe could roll the code immediately without impacting existing clients\nIt would work as soon as the apps in either store were released\n\nAnd this is all it took:1234567// Form request class...    protected function prepareForValidation(): void    &#123;        $this-&gt;merge([            'gb_licence' =&gt; $this-&gt;gb_licence ?? true,        ]);    &#125;\nSo in this instance if the gb_licence field didn’t exist it would be created and given a default value of true.\nSuper easy!\nI’ve used the prepareForValidation in a number of different FormRequests when needing to pre-format incoming data. A common example being uppercasing and formatting postcodes and vehicle registration numbers:\n12345678// Form request class...    protected function prepareForValidation(): void    &#123;        $this-&gt;merge([            'postcode' =&gt; mb_strtoupper($this-&gt;postcode),            'reg_no' =&gt; mb_strtoupper($this-&gt;reg_no),        ]);    &#125;\nI actually use a number of custom helper functions to actually do this but the above should illustrate how you can amend existing data.\n","dateCreated":"2019-11-24T22:03:20+00:00","dateModified":"2019-11-24T22:27:32+00:00","datePublished":"2019-11-24T22:03:20+00:00","description":"IntroductionLaravel’s Form Requests are a great way of removing validation logic from your controllers. \nThere are times were it can be useful to update or change the request data before it is passed to the validator for example formatting postcodes, removing invalid characters or providing default values to data.\nThe official documentation shows how we can perform additional logic after the rule sets have been run but not before hand.\nDigging through the Form Request api there is mention of a method called prepareForValidation which is an empty method that is called before the actual validation rules are run as can be seen in implementation:\n\nHeres a link to the above code\n\nSo given that the method is empty how do we use it and go about updating the form request data?","headline":"Updating Form Request Data Before Validation in Laravel","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://talvbansal.me/blog/update-form-request-data-before-validation-in-laravel/"},"publisher":{"@type":"Organization","name":"Talv Bansal","sameAs":["https://github.com/talvbansal","https://twitter.com/talv","https://instagram.com/iwantthewindowseat","https://www.linkedin.com/in/talvinder-bansal-5826594a","mailto:talvbansal@outlook.com"],"image":"https://www.gravatar.com/avatar/be14e67a41106fe8731f839b3bd46733","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/be14e67a41106fe8731f839b3bd46733"}},"url":"https://talvbansal.me/blog/update-form-request-data-before-validation-in-laravel/","keywords":"Laravel, Validation, Form Request"}</script> <meta name="description" content="IntroductionLaravel’s Form Requests are a great way of removing validation logic from your controllers.  There are times were it can be useful to update or change the request data before it is passed">
+<meta name="keywords" content="Laravel,Validation,Form Request">
 <meta property="og:type" content="blog">
-<meta property="og:title" content="TalvBansal.me">
-<meta property="og:url" content="https://talvbansal.me/tags/Dayjs/index.html">
+<meta property="og:title" content="Updating Form Request Data Before Validation in Laravel">
+<meta property="og:url" content="https://talvbansal.me/blog/update-form-request-data-before-validation-in-laravel/index.html">
 <meta property="og:site_name" content="TalvBansal.me">
-<meta property="og:description" content="Tales of a full stack developer">
+<meta property="og:description" content="IntroductionLaravel’s Form Requests are a great way of removing validation logic from your controllers.  There are times were it can be useful to update or change the request data before it is passed">
 <meta property="og:locale" content="en">
+<meta property="og:image" content="https://res.cloudinary.com/www-talvbansal-me/image/upload/v1574425624/posts/prepare-for-validation.png">
+<meta property="og:updated_time" content="2019-11-24T22:27:32.797Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="TalvBansal.me">
-<meta name="twitter:description" content="Tales of a full stack developer">
+<meta name="twitter:title" content="Updating Form Request Data Before Validation in Laravel">
+<meta name="twitter:description" content="IntroductionLaravel’s Form Requests are a great way of removing validation logic from your controllers.  There are times were it can be useful to update or change the request data before it is passed">
+<meta name="twitter:image" content="https://res.cloudinary.com/www-talvbansal-me/image/upload/v1574425624/posts/prepare-for-validation.png">
 <meta name="twitter:creator" content="@talv">     
   <meta property="og:image" content="https://www.gravatar.com/avatar/321065504328f47a4f9d8b57df0635f4?s=640" />
      
@@ -55,7 +58,7 @@
         
     
 
-<header id="header" data-behavior="1">
+<header id="header" data-behavior="4">
     <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
     <div class="header-title">
         <a class="header-title-link" href="/ ">TalvBansal.me</a>
@@ -77,7 +80,7 @@
 
     
 
-<nav id="sidebar" data-behavior="1">
+<nav id="sidebar" data-behavior="4">
     <div class="sidebar-container">
         
             <div class="sidebar-profile">
@@ -231,117 +234,163 @@
 </nav>
 
             
-            <div id="main" data-behavior="1"
+            <div id="main" data-behavior="4"
                  class="
                         hasCoverMetaIn
                         ">
                 
-    <section class="postShorten-group main-content-wrap">
+<article class="post">
     
     
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/human-readable-dates-with-dayjs-in-vue-js/">
-                            Human readable dates with Dayjs in Vue
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-05-19T18:13:40+01:00">
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            Updating Form Request Data Before Validation in Laravel
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2019-11-24T22:03:20+00:00">
 	
-		    May 19, 2019
+		    Nov 24, 2019
     	
     </time>
     
 </div>
 
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <p>Recently I blogged about replacing <a href="https://momentjs.com/" target="_blank" rel="noopener">Moment.js</a> with a lightweight alternative <a href="https://github.com/iamkun/dayjs" target="_blank" rel="noopener">Day.js</a>.</p>
-<p>In Laravel, when working with dates I’ve been used to using the <a href="https://carbon.nesbot.com/" target="_blank" rel="noopener">Carbon</a> method <code>diffForHumans</code>. </p>
-<p>It gives us a date value relative to an optional given date, but it defaults to now. Examples of output from the diffForHumans method looks like:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- 5 minutes ago</span><br><span class="line">- One week ago</span><br><span class="line">- Last Year</span><br></pre></td></tr></table></figure>
-<p>Rather than: </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">2019-05-19 18:08:40</span><br><span class="line">2019-05-12 18:13:40</span><br><span class="line">2018-05-19 18:13:40</span><br></pre></td></tr></table></figure>
-<p>We can do the same with Moment.js using the <code>fromNow</code> method. Given that Day.js is supposed to have the same API as Moment.js I assumed that the <code>fromNow</code> method would “Just work”.</p>
-<p>Turns out that it didn’t. But with some small changes to our code we can get the same <code>fromNow</code> method working with Day.js.</p>
-                    
-                        <a href="/blog/human-readable-dates-with-dayjs-in-vue-js/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/blog/human-readable-dates-with-dayjs-in-vue-js/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1558287756/posts/stockholm-brunkeberg-tunnel.jpg"/>
-                </div>
-            </a>
-            
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/replace-momentjs-with-dayjs/">
-                            Replacing Moment.js With Dayjs
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-10-02T19:01:00+01:00">
-	
-		    Oct 02, 2018
-    	
-    </time>
     
 </div>
 
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <p>Earlier this year I blogged about reducing the file size of moment.js by stripping out additional locales. Whilst stripping the locales made a good saving in file size, really all I was using it for was to format dates within my user interfaces. So I set out on finding a lightweight alternative to do just that…</p>
-                    
-                        <a href="/blog/replace-momentjs-with-dayjs/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/blog/replace-momentjs-with-dayjs/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1555352638/posts/mexico-city-bellas-artes.jpg"/>
-                </div>
-            </a>
-            
-        
-    </article>
     
-    <div class="pagination-bar">
-    <ul class="pagination">
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <h3 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h3><p>Laravel’s Form Requests are a great way of removing validation logic from your controllers. </p>
+<p>There are times were it can be useful to update or change the request data before it is passed to the validator for example formatting postcodes, removing invalid characters or providing default values to data.</p>
+<p>The official <a href="https://laravel.com/docs/master/validation#form-request-validation" target="_blank" rel="noopener">documentation</a> shows how we can perform additional logic after the rule sets have been run but not before hand.</p>
+<p>Digging through the Form Request <a href="https://laravel.com/api/master/Illuminate/Foundation/Http/FormRequest.html#method_prepareForValidation" target="_blank" rel="noopener">api</a> there is mention of a method called <code>prepareForValidation</code> which is an empty method that is called before the actual validation rules are run as can be seen in implementation:</p>
+<p><img src="https://res.cloudinary.com/www-talvbansal-me/image/upload/v1574425624/posts/prepare-for-validation.png" alt="the prepare for validation method"></p>
+<div style="text-align: center"><a href="https://github.com/laravel/framework/blob/master/src/Illuminate/Validation/ValidatesWhenResolvedTrait.php#L37" target="_blank" rel="noopener">Heres a link to the above code</a><br></div>
+
+<p>So given that the method is empty how do we use it and go about updating the form request data?</p>
+<a id="more"></a>
+<h3 id="Solution-and-example-of-implementation"><a href="#Solution-and-example-of-implementation" class="headerlink" title="Solution and example of implementation"></a>Solution and example of implementation</h3><p>The <code>merge</code> method on the same class is how.</p>
+<p>Here’s an example of something I was working on recently. </p>
+<p>We had built a Laravel app that is accessed by a React Native application. Our client realised post launch that they needed to only run certain validation against driving licences from Great Britain only. They said that almost all of their clients have GB licences but they still need to be able to accommodate others.</p>
+<p>So we amended the validation rules for this particular request to accommodate this new indicator:<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Form request class...</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">rules</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> [</span><br><span class="line">            ...</span><br><span class="line">            <span class="string">'gb_licence'</span> =&gt; [<span class="string">'required'</span>, <span class="string">'bool'</span>],</span><br><span class="line">        ];</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>However it takes time apps to get reviewed and published into their respective app stores and even then being in the app store doesn’t ensure that all clients are using the latest version of that app.</p>
+<p>So rolling this code out would break our existing clients since they would fail the <code>required</code> rule. </p>
+<p>We could have versioned off the API so that old versions of the app call the old code but newer build call a new route with this new validation, however for such a minor change it felt like overkill. Also it would still mean we’d have to create a default value for older clients otherwise we’d end up with not null errors with our database.</p>
+<p>So for the following reasons we opted to create a default value for this <code>gb_licence</code> indicator. </p>
+<ul>
+<li>We could continue to use the existing API (didn’t require the API to be versioned)</li>
+<li>We could roll the code immediately without impacting existing clients</li>
+<li>It would work as soon as the apps in either store were released</li>
+</ul>
+<p>And this is all it took:<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Form request class...</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="function"><span class="keyword">function</span> <span class="title">prepareForValidation</span><span class="params">()</span>: <span class="title">void</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;merge([</span><br><span class="line">            <span class="string">'gb_licence'</span> =&gt; <span class="keyword">$this</span>-&gt;gb_licence ?? <span class="keyword">true</span>,</span><br><span class="line">        ]);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>So in this instance if the <code>gb_licence</code> field didn’t exist it would be created and given a default value of <code>true</code>.</p>
+<p>Super easy!</p>
+<p>I’ve used the <code>prepareForValidation</code> in a number of different FormRequests when needing to pre-format incoming data. A common example being uppercasing and formatting postcodes and vehicle registration numbers:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Form request class...</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="function"><span class="keyword">function</span> <span class="title">prepareForValidation</span><span class="params">()</span>: <span class="title">void</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">$this</span>-&gt;merge([</span><br><span class="line">            <span class="string">'postcode'</span> =&gt; mb_strtoupper(<span class="keyword">$this</span>-&gt;postcode),</span><br><span class="line">            <span class="string">'reg_no'</span> =&gt; mb_strtoupper(<span class="keyword">$this</span>-&gt;reg_no),</span><br><span class="line">        ]);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p><em>I actually use a number of custom helper functions to actually do this but the above should illustrate how you can amend existing data.</em></p>
+
+            
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/Form-Request/">Form Request</a> <a class="tag tag--primary tag--small t-link" href="/tags/Laravel/">Laravel</a> <a class="tag tag--primary tag--small t-link" href="/tags/Validation/">Validation</a>
+
+            </div>
         
         
-        <li class="pagination-number">page 1 of 1</li>
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--disabled">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/blog/using-sshuttle-to-solve-static-ip-issues-when-remote-working/" data-tooltip="Using sshuttle to Solve Static IP Issues When Remote Working" aria-label="NEXT: Using sshuttle to Solve Static IP Issues When Remote Working">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://talvbansal.me/blog/update-form-request-data-before-validation-in-laravel/" title="Share on Facebook">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://talvbansal.me/blog/update-form-request-data-before-validation-in-laravel/" title="Share on Twitter">
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://talvbansal.me/blog/update-form-request-data-before-validation-in-laravel/" title="Share on Google+">
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
     </ul>
 </div>
 
-</section>
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
 
 
                 <footer id="footer" class="main-content-wrap">
@@ -351,6 +400,113 @@
 </footer>
 
             </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--disabled">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/blog/using-sshuttle-to-solve-static-ip-issues-when-remote-working/" data-tooltip="Using sshuttle to Solve Static IP Issues When Remote Working" aria-label="NEXT: Using sshuttle to Solve Static IP Issues When Remote Working">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://talvbansal.me/blog/update-form-request-data-before-validation-in-laravel/" title="Share on Facebook">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://talvbansal.me/blog/update-form-request-data-before-validation-in-laravel/" title="Share on Twitter">
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://talvbansal.me/blog/update-form-request-data-before-validation-in-laravel/" title="Share on Google+">
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+    <i id="btn-close-shareoptions" class="fa fa-times"></i>
+    <ul class="share-options">
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://talvbansal.me/blog/update-form-request-data-before-validation-in-laravel/">
+                    <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https://talvbansal.me/blog/update-form-request-data-before-validation-in-laravel/">
+                    <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https://talvbansal.me/blog/update-form-request-data-before-validation-in-laravel/">
+                    <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                </a>
+            </li>
+        
+    </ul>
+</div>
+
             
         </div>
         
@@ -712,6 +868,25 @@
         <!--SCRIPTS-->
 <script src="/assets/js/script-vufjrm3fmbuttogo1hxuu0w9w0sesk5iyysjuguc2hdhufot9szxg8twijry.min.js"></script>
 <!--SCRIPTS END-->
+
+    
+        <script>
+             var disqus_config = function () {
+                 this.page.url = 'https://talvbansal.me/blog/update-form-request-data-before-validation-in-laravel/';
+                 
+                    this.page.identifier = 'blog/update-form-request-data-before-validation-in-laravel/';
+                 
+             };
+            (function() {
+                var d = document, s = d.createElement('script');
+                var disqus_shortname = 'talvbansalblog';
+                s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment-with-locales.min.js"></script>

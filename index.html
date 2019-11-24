@@ -244,6 +244,50 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/blog/update-form-request-data-before-validation-in-laravel/">
+                            Updating Form Request Data Before Validation in Laravel
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2019-11-24T22:03:20+00:00">
+	
+		    Nov 24, 2019
+    	
+    </time>
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <h3 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h3><p>Laravel’s Form Requests are a great way of removing validation logic from your controllers. </p>
+<p>There are times were it can be useful to update or change the request data before it is passed to the validator for example formatting postcodes, removing invalid characters or providing default values to data.</p>
+<p>The official <a href="https://laravel.com/docs/master/validation#form-request-validation" target="_blank" rel="noopener">documentation</a> shows how we can perform additional logic after the rule sets have been run but not before hand.</p>
+<p>Digging through the Form Request <a href="https://laravel.com/api/master/Illuminate/Foundation/Http/FormRequest.html#method_prepareForValidation" target="_blank" rel="noopener">api</a> there is mention of a method called <code>prepareForValidation</code> which is an empty method that is called before the actual validation rules are run as can be seen in implementation:</p>
+<p><img src="https://res.cloudinary.com/www-talvbansal-me/image/upload/v1574425624/posts/prepare-for-validation.png" alt="the prepare for validation method"></p>
+<div style="text-align: center"><a href="https://github.com/laravel/framework/blob/master/src/Illuminate/Validation/ValidatesWhenResolvedTrait.php#L37" target="_blank" rel="noopener">Heres a link to the above code</a><br></div>
+
+<p>So given that the method is empty how do we use it and go about updating the form request data?</p>
+                    
+                        <a href="/blog/update-form-request-data-before-validation-in-laravel/" class="postShorten-excerpt_link link">
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-right">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/blog/using-sshuttle-to-solve-static-ip-issues-when-remote-working/">
                             Using sshuttle to Solve Static IP Issues When Remote Working
                         </a>
@@ -687,54 +731,6 @@
         
     </article>
     
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/testing-gitlab-ci-config-locally/">
-                            Testing your Gitlab CI config locally
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2018-04-20T11:29:30+01:00">
-	
-		    Apr 20, 2018
-    	
-    </time>
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>Recently at work we started using PHP7.2 for all of our new projects. We’d previously been using the <a href="https://github.com/TetraWeb/docker" target="_blank" rel="noopener">TetraWeb docker images</a> for our Gitlab CI needs, however they only (at the time of writing) have a docker images for versions up to PHP7.1.</p>
-<p>I tasked one of the junior members of my team with upgrading one of our projects and came back to our repositories commit history looking like this:</p>
-<p><img src="/blog/testing-gitlab-ci-config-locally/gitlab-commit-history.png" alt="Gitlab commit history"></p>
-<p>Kind of ugly and not so useful when scanning our commit history. </p>
-<p>In this article I want to show how we can test our Gitlab CI config locally whilst we’re working out how to set it up properly before we push it to Gitlab as well as keep our commit history cleaner in the process.</p>
-                    
-                        <a href="/blog/testing-gitlab-ci-config-locally/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/blog/testing-gitlab-ci-config-locally/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1555352830/posts/mexico-monument.jpg"/>
-                </div>
-            </a>
-            
-        
-    </article>
-    
     <div class="pagination-bar">
     <ul class="pagination">
         
@@ -1109,7 +1105,7 @@
                 data-message-zero="no post found"
                 data-message-one="1 post found"
                 data-message-other="{n} posts found">
-                21 posts found
+                22 posts found
             </p>
         </div>
     </div>
