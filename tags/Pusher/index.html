@@ -7,7 +7,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="generator" content="TalvBansal.me" />
-  <title>Archives: 2017 - TalvBansal.me</title>
+  <title>Tag: Pusher - TalvBansal.me</title>
   <meta name="author" content="Talv Bansal" />
   
   <meta name="keywords" content="hexo,gitlab,github,javascript,es6,laravel,php,vue,vue.js,development,full stack,CI/CD," />
@@ -17,7 +17,7 @@
 <meta name="keywords" content="hexo,gitlab,github,javascript,es6,laravel,php,vue,vue.js,development,full stack,CI&#x2F;CD">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="TalvBansal.me">
-<meta property="og:url" content="https://talvbansal.me/archives/2017/index.html">
+<meta property="og:url" content="https://talvbansal.me/tags/Pusher/index.html">
 <meta property="og:site_name" content="TalvBansal.me">
 <meta property="og:description" content="Tales of a full stack developer">
 <meta property="og:locale" content="en">
@@ -245,15 +245,15 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/blog/rsync-ing-data-between-servers/">
-                            RSync-ing Data Between Servers
+                        <a class="link-unstyled" href="/blog/updating-laravels-env-file-with-production-credentials-in-gitlab-ci-with-laravel-mix/">
+                            Updating Laravel&#39;s .env file with Production Credentials in Gitlab CI with Laravel Mix
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2017-08-20T15:10:44+01:00">
+    <time datetime="2019-12-02T20:58:47+00:00">
 	
-		    Aug 20, 2017
+		    Dec 02, 2019
     	
     </time>
     
@@ -262,104 +262,17 @@
             </div>
             
                 <div class="postShorten-excerpt">
-                    <p>After moving to NYC this week, I’ve found the need to move sets of data from my local machine to a server I have back at home in the UK.</p>
-<p>Whilst I use <a href="https://www.resilio.com/" target="_blank" rel="noopener">Resilio sync</a> to keep things that i use regularly in sync between a number of devices this was more of a one off type deal so I decided to use the trusty command line tool rsync.<br>
-                    
-                        <a href="/blog/rsync-ing-data-between-servers/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/blog/rsync-ing-data-between-servers/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1555352680/posts/new-york-skyline.jpg"/>
-                </div>
-            </a>
-            
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/simple-push-to-deploy-with-gitlab-cicd/">
-                            Simple push to deploy with Gitlab CI/CD
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2017-05-24T16:15:27+01:00">
-	
-		    May 24, 2017
-    	
-    </time>
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>This article follows directly on from my <a href="https://talvbansal.me/blog/gitlab-ci-for-php-applications">previous article</a> on adding gitlab’s CI to my PHP projects.</p>
-<p>Once we’re happy with our code being automatically tested we might want it to be automatically deployed to a testing server / environment or maybe even production.<br>
-                    
-                        <a href="/blog/simple-push-to-deploy-with-gitlab-cicd/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/blog/simple-push-to-deploy-with-gitlab-cicd/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1555352778/posts/westminister-sunset.jpg"/>
-                </div>
-            </a>
-            
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/gitlab-ci-for-php-applications/">
-                            Gitlab CI for PHP applications
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2017-02-24T16:24:17+00:00">
-	
-		    Feb 24, 2017
-    	
-    </time>
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>Gitlab provides some good documentation on getting build runners for your projects set up which can be found <a href="https://about.gitlab.com/2016/03/01/gitlab-runner-with-docker/" target="_blank" rel="noopener">here</a>. However I haven’t found a good article on setting up Gitlab CI for PHP applications yet. </p>
-<p>This article is not going to discuss setting up shared runners on Gitlab since I felt the documentation provided by them in the link above was easy enough to follow, what this I am going to focus on is the <code>.gitlab-ci.yml</code> configuration that I’m currently using in my projects to do the following: </p>
+                    <h3 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h3><p>Laravel apps read sensitive information from their <code>.env</code> file.</p>
+<p>Recently I found out that Laravel Mix can <a href="https://laravel.com/docs/master/mix#environment-variables" target="_blank" rel="noopener">pass values from the same <code>.env</code> file</a> to the js portion of your app as long as they are prefixed with <code>MIX_</code>  </p>
+<p>I use Gitlab ci pipelines to build production assets so that I dont need that additional tooling on the production servers the main one being:</p>
 <ul>
-<li>Run PHP CS against our code base to ensure that it conforms to PSR-2</li>
-<li>Run PHPUnit against our code base to ensure that our unit tests pass against different versions of PHP (5.6, 7.0, 7.1)</li>
+<li><code>yarn run production</code></li>
 </ul>
+<p>This is preceded with <code>cp .env.example .env</code> meaning when the build commands are being run, they are going to use values from the <code>.example.env</code> file.</p>
+<p>If your project doesn’t make use of anything from the <code>.env</code> file then this is totally fine, however in scenarios where you do, since production applications will almost certainly  have different <code>.env</code> values to those in the <code>.example.env</code> file (Never commit credentials to source control!) the resulting file will have been built with the wrong credentials.</p>
+<p>In this article I’m going to show how you can use gitlab CI to build those assets with updated environmental variables so that they function as expected when deployed to your production servers.</p>
                     
-                        <a href="/blog/gitlab-ci-for-php-applications/" class="postShorten-excerpt_link link">
+                        <a href="/blog/updating-laravels-env-file-with-production-credentials-in-gitlab-ci-with-laravel-mix/" class="postShorten-excerpt_link link">
                             Continue reading
                         </a>
                         
@@ -368,9 +281,9 @@
             
         </div>
         
-            <a href="/blog/gitlab-ci-for-php-applications/">
+            <a href="/blog/updating-laravels-env-file-with-production-credentials-in-gitlab-ci-with-laravel-mix/">
                 <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1555352188/posts/cancun-sunset.jpg"/>
+                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1575320794/posts/india-huyumans-tomb-chains.jpg"/>
                 </div>
             </a>
             
@@ -386,7 +299,6 @@
 </div>
 
 </section>
-
 
 
                 <footer id="footer" class="main-content-wrap">

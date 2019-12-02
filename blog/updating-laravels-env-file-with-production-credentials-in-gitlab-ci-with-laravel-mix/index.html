@@ -7,33 +7,35 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="generator" content="TalvBansal.me" />
-  <title>Simple push to deploy with Gitlab CI/CD - TalvBansal.me</title>
+  <title>Updating Laravel&#39;s .env file with Production Credentials in Gitlab CI with Laravel Mix - TalvBansal.me</title>
   <meta name="author" content="Talv Bansal" />
   
   <meta name="keywords" content="hexo,gitlab,github,javascript,es6,laravel,php,vue,vue.js,development,full stack,CI/CD," />
    
   <link rel="icon" href="https://talvbansal.me/assets/images/favicon.ico" />
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Talv Bansal","sameAs":["https://github.com/talvbansal","https://twitter.com/talv","https://instagram.com/iwantthewindowseat","https://www.linkedin.com/in/talvinder-bansal-5826594a","mailto:talvbansal@outlook.com"],"image":"https://www.gravatar.com/avatar/be14e67a41106fe8731f839b3bd46733"},"articleBody":"IntroductionThis article follows directly on from my previous article on adding gitlab’s CI to my PHP projects.\nOnce we’re happy with our code being automatically tested we might want it to be automatically deployed to a testing server / environment or maybe even production.Ultimately the deployment is just some script or set of commands that the runner will call. \nA super simple deployment process might involve the following steps:\n\nSSH into you remote server\nChange to project directory\nPut application into maintenance mode \nUndo any local changes \nCheckout the correct branch \nPull in new changes\nInstall new dependencies\nMigrate database\nTake application out of maintenance mode\n\nObviously there are a number of issues with this process if you were using it in production for example: \n\nRequires the project to be checked out in the first place\nNo back out process if a step fails\n\nSome of these issues could be fixed using a deployment tool like Capistrano - (if you have any other recommendations id love to hear them!).\nScroll to the bottom for a complete sample script to add to your gitlab-ci.yml\nGetting started with Gitlab CI/CDStart by defining a new pipeline stage called “deploy” within your projects gitlab-ci.yml file:\n12345678...stages:   - syntax   - tests   - deploy...\nNext create a new section where we can define what will occur during the deploy stage and then provide it with a base docker image to use:\n123deploy-master:    stage: deploy\timage: tetraweb/php:7.0\nNext this section we need to give our docker image an ssh key needed to get into our remote server. This can be done in the before_script section. \n12345before_script:\t- mkdir -p ~/.ssh\t- echo -e \"$DEPLOY_KEY\" &gt; ~/.ssh/id_rsa\t- chmod 600 ~/.ssh/id_rsa\t- '[[ -f /.dockerenv ]] &amp;&amp; echo -e \"Host *\\n\\tStrictHostKeyChecking no\\n\\n\" &gt; ~/.ssh/config'\nIn the section above pay attention to the $DEPLOY_KEY variable Within Gitlab we’ll need to set up a Secret Variable that holds the contents of the private portion of an SSH key that has access to your deployment server.\n\nIts highly recommended to NOT use your main user to deploy your project code with, for more information on how to do that check out Chris Fidao’s  excellent server management book : Servers For Hackers.\n\nTo add a new secret variable to a Gitlab project, go to the Project Page -&gt; Settings -&gt; CI / CD Pipelines. Then scroll down to Secret Variables. Call the variable DEPLOY_KEY and paste the PRIVATE portion of your deployment users SSH key into the Value field.\nDeploymentThe commands to deploy outlined at the top of this article can be translated into:\n\nssh user@server-name.com\ncd /project/path\nphp artisan down\ngit checkout .\ngit checkout master\ngit pull\ncomposer install\nphp artisan migrate\nphp artisan up\n\nOnce we’ve ssh’d into the remote server we can only run a single command before the process will terminate, so we can join our commands together using &amp;&amp;:\n1234567891011script:\t- ssh user@server-name.com \"\t    cd /var/www/ &amp;&amp;\t\tphp artisan down &amp;&amp;\t\tgit checkout . &amp;&amp;\t\tgit checkout master &amp;&amp;\t\tgit pull &amp;&amp;\t\tcomposer install &amp;&amp;\t\tphp artisan migrate &amp;&amp;\t\tphp artisan up\t\t\"\nLimiting releases to a specific branchIf we put everything together now and used the resulting script we’d have something that deploys code from any branch any time we pushed to Gitlab. Not ideal since we only want code to be deployed when we merge into a particular branch, say master or develop. We can limit when a section of a stage is run using the only command.\n12only:\t- master\nPutting it all together:Heres an almost complete deployment script (with the syntax and tests sections omitted): \n1234567891011121314151617181920212223242526272829303132333435stages:   - syntax   - tests   - deploy           deploy-master:    stage: deploy        image: tetraweb/php:7.0                                   before_script:            - mkdir -p ~/.ssh            - echo -e \"$DEPLOY_KEY\" &gt; ~/.ssh/id_rsa            - chmod 600 ~/.ssh/id_rsa            - '[[ -f /.dockerenv ]] &amp;&amp; echo -e \"Host *\\n\\tStrictHostKeyChecking no\\n\\n\" &gt; ~/.ssh/config'                script:            - ssh user@server-name.com \"                cd /var/www/ &amp;&amp;                php artisan down &amp;&amp;                git checkout . &amp;&amp;                git checkout master &amp;&amp;                git pull &amp;&amp;                composer install &amp;&amp;                php artisan migrate &amp;&amp;                php artisan up            \"                                            environment:            name: production                    only:            - master`\nHopefully this has been useful, if you have suggestions on how i can improve the article / process I’d love to hear from you.\n","dateCreated":"2017-05-24T16:15:27+01:00","dateModified":"2019-04-15T19:26:45+01:00","datePublished":"2017-05-24T16:15:27+01:00","description":"IntroductionThis article follows directly on from my previous article on adding gitlab’s CI to my PHP projects.\nOnce we’re happy with our code being automatically tested we might want it to be automatically deployed to a testing server / environment or maybe even production.","headline":"Simple push to deploy with Gitlab CI/CD","image":["https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1555352778/posts/westminister-sunset.jpg","https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_1600/v1555352778/posts/westminister-sunset.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://talvbansal.me/blog/simple-push-to-deploy-with-gitlab-cicd/"},"publisher":{"@type":"Organization","name":"Talv Bansal","sameAs":["https://github.com/talvbansal","https://twitter.com/talv","https://instagram.com/iwantthewindowseat","https://www.linkedin.com/in/talvinder-bansal-5826594a","mailto:talvbansal@outlook.com"],"image":"https://www.gravatar.com/avatar/be14e67a41106fe8731f839b3bd46733","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/be14e67a41106fe8731f839b3bd46733"}},"url":"https://talvbansal.me/blog/simple-push-to-deploy-with-gitlab-cicd/","keywords":"PHP, Laravel, Gitlab, Devops, CI/CD","thumbnailUrl":"https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1555352778/posts/westminister-sunset.jpg"}</script> <meta name="description" content="IntroductionThis article follows directly on from my previous article on adding gitlab’s CI to my PHP projects. Once we’re happy with our code being automatically tested we might want it to be automat">
-<meta name="keywords" content="PHP,Laravel,Gitlab,Devops,CI&#x2F;CD">
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Talv Bansal","sameAs":["https://github.com/talvbansal","https://twitter.com/talv","https://instagram.com/iwantthewindowseat","https://www.linkedin.com/in/talvinder-bansal-5826594a","mailto:talvbansal@outlook.com"],"image":"https://www.gravatar.com/avatar/be14e67a41106fe8731f839b3bd46733"},"articleBody":"IntroductionLaravel apps read sensitive information from their .env file.\nRecently I found out that Laravel Mix can pass values from the same .env file to the js portion of your app as long as they are prefixed with MIX_  \nI use Gitlab ci pipelines to build production assets so that I dont need that additional tooling on the production servers the main one being:\n\nyarn run production\n\nThis is preceded with cp .env.example .env meaning when the build commands are being run, they are going to use values from the .example.env file.\nIf your project doesn’t make use of anything from the .env file then this is totally fine, however in scenarios where you do, since production applications will almost certainly  have different .env values to those in the .example.env file (Never commit credentials to source control!) the resulting file will have been built with the wrong credentials.\nIn this article I’m going to show how you can use gitlab CI to build those assets with updated environmental variables so that they function as expected when deployed to your production servers.\n\nLaravel’s stock exampleLets start by looking at a real example of how these environmental variables are configured and used.\nThe default Laravel .env has the following section in that is used to configure the Pusher.com library.\n1234567PUSHER_APP_ID=PUSHER_APP_KEY=PUSHER_APP_SECRET=PUSHER_APP_CLUSTER=euMIX_PUSHER_APP_KEY=\"$&#123;PUSHER_APP_KEY&#125;\"MIX_PUSHER_APP_CLUSTER=\"$&#123;PUSHER_APP_CLUSTER&#125;\"\nThe second part says for the MIX_PUSHER_APP_KEY key use the same value as the PUSHER_APP_KEY key and the same for MIX_PUSHER_APP_CLUSTER to use PUSHER_APP_CLUSTER as its value.\nSo if we set PUSHER_APP_KEY to be “TEST_PUSHER_KEY” then MIX_PUSHER_APP_KEY will also have the value of “TEST_PUSHER_KEY”.\nThose values are used in the resources/js/boostrap.js file to configure the Laravel Echo pusher subscriber:\n123456window.Echo = new Echo(&#123;\tbroadcaster: 'pusher',\tkey: process.env.MIX_PUSHER_APP_KEY,\tcluster: process.env.MIX_PUSHER_APP_CLUSTER,\tencrypted: true&#125;);\nSo when yarn run production is run the key and cluster properties will be populated with the values in the .env file. \nUpdating the .env in Gitlab CINow lets look at the relevant parts of the projects .gitlab.yml file:\n12345678910111213141516171819202122232425262728293031323334353637383940# .gitlab.ymlimage: edbizarro/gitlab-ci-pipeline-php:7.3stages:  - preparation  - building...yarn:  stage: preparation  script:    - yarn --version    - yarn install --pure-lockfile  artifacts:    paths:      - node_modules/    expire_in: 1 days    when: always  cache:    paths:    - node_modules/build-production-assets:  stage: building  dependencies:    - yarn  script:    - cp .env.example .env    - yarn --version    - yarn run production --progress false  artifacts:    paths:      - public/css/      - public/js/      - public/fonts/      - public/mix-manifest.json    expire_in: 1 days    when: always  only:    - master\nThere are 2 stages, preparation then building. \nThe preparation stage simply runs yarn install  and downloads all of the projects JS dependencies from the NPM registry. Then it creates a gitlab artifact that its keeps for 1 day. \n\nIn Gitlab, artifacts are objects that can be passed between build stages, where as cache is used to speed up things like npm / yarn / composer installs on subsequent runs.\n\nWith the dependencies downloaded we no longer have to waste time or CI minutes in other stages for them to be downloaded again. \nThe build-production-assets stage is where we want to focus.\nThe dependencies section tells the stage to download the artifacts generated in the stage named yarn.12dependencies:  - yarn\nThe script section is where Laravel Mix is being run and our production assets are being generated.1234script:  - cp .env.example .env  - yarn --version  - yarn run production --progress false\nWhat we want to do is kind of like this:\n12345  script:    - cp .env.example .env# *** write our production values into the .env file here ***    - yarn --version    - yarn run production --progress false\nLuckily its not to difficult to do, however as much as I love Gitlab and Gitlab CI it sometimes feels like its got too much going on and I’ve forgotten where I can add production information to Gitlab CI far too many times.\nSo here’s a quick gif of where to go:\nAdd Environmental Variable to Gitlab CI\nWithin the project page on gitlab, in the sidebar under set the settings section open the CI / CD page. From here scroll down to the Variables section and expand it.\nFrom here we can begin to add keys and values that will be exposed to our gitlab ci runner. \nUsing our Pusher example from earlier. We know that if we were to update the PUSHER_APP_KEY key then the MIX_PUSHER_APP_KEY that gets used by Laravel mix will automatically be updated.\n12PUSHER_APP_KEY=MIX_PUSHER_APP_KEY=\"$&#123;PUSHER_APP_KEY&#125;\"\nOur variables in Gitlab CI don’t need to match, so lets add a new variable to the gitlab runner for our production Pusher Keys called PUSHER_LIVE_APP_KEY and give it the value of our Pusher production key. Remember to save the variable.\n\n\nSince we might be building for multiple environments in our pipelines I like to include the product and environment in my variable names whilst keeping them close to the variable im hoping to replace. Gitlab’s UI is a little congested so I tend to put the environment as the second word so the product is quicker to scan for me.\n\nWith the environmental variable in place we now need to use it in our pipeline.\nTrying to parse the .env file for the correct key and then update it with the variable is beyond my command line skill set however, if you append a key that already exists to the bottom of an .env the Dotenv library used by Laravel picks up the last instance. \nSo lets update our .gitlab.yml to do that!\n12345script:  - cp .env.example .env  - echo \"PUSHER_APP_KEY=$PUSHER_LIVE_APP_KEY\" &gt;&gt; .env  - yarn --version  - yarn run production --progress false\nAnd that is it! Next time you run a pipeline the environmental variable from gitlab will be appended to the bottom of your projects .env file and then picked up by Laravel Mix when it does its magic!\n","dateCreated":"2019-12-02T20:58:47+00:00","dateModified":"2019-12-02T23:16:23+00:00","datePublished":"2019-12-02T20:58:47+00:00","description":"IntroductionLaravel apps read sensitive information from their .env file.\nRecently I found out that Laravel Mix can pass values from the same .env file to the js portion of your app as long as they are prefixed with MIX_  \nI use Gitlab ci pipelines to build production assets so that I dont need that additional tooling on the production servers the main one being:\n\nyarn run production\n\nThis is preceded with cp .env.example .env meaning when the build commands are being run, they are going to use values from the .example.env file.\nIf your project doesn’t make use of anything from the .env file then this is totally fine, however in scenarios where you do, since production applications will almost certainly  have different .env values to those in the .example.env file (Never commit credentials to source control!) the resulting file will have been built with the wrong credentials.\nIn this article I’m going to show how you can use gitlab CI to build those assets with updated environmental variables so that they function as expected when deployed to your production servers.","headline":"Updating Laravel's .env file with Production Credentials in Gitlab CI with Laravel Mix","image":["https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1575320794/posts/india-huyumans-tomb-chains.jpg","https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_1600/v1575320794/posts/india-huyumans-tomb-chains.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://talvbansal.me/blog/updating-laravels-env-file-with-production-credentials-in-gitlab-ci-with-laravel-mix/"},"publisher":{"@type":"Organization","name":"Talv Bansal","sameAs":["https://github.com/talvbansal","https://twitter.com/talv","https://instagram.com/iwantthewindowseat","https://www.linkedin.com/in/talvinder-bansal-5826594a","mailto:talvbansal@outlook.com"],"image":"https://www.gravatar.com/avatar/be14e67a41106fe8731f839b3bd46733","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/be14e67a41106fe8731f839b3bd46733"}},"url":"https://talvbansal.me/blog/updating-laravels-env-file-with-production-credentials-in-gitlab-ci-with-laravel-mix/","keywords":"Laravel, Gitlab, CI/CD, Javascript, Tooling, Laravel Mix, Laravel Echo, Pusher","thumbnailUrl":"https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1575320794/posts/india-huyumans-tomb-chains.jpg"}</script> <meta name="description" content="IntroductionLaravel apps read sensitive information from their .env file. Recently I found out that Laravel Mix can pass values from the same .env file to the js portion of your app as long as they ar">
+<meta name="keywords" content="Laravel,Gitlab,CI&#x2F;CD,Javascript,Tooling,Laravel Mix,Laravel Echo,Pusher">
 <meta property="og:type" content="blog">
-<meta property="og:title" content="Simple push to deploy with Gitlab CI&#x2F;CD">
-<meta property="og:url" content="https://talvbansal.me/blog/simple-push-to-deploy-with-gitlab-cicd/index.html">
+<meta property="og:title" content="Updating Laravel&#39;s .env file with Production Credentials in Gitlab CI with Laravel Mix">
+<meta property="og:url" content="https://talvbansal.me/blog/updating-laravels-env-file-with-production-credentials-in-gitlab-ci-with-laravel-mix/index.html">
 <meta property="og:site_name" content="TalvBansal.me">
-<meta property="og:description" content="IntroductionThis article follows directly on from my previous article on adding gitlab’s CI to my PHP projects. Once we’re happy with our code being automatically tested we might want it to be automat">
+<meta property="og:description" content="IntroductionLaravel apps read sensitive information from their .env file. Recently I found out that Laravel Mix can pass values from the same .env file to the js portion of your app as long as they ar">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-04-15T18:26:45.642Z">
+<meta property="og:image" content="https://res.cloudinary.com/www-talvbansal-me/image/upload/v1575327081/posts/gitlab-ci-enviromental-variables.png">
+<meta property="og:updated_time" content="2019-12-02T23:16:23.586Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Simple push to deploy with Gitlab CI&#x2F;CD">
-<meta name="twitter:description" content="IntroductionThis article follows directly on from my previous article on adding gitlab’s CI to my PHP projects. Once we’re happy with our code being automatically tested we might want it to be automat">
+<meta name="twitter:title" content="Updating Laravel&#39;s .env file with Production Credentials in Gitlab CI with Laravel Mix">
+<meta name="twitter:description" content="IntroductionLaravel apps read sensitive information from their .env file. Recently I found out that Laravel Mix can pass values from the same .env file to the js portion of your app as long as they ar">
+<meta name="twitter:image" content="https://res.cloudinary.com/www-talvbansal-me/image/upload/v1575327081/posts/gitlab-ci-enviromental-variables.png">
 <meta name="twitter:creator" content="@talv">     
   <meta property="og:image" content="https://www.gravatar.com/avatar/321065504328f47a4f9d8b57df0635f4?s=640" />
    
-  <meta property="og:image" content="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1555352778/posts/westminister-sunset.jpg" />
+  <meta property="og:image" content="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1575320794/posts/india-huyumans-tomb-chains.jpg" />
   <meta class="swiftype" name="image" data-type="enum"
-    content="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1555352778/posts/westminister-sunset.jpg" />
+    content="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1575320794/posts/india-huyumans-tomb-chains.jpg" />
    
-  <meta property="og:image" content="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_1600/v1555352778/posts/westminister-sunset.jpg" />
-  <meta class="swiftype" name="image" data-type="enum" content="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_1600/v1555352778/posts/westminister-sunset.jpg" />
+  <meta property="og:image" content="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_1600/v1575320794/posts/india-huyumans-tomb-chains.jpg" />
+  <meta class="swiftype" name="image" data-type="enum" content="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_1600/v1575320794/posts/india-huyumans-tomb-chains.jpg" />
    
   <!--STYLES-->
   <link rel="stylesheet" href="/assets/css/style-du2xmrqdqrl2ollgeiw050kpl6l4nbyz7bumjuurjgsxyopifvukebxc9lqe.min.css">
@@ -242,20 +244,20 @@
         <div class="post-header-cover
                     text-center
                     post-header-cover--partial"
-             style="background-image:url('https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_1600/v1555352778/posts/westminister-sunset.jpg');"
+             style="background-image:url('https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_1600/v1575320794/posts/india-huyumans-tomb-chains.jpg');"
              data-behavior="4">
             
                 <div class="post-header main-content-wrap text-center">
     
         <h1 class="post-title">
-            Simple push to deploy with Gitlab CI/CD
+            Updating Laravel&#39;s .env file with Production Credentials in Gitlab CI with Laravel Mix
         </h1>
     
     
         <div class="post-meta">
-    <time datetime="2017-05-24T16:15:27+01:00">
+    <time datetime="2019-12-02T20:58:47+00:00">
 	
-		    May 24, 2017
+		    Dec 02, 2019
     	
     </time>
     
@@ -277,57 +279,54 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>This article follows directly on from my <a href="https://talvbansal.me/blog/gitlab-ci-for-php-applications">previous article</a> on adding gitlab’s CI to my PHP projects.</p>
-<p>Once we’re happy with our code being automatically tested we might want it to be automatically deployed to a testing server / environment or maybe even production.<br><a id="more"></a><br>Ultimately the deployment is just some script or set of commands that the runner will call. </p>
-<p>A super simple deployment process might involve the following steps:</p>
+            <h3 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h3><p>Laravel apps read sensitive information from their <code>.env</code> file.</p>
+<p>Recently I found out that Laravel Mix can <a href="https://laravel.com/docs/master/mix#environment-variables" target="_blank" rel="noopener">pass values from the same <code>.env</code> file</a> to the js portion of your app as long as they are prefixed with <code>MIX_</code>  </p>
+<p>I use Gitlab ci pipelines to build production assets so that I dont need that additional tooling on the production servers the main one being:</p>
 <ul>
-<li>SSH into you remote server</li>
-<li>Change to project directory</li>
-<li>Put application into maintenance mode </li>
-<li>Undo any local changes </li>
-<li>Checkout the correct branch </li>
-<li>Pull in new changes</li>
-<li>Install new dependencies</li>
-<li>Migrate database</li>
-<li>Take application out of maintenance mode</li>
+<li><code>yarn run production</code></li>
 </ul>
-<p>Obviously there are a number of issues with this process if you were using it in production for example: </p>
-<ul>
-<li>Requires the project to be checked out in the first place</li>
-<li>No back out process if a step fails</li>
-</ul>
-<p>Some of these issues could be fixed using a deployment tool like <a href="http://capistranorb.com/" target="_blank" rel="noopener">Capistrano</a> - (if you have any other recommendations id love to hear them!).</p>
-<p><em>Scroll to the bottom for a complete sample script to add to your <code>gitlab-ci.yml</code></em></p>
-<h2 id="Getting-started-with-Gitlab-CI-CD"><a href="#Getting-started-with-Gitlab-CI-CD" class="headerlink" title="Getting started with Gitlab CI/CD"></a>Getting started with Gitlab CI/CD</h2><p>Start by defining a new pipeline stage called “deploy” within your projects <code>gitlab-ci.yml</code> file:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"></span><br><span class="line">stages:</span><br><span class="line">   - syntax</span><br><span class="line">   - tests</span><br><span class="line">   - deploy</span><br><span class="line"></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<p>Next create a new section where we can define what will occur during the <code>deploy</code> stage and then provide it with a base docker image to use:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">deploy-master:</span><br><span class="line">    stage: deploy</span><br><span class="line">	image: tetraweb/php:7.0</span><br></pre></td></tr></table></figure>
-<p>Next this section we need to give our docker image an ssh key needed to get into our remote server. This can be done in the <code>before_script</code> section. </p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">before_script:</span><br><span class="line">	- mkdir -p ~/.ssh</span><br><span class="line">	- <span class="built_in">echo</span> -e <span class="string">"<span class="variable">$DEPLOY_KEY</span>"</span> &gt; ~/.ssh/id_rsa</span><br><span class="line">	- chmod 600 ~/.ssh/id_rsa</span><br><span class="line">	- <span class="string">'[[ -f /.dockerenv ]] &amp;&amp; echo -e "Host *\n\tStrictHostKeyChecking no\n\n" &gt; ~/.ssh/config'</span></span><br></pre></td></tr></table></figure>
-<p>In the section above pay attention to the $DEPLOY_KEY variable Within Gitlab we’ll need to set up a <strong>Secret Variable</strong> that holds the contents of the private portion of an SSH key that has access to your deployment server.</p>
+<p>This is preceded with <code>cp .env.example .env</code> meaning when the build commands are being run, they are going to use values from the <code>.example.env</code> file.</p>
+<p>If your project doesn’t make use of anything from the <code>.env</code> file then this is totally fine, however in scenarios where you do, since production applications will almost certainly  have different <code>.env</code> values to those in the <code>.example.env</code> file (Never commit credentials to source control!) the resulting file will have been built with the wrong credentials.</p>
+<p>In this article I’m going to show how you can use gitlab CI to build those assets with updated environmental variables so that they function as expected when deployed to your production servers.</p>
+<a id="more"></a>
+<h3 id="Laravel’s-stock-example"><a href="#Laravel’s-stock-example" class="headerlink" title="Laravel’s stock example"></a>Laravel’s stock example</h3><p>Lets start by looking at a real example of how these environmental variables are configured and used.</p>
+<p>The default Laravel <code>.env</code> has the following section in that is used to configure the <a href="www.pusher.com">Pusher.com</a> library.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">PUSHER_APP_ID=</span><br><span class="line">PUSHER_APP_KEY=</span><br><span class="line">PUSHER_APP_SECRET=</span><br><span class="line">PUSHER_APP_CLUSTER=eu</span><br><span class="line"></span><br><span class="line">MIX_PUSHER_APP_KEY=<span class="string">"<span class="variable">$&#123;PUSHER_APP_KEY&#125;</span>"</span></span><br><span class="line">MIX_PUSHER_APP_CLUSTER=<span class="string">"<span class="variable">$&#123;PUSHER_APP_CLUSTER&#125;</span>"</span></span><br></pre></td></tr></table></figure>
+<p>The second part says for the <code>MIX_PUSHER_APP_KEY</code> key use the same value as the <code>PUSHER_APP_KEY</code> key and the same for <code>MIX_PUSHER_APP_CLUSTER</code> to use <code>PUSHER_APP_CLUSTER</code> as its value.</p>
+<p>So if we set <code>PUSHER_APP_KEY</code> to be “TEST_PUSHER_KEY” then <code>MIX_PUSHER_APP_KEY</code> will also have the value of “TEST_PUSHER_KEY”.</p>
+<p>Those values are used in the <code>resources/js/boostrap.js</code> file to configure the Laravel Echo pusher subscriber:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">window</span>.Echo = <span class="keyword">new</span> Echo(&#123;</span><br><span class="line">	broadcaster: <span class="string">'pusher'</span>,</span><br><span class="line">	key: process.env.MIX_PUSHER_APP_KEY,</span><br><span class="line">	cluster: process.env.MIX_PUSHER_APP_CLUSTER,</span><br><span class="line">	encrypted: <span class="literal">true</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>So when <code>yarn run production</code> is run the key and cluster properties will be populated with the values in the <code>.env</code> file. </p>
+<h3 id="Updating-the-env-in-Gitlab-CI"><a href="#Updating-the-env-in-Gitlab-CI" class="headerlink" title="Updating the .env in Gitlab CI"></a>Updating the .env in Gitlab CI</h3><p>Now lets look at the relevant parts of the projects <code>.gitlab.yml</code> file:</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># .gitlab.yml</span></span><br><span class="line"><span class="attr">image:</span> <span class="string">edbizarro/gitlab-ci-pipeline-php:7.3</span></span><br><span class="line"></span><br><span class="line"><span class="attr">stages:</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">preparation</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">building</span></span><br><span class="line"><span class="string">...</span></span><br><span class="line"></span><br><span class="line"><span class="attr">yarn:</span></span><br><span class="line"><span class="attr">  stage:</span> <span class="string">preparation</span></span><br><span class="line"><span class="attr">  script:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">yarn</span> <span class="bullet">--version</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">yarn</span> <span class="string">install</span> <span class="bullet">--pure-lockfile</span></span><br><span class="line"><span class="attr">  artifacts:</span></span><br><span class="line"><span class="attr">    paths:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">node_modules/</span></span><br><span class="line"><span class="attr">    expire_in:</span> <span class="number">1</span> <span class="string">days</span></span><br><span class="line"><span class="attr">    when:</span> <span class="string">always</span></span><br><span class="line"><span class="attr">  cache:</span></span><br><span class="line"><span class="attr">    paths:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">node_modules/</span></span><br><span class="line"></span><br><span class="line"><span class="attr">build-production-assets:</span></span><br><span class="line"><span class="attr">  stage:</span> <span class="string">building</span></span><br><span class="line"><span class="attr">  dependencies:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">yarn</span></span><br><span class="line"><span class="attr">  script:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">cp</span> <span class="string">.env.example</span> <span class="string">.env</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">yarn</span> <span class="bullet">--version</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">yarn</span> <span class="string">run</span> <span class="string">production</span> <span class="bullet">--progress</span> <span class="literal">false</span></span><br><span class="line"><span class="attr">  artifacts:</span></span><br><span class="line"><span class="attr">    paths:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">public/css/</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">public/js/</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">public/fonts/</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">public/mix-manifest.json</span></span><br><span class="line"><span class="attr">    expire_in:</span> <span class="number">1</span> <span class="string">days</span></span><br><span class="line"><span class="attr">    when:</span> <span class="string">always</span></span><br><span class="line"><span class="attr">  only:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">master</span></span><br></pre></td></tr></table></figure>
+<p>There are 2 stages, <em>preparation</em> then <em>building</em>. </p>
+<p>The preparation stage simply runs <code>yarn install</code>  and downloads all of the projects JS dependencies from the NPM registry. Then it creates a gitlab artifact that its keeps for 1 day. </p>
 <blockquote>
-<p>Its highly recommended to <strong>NOT</strong> use your main user to deploy your project code with, for more information on how to do that check out <a href="https://twitter.com/fideloper" target="_blank" rel="noopener">Chris Fidao’s </a> excellent server management book : <a href="https://serversforhackers.com/" target="_blank" rel="noopener">Servers For Hackers</a>.</p>
+<p>In Gitlab, artifacts are objects that can be passed between build stages, where as cache is used to speed up things like npm / yarn / composer installs on subsequent runs.</p>
 </blockquote>
-<p>To add a new secret variable to a Gitlab project, go to the Project Page -&gt; Settings -&gt; CI / CD Pipelines. Then scroll down to <strong>Secret Variables</strong>. Call the variable <code>DEPLOY_KEY</code> and paste the <strong>PRIVATE</strong> portion of your deployment users SSH key into the <code>Value</code> field.</p>
-<h3 id="Deployment"><a href="#Deployment" class="headerlink" title="Deployment"></a>Deployment</h3><p>The commands to deploy outlined at the top of this article can be translated into:</p>
-<ul>
-<li>ssh user@server-name.com</li>
-<li>cd /project/path</li>
-<li>php artisan down</li>
-<li>git checkout .</li>
-<li>git checkout master</li>
-<li>git pull</li>
-<li>composer install</li>
-<li>php artisan migrate</li>
-<li>php artisan up</li>
-</ul>
-<p>Once we’ve ssh’d into the remote server we can only run a single command before the process will terminate, so we can join our commands together using <code>&amp;&amp;</code>:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">script:</span><br><span class="line">	- ssh user@server-name.com <span class="string">"</span></span><br><span class="line"><span class="string">	    cd /var/www/ &amp;&amp;</span></span><br><span class="line"><span class="string">		php artisan down &amp;&amp;</span></span><br><span class="line"><span class="string">		git checkout . &amp;&amp;</span></span><br><span class="line"><span class="string">		git checkout master &amp;&amp;</span></span><br><span class="line"><span class="string">		git pull &amp;&amp;</span></span><br><span class="line"><span class="string">		composer install &amp;&amp;</span></span><br><span class="line"><span class="string">		php artisan migrate &amp;&amp;</span></span><br><span class="line"><span class="string">		php artisan up</span></span><br><span class="line"><span class="string">		"</span></span><br></pre></td></tr></table></figure>
-<h3 id="Limiting-releases-to-a-specific-branch"><a href="#Limiting-releases-to-a-specific-branch" class="headerlink" title="Limiting releases to a specific branch"></a>Limiting releases to a specific branch</h3><p>If we put everything together now and used the resulting script we’d have something that deploys code from any branch any time we pushed to Gitlab. Not ideal since we only want code to be deployed when we merge into a particular branch, say master or develop. We can limit when a section of a stage is run using the <code>only</code> command.</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">only:</span><br><span class="line">	- master</span><br></pre></td></tr></table></figure>
-<h2 id="Putting-it-all-together"><a href="#Putting-it-all-together" class="headerlink" title="Putting it all together:"></a>Putting it all together:</h2><p>Heres an almost complete deployment script (with the syntax and tests sections omitted): </p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">stages:</span><br><span class="line">   - syntax</span><br><span class="line">   - tests</span><br><span class="line">   - deploy</span><br><span class="line">           </span><br><span class="line"></span><br><span class="line">deploy-master:</span><br><span class="line">    stage: deploy</span><br><span class="line">        image: tetraweb/php:7.0       </span><br><span class="line">                        </span><br><span class="line">    before_script:</span><br><span class="line">            - mkdir -p ~/.ssh</span><br><span class="line">            - <span class="built_in">echo</span> -e <span class="string">"<span class="variable">$DEPLOY_KEY</span>"</span> &gt; ~/.ssh/id_rsa</span><br><span class="line">            - chmod 600 ~/.ssh/id_rsa</span><br><span class="line">            - <span class="string">'[[ -f /.dockerenv ]] &amp;&amp; echo -e "Host *\n\tStrictHostKeyChecking no\n\n" &gt; ~/.ssh/config'</span></span><br><span class="line">        </span><br><span class="line">        script:</span><br><span class="line">            - ssh user@server-name.com <span class="string">"</span></span><br><span class="line"><span class="string">                cd /var/www/ &amp;&amp;</span></span><br><span class="line"><span class="string">                php artisan down &amp;&amp;</span></span><br><span class="line"><span class="string">                git checkout . &amp;&amp;</span></span><br><span class="line"><span class="string">                git checkout master &amp;&amp;</span></span><br><span class="line"><span class="string">                git pull &amp;&amp;</span></span><br><span class="line"><span class="string">                composer install &amp;&amp;</span></span><br><span class="line"><span class="string">                php artisan migrate &amp;&amp;</span></span><br><span class="line"><span class="string">                php artisan up</span></span><br><span class="line"><span class="string">            "</span></span><br><span class="line">                                    </span><br><span class="line">        environment:</span><br><span class="line">            name: production</span><br><span class="line">            </span><br><span class="line">        only:</span><br><span class="line">            - master</span><br><span class="line">`</span><br></pre></td></tr></table></figure>
-<p>Hopefully this has been useful, if you have suggestions on how i can improve the article / process I’d love to hear from you.</p>
+<p>With the dependencies downloaded we no longer have to waste time or CI minutes in other stages for them to be downloaded again. </p>
+<p>The <code>build-production-assets</code> stage is where we want to focus.</p>
+<p>The dependencies section tells the stage to download the artifacts generated in the stage named yarn.<br><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">dependencies:</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">yarn</span></span><br></pre></td></tr></table></figure></p>
+<p>The script section is where Laravel Mix is being run and our production assets are being generated.<br><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">script:</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">cp</span> <span class="string">.env.example</span> <span class="string">.env</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">yarn</span> <span class="bullet">--version</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">yarn</span> <span class="string">run</span> <span class="string">production</span> <span class="bullet">--progress</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure></p>
+<p>What we want to do is kind of like this:</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">  script:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">cp</span> <span class="string">.env.example</span> <span class="string">.env</span></span><br><span class="line"><span class="comment"># *** write our production values into the .env file here ***</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">yarn</span> <span class="bullet">--version</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">yarn</span> <span class="string">run</span> <span class="string">production</span> <span class="bullet">--progress</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+<p>Luckily its not to difficult to do, however as much as I love Gitlab and Gitlab CI it sometimes feels like its got too much going on and I’ve forgotten where I can add production information to Gitlab CI far too many times.</p>
+<p>So here’s a quick gif of where to go:</p>
+<p><blockquote class="imgur-embed-pub" lang="en" data-id="ZNwEWqG"><a href="//imgur.com/ZNwEWqG">Add Environmental Variable to Gitlab CI</a></blockquote><script async src="//s.imgur.com/min/embed.js" charset="utf-8"></script></p>
+<p>Within the project page on gitlab, in the sidebar under set the settings section open the CI / CD page. From here scroll down to the <code>Variables</code> section and expand it.</p>
+<p>From here we can begin to add keys and values that will be exposed to our gitlab ci runner. </p>
+<p>Using our Pusher example from earlier. We know that if we were to update the <code>PUSHER_APP_KEY</code> key then the <code>MIX_PUSHER_APP_KEY</code> that gets used by Laravel mix will automatically be updated.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">PUSHER_APP_KEY=</span><br><span class="line">MIX_PUSHER_APP_KEY=<span class="string">"<span class="variable">$&#123;PUSHER_APP_KEY&#125;</span>"</span></span><br></pre></td></tr></table></figure>
+<p>Our variables in Gitlab CI don’t need to match, so lets add a new variable to the gitlab runner for our production Pusher Keys called <code>PUSHER_LIVE_APP_KEY</code> and give it the value of our Pusher production key. Remember to save the variable.</p>
+<p><img src="https://res.cloudinary.com/www-talvbansal-me/image/upload/v1575327081/posts/gitlab-ci-enviromental-variables.png" alt="Gitlab Environmental Variables"></p>
+<blockquote>
+<p>Since we might be building for multiple environments in our pipelines I like to include the product and environment in my variable names whilst keeping them close to the variable im hoping to replace. Gitlab’s UI is a little congested so I tend to put the environment as the second word so the product is quicker to scan for me.</p>
+</blockquote>
+<p>With the environmental variable in place we now need to use it in our pipeline.</p>
+<p>Trying to parse the <code>.env</code> file for the correct key and then update it with the variable is beyond my command line skill set however, if you append a key that already exists to the bottom of an <code>.env</code> the <a href="https://github.com/vlucas/phpdotenv" target="_blank" rel="noopener">Dotenv library used by Laravel</a> picks up the last instance. </p>
+<p>So lets update our .gitlab.yml to do that!</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">script:</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">cp</span> <span class="string">.env.example</span> <span class="string">.env</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">echo</span> <span class="string">"PUSHER_APP_KEY=$PUSHER_LIVE_APP_KEY"</span> <span class="string">&gt;&gt;</span> <span class="string">.env</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">yarn</span> <span class="bullet">--version</span></span><br><span class="line"><span class="bullet">  -</span> <span class="string">yarn</span> <span class="string">run</span> <span class="string">production</span> <span class="bullet">--progress</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+<p>And that is it! Next time you run a pipeline the environmental variable from gitlab will be appended to the bottom of your projects <code>.env</code> file and then picked up by Laravel Mix when it does its magic!</p>
 
             
 
@@ -338,7 +337,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/CI-CD/">CI/CD</a> <a class="tag tag--primary tag--small t-link" href="/tags/Devops/">Devops</a> <a class="tag tag--primary tag--small t-link" href="/tags/Gitlab/">Gitlab</a> <a class="tag tag--primary tag--small t-link" href="/tags/Laravel/">Laravel</a> <a class="tag tag--primary tag--small t-link" href="/tags/PHP/">PHP</a>
+    <a class="tag tag--primary tag--small t-link" href="/tags/CI-CD/">CI/CD</a> <a class="tag tag--primary tag--small t-link" href="/tags/Gitlab/">Gitlab</a> <a class="tag tag--primary tag--small t-link" href="/tags/Javascript/">Javascript</a> <a class="tag tag--primary tag--small t-link" href="/tags/Laravel/">Laravel</a> <a class="tag tag--primary tag--small t-link" href="/tags/Laravel-Echo/">Laravel Echo</a> <a class="tag tag--primary tag--small t-link" href="/tags/Laravel-Mix/">Laravel Mix</a> <a class="tag tag--primary tag--small t-link" href="/tags/Pusher/">Pusher</a> <a class="tag tag--primary tag--small t-link" href="/tags/Tooling/">Tooling</a>
 
             </div>
         
@@ -348,8 +347,7 @@
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/blog/rsync-ing-data-between-servers/" data-tooltip="RSync-ing Data Between Servers" aria-label="PREVIOUS: RSync-ing Data Between Servers">
+                    <a class="post-action-btn btn btn--disabled">
                 
                     <i class="fa fa-angle-left" aria-hidden="true"></i>
                     <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
@@ -358,7 +356,7 @@
             <li class="post-action">
                 
                     
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/blog/gitlab-ci-for-php-applications/" data-tooltip="Gitlab CI for PHP applications" aria-label="NEXT: Gitlab CI for PHP applications">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/blog/update-form-request-data-before-validation-in-laravel/" data-tooltip="Updating Form Request Data Before Validation in Laravel" aria-label="NEXT: Updating Form Request Data Before Validation in Laravel">
                 
                     <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
@@ -376,7 +374,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://talvbansal.me/blog/simple-push-to-deploy-with-gitlab-cicd/" title="Share on Facebook">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://talvbansal.me/blog/updating-laravels-env-file-with-production-credentials-in-gitlab-ci-with-laravel-mix/" title="Share on Facebook">
                     <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
             </li>
@@ -384,7 +382,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://talvbansal.me/blog/simple-push-to-deploy-with-gitlab-cicd/" title="Share on Twitter">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://talvbansal.me/blog/updating-laravels-env-file-with-production-credentials-in-gitlab-ci-with-laravel-mix/" title="Share on Twitter">
                     <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
             </li>
@@ -392,7 +390,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://talvbansal.me/blog/simple-push-to-deploy-with-gitlab-cicd/" title="Share on Google+">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://talvbansal.me/blog/updating-laravels-env-file-with-production-credentials-in-gitlab-ci-with-laravel-mix/" title="Share on Google+">
                     <i class="fab fa-google-plus" aria-hidden="true"></i>
                 </a>
             </li>
@@ -444,8 +442,7 @@
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/blog/rsync-ing-data-between-servers/" data-tooltip="RSync-ing Data Between Servers" aria-label="PREVIOUS: RSync-ing Data Between Servers">
+                    <a class="post-action-btn btn btn--disabled">
                 
                     <i class="fa fa-angle-left" aria-hidden="true"></i>
                     <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
@@ -454,7 +451,7 @@
             <li class="post-action">
                 
                     
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/blog/gitlab-ci-for-php-applications/" data-tooltip="Gitlab CI for PHP applications" aria-label="NEXT: Gitlab CI for PHP applications">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/blog/update-form-request-data-before-validation-in-laravel/" data-tooltip="Updating Form Request Data Before Validation in Laravel" aria-label="NEXT: Updating Form Request Data Before Validation in Laravel">
                 
                     <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
@@ -472,7 +469,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://talvbansal.me/blog/simple-push-to-deploy-with-gitlab-cicd/" title="Share on Facebook">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://talvbansal.me/blog/updating-laravels-env-file-with-production-credentials-in-gitlab-ci-with-laravel-mix/" title="Share on Facebook">
                     <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
             </li>
@@ -480,7 +477,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://talvbansal.me/blog/simple-push-to-deploy-with-gitlab-cicd/" title="Share on Twitter">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://talvbansal.me/blog/updating-laravels-env-file-with-production-credentials-in-gitlab-ci-with-laravel-mix/" title="Share on Twitter">
                     <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
             </li>
@@ -488,7 +485,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://talvbansal.me/blog/simple-push-to-deploy-with-gitlab-cicd/" title="Share on Google+">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://talvbansal.me/blog/updating-laravels-env-file-with-production-credentials-in-gitlab-ci-with-laravel-mix/" title="Share on Google+">
                     <i class="fab fa-google-plus" aria-hidden="true"></i>
                 </a>
             </li>
@@ -521,7 +518,7 @@
             
             
             <li class="share-option">
-                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://talvbansal.me/blog/simple-push-to-deploy-with-gitlab-cicd/">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://talvbansal.me/blog/updating-laravels-env-file-with-production-credentials-in-gitlab-ci-with-laravel-mix/">
                     <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
                 </a>
             </li>
@@ -529,7 +526,7 @@
             
             
             <li class="share-option">
-                <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https://talvbansal.me/blog/simple-push-to-deploy-with-gitlab-cicd/">
+                <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https://talvbansal.me/blog/updating-laravels-env-file-with-production-credentials-in-gitlab-ci-with-laravel-mix/">
                     <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
                 </a>
             </li>
@@ -537,7 +534,7 @@
             
             
             <li class="share-option">
-                <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https://talvbansal.me/blog/simple-push-to-deploy-with-gitlab-cicd/">
+                <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https://talvbansal.me/blog/updating-laravels-env-file-with-production-credentials-in-gitlab-ci-with-laravel-mix/">
                     <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
                 </a>
             </li>
@@ -910,9 +907,9 @@
     
         <script>
              var disqus_config = function () {
-                 this.page.url = 'https://talvbansal.me/blog/simple-push-to-deploy-with-gitlab-cicd/';
+                 this.page.url = 'https://talvbansal.me/blog/updating-laravels-env-file-with-production-credentials-in-gitlab-ci-with-laravel-mix/';
                  
-                    this.page.identifier = 'blog/simple-push-to-deploy-with-gitlab-cicd/';
+                    this.page.identifier = 'blog/updating-laravels-env-file-with-production-credentials-in-gitlab-ci-with-laravel-mix/';
                  
              };
             (function() {

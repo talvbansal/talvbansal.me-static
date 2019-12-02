@@ -245,6 +245,58 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/blog/updating-laravels-env-file-with-production-credentials-in-gitlab-ci-with-laravel-mix/">
+                            Updating Laravel&#39;s .env file with Production Credentials in Gitlab CI with Laravel Mix
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2019-12-02T20:58:47+00:00">
+	
+		    Dec 02, 2019
+    	
+    </time>
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <h3 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h3><p>Laravel apps read sensitive information from their <code>.env</code> file.</p>
+<p>Recently I found out that Laravel Mix can <a href="https://laravel.com/docs/master/mix#environment-variables" target="_blank" rel="noopener">pass values from the same <code>.env</code> file</a> to the js portion of your app as long as they are prefixed with <code>MIX_</code>  </p>
+<p>I use Gitlab ci pipelines to build production assets so that I dont need that additional tooling on the production servers the main one being:</p>
+<ul>
+<li><code>yarn run production</code></li>
+</ul>
+<p>This is preceded with <code>cp .env.example .env</code> meaning when the build commands are being run, they are going to use values from the <code>.example.env</code> file.</p>
+<p>If your project doesn’t make use of anything from the <code>.env</code> file then this is totally fine, however in scenarios where you do, since production applications will almost certainly  have different <code>.env</code> values to those in the <code>.example.env</code> file (Never commit credentials to source control!) the resulting file will have been built with the wrong credentials.</p>
+<p>In this article I’m going to show how you can use gitlab CI to build those assets with updated environmental variables so that they function as expected when deployed to your production servers.</p>
+                    
+                        <a href="/blog/updating-laravels-env-file-with-production-credentials-in-gitlab-ci-with-laravel-mix/" class="postShorten-excerpt_link link">
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+            <a href="/blog/updating-laravels-env-file-with-production-credentials-in-gitlab-ci-with-laravel-mix/">
+                <div class="postShorten-thumbnailimg">
+                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1575320794/posts/india-huyumans-tomb-chains.jpg"/>
+                </div>
+            </a>
+            
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-right">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/blog/human-readable-dates-with-dayjs-in-vue-js/">
                             Human readable dates with Dayjs in Vue
                         </a>
@@ -839,7 +891,7 @@
                 data-message-zero="no post found"
                 data-message-one="1 post found"
                 data-message-other="{n} posts found">
-                22 posts found
+                23 posts found
             </p>
         </div>
     </div>
