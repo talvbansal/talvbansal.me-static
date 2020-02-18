@@ -7,7 +7,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="generator" content="TalvBansal.me" />
-  <title>Tag: SSH - TalvBansal.me</title>
+  <title>Tag: EC2 - TalvBansal.me</title>
   <meta name="author" content="Talv Bansal" />
   
   <meta name="keywords" content="hexo,gitlab,github,javascript,es6,laravel,php,vue,vue.js,development,full stack,CI/CD," />
@@ -17,7 +17,7 @@
 <meta name="keywords" content="hexo,gitlab,github,javascript,es6,laravel,php,vue,vue.js,development,full stack,CI&#x2F;CD">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="TalvBansal.me">
-<meta property="og:url" content="https://talvbansal.me/tags/SSH/index.html">
+<meta property="og:url" content="https://talvbansal.me/tags/EC2/index.html">
 <meta property="og:site_name" content="TalvBansal.me">
 <meta property="og:description" content="Tales of a full stack developer">
 <meta property="og:locale" content="en">
@@ -245,15 +245,15 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/blog/using-sshuttle-to-solve-static-ip-issues-when-remote-working/">
-                            Using sshuttle to Solve Static IP Issues When Remote Working
+                        <a class="link-unstyled" href="/blog/solving-out-of-memory-errors-with-PHP-and-Composer-on-EC2s-free-tier/">
+                            Solving out of memory errors with PHP and Composer on EC2s free tier
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2019-11-21T15:51:28+00:00">
+    <time datetime="2020-02-05T20:45:36+00:00">
 	
-		    Nov 21, 2019
+		    Feb 05, 2020
     	
     </time>
     
@@ -262,20 +262,15 @@
             </div>
             
                 <div class="postShorten-excerpt">
-                    <h3 id="Introduction-and-Prerequisites"><a href="#Introduction-and-Prerequisites" class="headerlink" title="Introduction and Prerequisites"></a>Introduction and Prerequisites</h3><p>I’ve been remote working full time for over 3 years now. </p>
-<p>In that time I’ve had to work with a number of clients who restrict access to their internal systems via IP Address whitelisting.</p>
-<p>As a developer who often works from different locations and countries this can quickly become problematic. </p>
-<p>A paid for solution is to purchase a Dedicated Static IP VPN from a reputable provider like <a href="https://nordvpn.com/features/dedicated-ip/" target="_blank" rel="noopener">NordVPN.</a>  and ask the clients IT team to whitelist your new Dedicated Static IP.</p>
-<p>This is something I’ve been doing for a while and whilst the initial set up is a little fiddly, (You have to set up 2 accounts and get their team to link them together) its worked flawlessly for me.</p>
-<p>However if you have the following:</p>
-<ul>
-<li>SSH access to a device in a location with a Static IP (Perhaps you get one from your ISP or your office has one)</li>
-<li>You use Linux or OSX (Sorry windows guys I don’t think even with WSL this will work). </li>
-</ul>
-<p>Then you can use the super handy command line tool <a href="https://github.com/sshuttle/sshuttle" target="_blank" rel="noopener">SSHUTTLE</a> to route all (or some) of your traffic through that device.</p>
-<p>Lets take a look at getting it working…</p>
+                    <p>For one of my recent projects I wanted to make use of the free allowance that AWS gives for SES.</p>
+<p>One of the conditions of the SES allowance was that your calling app needs to be hosted on EC2.</p>
+<p>I’ve not used EC2 before so I figured this would be a good way to dive into it.</p>
+<p>Whilst I would never usually install software like composer on a production server, this was purely to test things out.</p>
+<p> So after signing up for AWS and creating a local ubuntu server on an EC2 t2micro instance then cloning down the project I ran composer install to come across the following message: </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">composer install</span><br><span class="line">Loading composer repositories with package information</span><br><span class="line">Updating dependencies (including require-dev)</span><br><span class="line"></span><br><span class="line">mmap() failed: [12] Cannot allocate memory</span><br><span class="line"></span><br><span class="line">mmap() failed: [12] Cannot allocate memory</span><br><span class="line">PHP Fatal error:  Out of memory (allocated 822091776) (tried to allocate 4096 bytes) <span class="keyword">in</span> phar:///usr/<span class="built_in">local</span>/bin/composer/src/Composer/DependencyResolver/Solver.php on line 223</span><br><span class="line"></span><br><span class="line">Fatal error: Out of memory (allocated 822091776) (tried to allocate 4096 bytes) <span class="keyword">in</span> phar:///usr/<span class="built_in">local</span>/bin/composer/src/Composer/DependencyResolver/Solver.php on line 223</span><br></pre></td></tr></table></figure>
+<p>822091776bytes is over 800mb of memory being consumed by composer.</p>
                     
-                        <a href="/blog/using-sshuttle-to-solve-static-ip-issues-when-remote-working/" class="postShorten-excerpt_link link">
+                        <a href="/blog/solving-out-of-memory-errors-with-PHP-and-Composer-on-EC2s-free-tier/" class="postShorten-excerpt_link link">
                             Continue reading
                         </a>
                         
@@ -284,9 +279,9 @@
             
         </div>
         
-            <a href="/blog/using-sshuttle-to-solve-static-ip-issues-when-remote-working/">
+            <a href="/blog/solving-out-of-memory-errors-with-PHP-and-Composer-on-EC2s-free-tier/">
                 <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1574239597/posts/tribeca-manhattan-nyc.jpg"/>
+                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1582033481/posts/istanbul-galata-tower.jpg"/>
                 </div>
             </a>
             

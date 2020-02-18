@@ -245,6 +245,56 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/blog/solving-out-of-memory-errors-with-PHP-and-Composer-on-EC2s-free-tier/">
+                            Solving out of memory errors with PHP and Composer on EC2s free tier
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2020-02-05T20:45:36+00:00">
+	
+		    Feb 05, 2020
+    	
+    </time>
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <p>For one of my recent projects I wanted to make use of the free allowance that AWS gives for SES.</p>
+<p>One of the conditions of the SES allowance was that your calling app needs to be hosted on EC2.</p>
+<p>I’ve not used EC2 before so I figured this would be a good way to dive into it.</p>
+<p>Whilst I would never usually install software like composer on a production server, this was purely to test things out.</p>
+<p> So after signing up for AWS and creating a local ubuntu server on an EC2 t2micro instance then cloning down the project I ran composer install to come across the following message: </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">composer install</span><br><span class="line">Loading composer repositories with package information</span><br><span class="line">Updating dependencies (including require-dev)</span><br><span class="line"></span><br><span class="line">mmap() failed: [12] Cannot allocate memory</span><br><span class="line"></span><br><span class="line">mmap() failed: [12] Cannot allocate memory</span><br><span class="line">PHP Fatal error:  Out of memory (allocated 822091776) (tried to allocate 4096 bytes) <span class="keyword">in</span> phar:///usr/<span class="built_in">local</span>/bin/composer/src/Composer/DependencyResolver/Solver.php on line 223</span><br><span class="line"></span><br><span class="line">Fatal error: Out of memory (allocated 822091776) (tried to allocate 4096 bytes) <span class="keyword">in</span> phar:///usr/<span class="built_in">local</span>/bin/composer/src/Composer/DependencyResolver/Solver.php on line 223</span><br></pre></td></tr></table></figure>
+<p>822091776bytes is over 800mb of memory being consumed by composer.</p>
+                    
+                        <a href="/blog/solving-out-of-memory-errors-with-PHP-and-Composer-on-EC2s-free-tier/" class="postShorten-excerpt_link link">
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+            <a href="/blog/solving-out-of-memory-errors-with-PHP-and-Composer-on-EC2s-free-tier/">
+                <div class="postShorten-thumbnailimg">
+                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1582033481/posts/istanbul-galata-tower.jpg"/>
+                </div>
+            </a>
+            
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-right">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/blog/resizing-images-for-static-sites-with-php-when-deploying-to-netlify/">
                             Resizing images for static sites with php when deploying to Netlify
                         </a>
@@ -675,51 +725,6 @@
         
     </article>
     
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/finally-contributing-to-open-source/">
-                            (Finally) Contributing to open source
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2016-08-16T19:24:17+01:00">
-	
-		    Aug 16, 2016
-    	
-    </time>
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <p>I once read an article on the merits of contributing to open source projects, within it i remember the author saying that the even smallest things can make all the difference. They even went on to say that their first commit was fixing a one character spelling mistake.</p>
-<p>Open source software has provided me the tools to make my living as a software engineer over the past 9ish years, over that period I’ve always wanted to contribute back to the community to but for some reason I never actually have. Maybe I wasn’t looking in the right places, perhaps i was looking at the wrong projects when my skills weren’t where they needed who knows. I just knew that eventually I wanted to.</p>
-                    
-                        <a href="/blog/finally-contributing-to-open-source/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/blog/finally-contributing-to-open-source/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1555352082/posts/south-africa-penguins.jpg"/>
-                </div>
-            </a>
-            
-        
-    </article>
-    
     <div class="pagination-bar">
     <ul class="pagination">
         
@@ -1094,7 +1099,7 @@
                 data-message-zero="no post found"
                 data-message-one="1 post found"
                 data-message-other="{n} posts found">
-                24 posts found
+                25 posts found
             </p>
         </div>
     </div>

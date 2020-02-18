@@ -7,26 +7,34 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="generator" content="TalvBansal.me" />
-  <title>Tag: SSH - TalvBansal.me</title>
+  <title>Solving out of memory errors with PHP and Composer on EC2s free tier - TalvBansal.me</title>
   <meta name="author" content="Talv Bansal" />
   
   <meta name="keywords" content="hexo,gitlab,github,javascript,es6,laravel,php,vue,vue.js,development,full stack,CI/CD," />
    
   <link rel="icon" href="https://talvbansal.me/assets/images/favicon.ico" />
-    <script type="application/ld+json">{}</script> <meta name="description" content="Tales of a full stack developer">
-<meta name="keywords" content="hexo,gitlab,github,javascript,es6,laravel,php,vue,vue.js,development,full stack,CI&#x2F;CD">
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Talv Bansal","sameAs":["https://github.com/talvbansal","https://twitter.com/talv","https://instagram.com/iwantthewindowseat","https://www.linkedin.com/in/talvinder-bansal-5826594a","mailto:talvbansal@outlook.com"],"image":"https://www.gravatar.com/avatar/be14e67a41106fe8731f839b3bd46733"},"articleBody":"For one of my recent projects I wanted to make use of the free allowance that AWS gives for SES.\nOne of the conditions of the SES allowance was that your calling app needs to be hosted on EC2.\nI’ve not used EC2 before so I figured this would be a good way to dive into it.\nWhilst I would never usually install software like composer on a production server, this was purely to test things out.\n So after signing up for AWS and creating a local ubuntu server on an EC2 t2micro instance then cloning down the project I ran composer install to come across the following message: \n12345678910composer installLoading composer repositories with package informationUpdating dependencies (including require-dev)mmap() failed: [12] Cannot allocate memorymmap() failed: [12] Cannot allocate memoryPHP Fatal error:  Out of memory (allocated 822091776) (tried to allocate 4096 bytes) in phar:///usr/local/bin/composer/src/Composer/DependencyResolver/Solver.php on line 223Fatal error: Out of memory (allocated 822091776) (tried to allocate 4096 bytes) in phar:///usr/local/bin/composer/src/Composer/DependencyResolver/Solver.php on line 223\n822091776bytes is over 800mb of memory being consumed by composer.\n\nWhilst php-fpm has a 128mb max memory limit per script by default, php-cli has a value of -1 which means use unlimited memory.\n In this instance attempting to allocate over 800mb of memory on a server with 1gb was not going to end well.\nThe solve was to create a swap file on the disk.\nA swap file or partition is space on disk allocated that can used when the physical memory allocation is exhausted. Once the allocation is exhausted, older items in memory get offloaded to the swap partition.\nThe actual solve for this i found over on this github issue. \nThe following code will create a 1gb swap file in /var/swap.1 for our instance to use\n123sudo /bin/dd if=/dev/zero of=/var/swap.1 bs=1M count=1024sudo /sbin/mkswap /var/swap.1sudo /sbin/swapon /var/swap.1\n","dateCreated":"2020-02-05T20:45:36+00:00","dateModified":"2020-02-18T13:45:20+00:00","datePublished":"2020-02-05T20:45:36+00:00","description":"For one of my recent projects I wanted to make use of the free allowance that AWS gives for SES.\nOne of the conditions of the SES allowance was that your calling app needs to be hosted on EC2.\nI’ve not used EC2 before so I figured this would be a good way to dive into it.\nWhilst I would never usually install software like composer on a production server, this was purely to test things out.\n So after signing up for AWS and creating a local ubuntu server on an EC2 t2micro instance then cloning down the project I ran composer install to come across the following message: \n12345678910composer installLoading composer repositories with package informationUpdating dependencies (including require-dev)mmap() failed: [12] Cannot allocate memorymmap() failed: [12] Cannot allocate memoryPHP Fatal error:  Out of memory (allocated 822091776) (tried to allocate 4096 bytes) in phar:///usr/local/bin/composer/src/Composer/DependencyResolver/Solver.php on line 223Fatal error: Out of memory (allocated 822091776) (tried to allocate 4096 bytes) in phar:///usr/local/bin/composer/src/Composer/DependencyResolver/Solver.php on line 223\n822091776bytes is over 800mb of memory being consumed by composer.","headline":"Solving out of memory errors with PHP and Composer on EC2s free tier","image":["https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1582033481/posts/istanbul-galata-tower.jpg","https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_1600/v1582033481/posts/istanbul-galata-tower.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://talvbansal.me/blog/solving-out-of-memory-errors-with-PHP-and-Composer-on-EC2s-free-tier/"},"publisher":{"@type":"Organization","name":"Talv Bansal","sameAs":["https://github.com/talvbansal","https://twitter.com/talv","https://instagram.com/iwantthewindowseat","https://www.linkedin.com/in/talvinder-bansal-5826594a","mailto:talvbansal@outlook.com"],"image":"https://www.gravatar.com/avatar/be14e67a41106fe8731f839b3bd46733","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/be14e67a41106fe8731f839b3bd46733"}},"url":"https://talvbansal.me/blog/solving-out-of-memory-errors-with-PHP-and-Composer-on-EC2s-free-tier/","keywords":"PHP, AWS, EC2, SES, Composer","thumbnailUrl":"https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1582033481/posts/istanbul-galata-tower.jpg"}</script> <meta name="description" content="For one of my recent projects I wanted to make use of the free allowance that AWS gives for SES. One of the conditions of the SES allowance was that your calling app needs to be hosted on EC2. I’ve no">
+<meta name="keywords" content="PHP,AWS,EC2,SES,Composer">
 <meta property="og:type" content="blog">
-<meta property="og:title" content="TalvBansal.me">
-<meta property="og:url" content="https://talvbansal.me/tags/SSH/index.html">
+<meta property="og:title" content="Solving out of memory errors with PHP and Composer on EC2s free tier">
+<meta property="og:url" content="https://talvbansal.me/blog/solving-out-of-memory-errors-with-PHP-and-Composer-on-EC2s-free-tier/index.html">
 <meta property="og:site_name" content="TalvBansal.me">
-<meta property="og:description" content="Tales of a full stack developer">
+<meta property="og:description" content="For one of my recent projects I wanted to make use of the free allowance that AWS gives for SES. One of the conditions of the SES allowance was that your calling app needs to be hosted on EC2. I’ve no">
 <meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2020-02-18T13:45:20.217Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="TalvBansal.me">
-<meta name="twitter:description" content="Tales of a full stack developer">
+<meta name="twitter:title" content="Solving out of memory errors with PHP and Composer on EC2s free tier">
+<meta name="twitter:description" content="For one of my recent projects I wanted to make use of the free allowance that AWS gives for SES. One of the conditions of the SES allowance was that your calling app needs to be hosted on EC2. I’ve no">
 <meta name="twitter:creator" content="@talv">     
   <meta property="og:image" content="https://www.gravatar.com/avatar/321065504328f47a4f9d8b57df0635f4?s=640" />
-     
+   
+  <meta property="og:image" content="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1582033481/posts/istanbul-galata-tower.jpg" />
+  <meta class="swiftype" name="image" data-type="enum"
+    content="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1582033481/posts/istanbul-galata-tower.jpg" />
+   
+  <meta property="og:image" content="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_1600/v1582033481/posts/istanbul-galata-tower.jpg" />
+  <meta class="swiftype" name="image" data-type="enum" content="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_1600/v1582033481/posts/istanbul-galata-tower.jpg" />
+   
   <!--STYLES-->
   <link rel="stylesheet" href="/assets/css/style-du2xmrqdqrl2ollgeiw050kpl6l4nbyz7bumjuurjgsxyopifvukebxc9lqe.min.css">
   <!--STYLES END-->
@@ -55,7 +63,7 @@
         
     
 
-<header id="header" data-behavior="1">
+<header id="header" data-behavior="4">
     <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
     <div class="header-title">
         <a class="header-title-link" href="/ ">TalvBansal.me</a>
@@ -77,7 +85,7 @@
 
     
 
-<nav id="sidebar" data-behavior="1">
+<nav id="sidebar" data-behavior="4">
     <div class="sidebar-container">
         
             <div class="sidebar-profile">
@@ -231,77 +239,158 @@
 </nav>
 
             
-            <div id="main" data-behavior="1"
-                 class="
-                        hasCoverMetaIn
-                        ">
-                
-    <section class="postShorten-group main-content-wrap">
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
+        <div class="post-header-cover
+                    text-center
+                    post-header-cover--partial"
+             style="background-image:url('https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_1600/v1582033481/posts/istanbul-galata-tower.jpg');"
+             data-behavior="4">
             
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/using-sshuttle-to-solve-static-ip-issues-when-remote-working/">
-                            Using sshuttle to Solve Static IP Issues When Remote Working
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-11-21T15:51:28+00:00">
+                <div class="post-header main-content-wrap text-center">
+    
+        <h1 class="post-title">
+            Solving out of memory errors with PHP and Composer on EC2s free tier
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2020-02-05T20:45:36+00:00">
 	
-		    Nov 21, 2019
+		    Feb 05, 2020
     	
     </time>
     
 </div>
 
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <h3 id="Introduction-and-Prerequisites"><a href="#Introduction-and-Prerequisites" class="headerlink" title="Introduction and Prerequisites"></a>Introduction and Prerequisites</h3><p>I’ve been remote working full time for over 3 years now. </p>
-<p>In that time I’ve had to work with a number of clients who restrict access to their internal systems via IP Address whitelisting.</p>
-<p>As a developer who often works from different locations and countries this can quickly become problematic. </p>
-<p>A paid for solution is to purchase a Dedicated Static IP VPN from a reputable provider like <a href="https://nordvpn.com/features/dedicated-ip/" target="_blank" rel="noopener">NordVPN.</a>  and ask the clients IT team to whitelist your new Dedicated Static IP.</p>
-<p>This is something I’ve been doing for a while and whilst the initial set up is a little fiddly, (You have to set up 2 accounts and get their team to link them together) its worked flawlessly for me.</p>
-<p>However if you have the following:</p>
-<ul>
-<li>SSH access to a device in a location with a Static IP (Perhaps you get one from your ISP or your office has one)</li>
-<li>You use Linux or OSX (Sorry windows guys I don’t think even with WSL this will work). </li>
-</ul>
-<p>Then you can use the super handy command line tool <a href="https://github.com/sshuttle/sshuttle" target="_blank" rel="noopener">SSHUTTLE</a> to route all (or some) of your traffic through that device.</p>
-<p>Lets take a look at getting it working…</p>
-                    
-                        <a href="/blog/using-sshuttle-to-solve-static-ip-issues-when-remote-working/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
+    
+</div>
+
             
         </div>
+
+            <div id="main" data-behavior="4"
+                 class="hasCover
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>For one of my recent projects I wanted to make use of the free allowance that AWS gives for SES.</p>
+<p>One of the conditions of the SES allowance was that your calling app needs to be hosted on EC2.</p>
+<p>I’ve not used EC2 before so I figured this would be a good way to dive into it.</p>
+<p>Whilst I would never usually install software like composer on a production server, this was purely to test things out.</p>
+<p> So after signing up for AWS and creating a local ubuntu server on an EC2 t2micro instance then cloning down the project I ran composer install to come across the following message: </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">composer install</span><br><span class="line">Loading composer repositories with package information</span><br><span class="line">Updating dependencies (including require-dev)</span><br><span class="line"></span><br><span class="line">mmap() failed: [12] Cannot allocate memory</span><br><span class="line"></span><br><span class="line">mmap() failed: [12] Cannot allocate memory</span><br><span class="line">PHP Fatal error:  Out of memory (allocated 822091776) (tried to allocate 4096 bytes) <span class="keyword">in</span> phar:///usr/<span class="built_in">local</span>/bin/composer/src/Composer/DependencyResolver/Solver.php on line 223</span><br><span class="line"></span><br><span class="line">Fatal error: Out of memory (allocated 822091776) (tried to allocate 4096 bytes) <span class="keyword">in</span> phar:///usr/<span class="built_in">local</span>/bin/composer/src/Composer/DependencyResolver/Solver.php on line 223</span><br></pre></td></tr></table></figure>
+<p>822091776bytes is over 800mb of memory being consumed by composer.</p>
+<a id="more"></a>
+<p>Whilst php-fpm has a 128mb max memory limit per script by default,<br> php-cli has a value of -1 which means use unlimited memory.</p>
+<p> In this instance attempting to allocate over 800mb of memory on a server with 1gb was not going to end well.</p>
+<p>The solve was to create a swap file on the disk.</p>
+<p>A swap file or partition is space on disk allocated that can used when the physical memory allocation is exhausted. Once the allocation is exhausted, older items in memory get offloaded to the swap partition.</p>
+<p>The actual solve for this i found over on <a href="https://github.com/composer/composer/issues/7348" target="_blank" rel="noopener">this github issue</a>. </p>
+<p>The following code will create a 1gb swap file in <code>/var/swap.1</code> for our instance to use</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo /bin/dd <span class="keyword">if</span>=/dev/zero of=/var/swap.1 bs=1M count=1024</span><br><span class="line">sudo /sbin/mkswap /var/swap.1</span><br><span class="line">sudo /sbin/swapon /var/swap.1</span><br></pre></td></tr></table></figure>
+
+            
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
         
-            <a href="/blog/using-sshuttle-to-solve-static-ip-issues-when-remote-working/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1574239597/posts/tribeca-manhattan-nyc.jpg"/>
-                </div>
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/AWS/">AWS</a> <a class="tag tag--primary tag--small t-link" href="/tags/Composer/">Composer</a> <a class="tag tag--primary tag--small t-link" href="/tags/EC2/">EC2</a> <a class="tag tag--primary tag--small t-link" href="/tags/PHP/">PHP</a> <a class="tag tag--primary tag--small t-link" href="/tags/SES/">SES</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--disabled">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/blog/resizing-images-for-static-sites-with-php-when-deploying-to-netlify/" data-tooltip="Resizing images for static sites with php when deploying to Netlify" aria-label="NEXT: Resizing images for static sites with php when deploying to Netlify">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://talvbansal.me/blog/solving-out-of-memory-errors-with-PHP-and-Composer-on-EC2s-free-tier/" title="Share on Facebook">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://talvbansal.me/blog/solving-out-of-memory-errors-with-PHP-and-Composer-on-EC2s-free-tier/" title="Share on Twitter">
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://talvbansal.me/blog/solving-out-of-memory-errors-with-PHP-and-Composer-on-EC2s-free-tier/" title="Share on Google+">
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
             
         
-    </article>
-    
-    <div class="pagination-bar">
-    <ul class="pagination">
-        
-        
-        <li class="pagination-number">page 1 of 1</li>
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
     </ul>
 </div>
 
-</section>
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
 
 
                 <footer id="footer" class="main-content-wrap">
@@ -311,6 +400,113 @@
 </footer>
 
             </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--disabled">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/blog/resizing-images-for-static-sites-with-php-when-deploying-to-netlify/" data-tooltip="Resizing images for static sites with php when deploying to Netlify" aria-label="NEXT: Resizing images for static sites with php when deploying to Netlify">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://talvbansal.me/blog/solving-out-of-memory-errors-with-PHP-and-Composer-on-EC2s-free-tier/" title="Share on Facebook">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://talvbansal.me/blog/solving-out-of-memory-errors-with-PHP-and-Composer-on-EC2s-free-tier/" title="Share on Twitter">
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://talvbansal.me/blog/solving-out-of-memory-errors-with-PHP-and-Composer-on-EC2s-free-tier/" title="Share on Google+">
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+    <i id="btn-close-shareoptions" class="fa fa-times"></i>
+    <ul class="share-options">
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://talvbansal.me/blog/solving-out-of-memory-errors-with-PHP-and-Composer-on-EC2s-free-tier/">
+                    <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https://talvbansal.me/blog/solving-out-of-memory-errors-with-PHP-and-Composer-on-EC2s-free-tier/">
+                    <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https://talvbansal.me/blog/solving-out-of-memory-errors-with-PHP-and-Composer-on-EC2s-free-tier/">
+                    <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                </a>
+            </li>
+        
+    </ul>
+</div>
+
             
         </div>
         
@@ -672,6 +868,25 @@
         <!--SCRIPTS-->
 <script src="/assets/js/script-vufjrm3fmbuttogo1hxuu0w9w0sesk5iyysjuguc2hdhufot9szxg8twijry.min.js"></script>
 <!--SCRIPTS END-->
+
+    
+        <script>
+             var disqus_config = function () {
+                 this.page.url = 'https://talvbansal.me/blog/solving-out-of-memory-errors-with-PHP-and-Composer-on-EC2s-free-tier/';
+                 
+                    this.page.identifier = 'blog/solving-out-of-memory-errors-with-PHP-and-Composer-on-EC2s-free-tier/';
+                 
+             };
+            (function() {
+                var d = document, s = d.createElement('script');
+                var disqus_shortname = 'talvbansalblog';
+                s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment-with-locales.min.js"></script>
