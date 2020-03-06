@@ -245,6 +245,62 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/blog/in-depth-gitlab-ci-cd-with-laravel-apps/">
+                            In depth Gitlab CI/CD with Laravel Apps
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2020-03-06T10:13:49+00:00">
+	
+		    Mar 06, 2020
+    	
+    </time>
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>My most read articles on this blog are about <a href="/all-tags/#Gitlab-list">Gitlab CI/CD</a> with PHP. They cover a basic linting, testing and crude deploying process.</p>
+<p>Today I want to look at my current CI/CD process for my Laravel projects in more depth. Currently the pipelines of my projects might vary slightly but is very similar to this:</p>
+<p> <img src="https://res.cloudinary.com/www-talvbansal-me/image/upload/v1583495330/posts/gitlab-ci-pipelines.png" alt="Gitlab Pipeline"></p>
+<p> So there are 5 main stages in the process:</p>
+<ul>
+<li><strong>Preparation</strong> - The pulling down of dependencies and storing them in an artifact</li>
+<li><strong>Syntax</strong> - Check code syntax</li>
+<li><strong>Testing</strong> - Run unit tests</li>
+<li><strong>Building</strong> - Build assets</li>
+<li><strong>Deployment</strong> - Deploying to an appropriate server</li>
+</ul>
+<p>The stages are processed in order with each stage containing one or many tasks. Should one task fails in a stage then the whole pipeline stops and is marked as failed.</p>
+<p>To run the pipelines I make use of gitlabs free tier which gives you access to 2000 shared minutes per month as well as a runner on a server I have. More about setting that up can be found <a href="/blog/maximising-gitlab-ci-s-free-tier/">here</a>.</p>
+                    
+                        <a href="/blog/in-depth-gitlab-ci-cd-with-laravel-apps/" class="postShorten-excerpt_link link">
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+            <a href="/blog/in-depth-gitlab-ci-cd-with-laravel-apps/">
+                <div class="postShorten-thumbnailimg">
+                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1583496063/posts/long-island-city-skyline.jpg"/>
+                </div>
+            </a>
+            
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-right">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/blog/solving-out-of-memory-errors-with-PHP-and-Composer-on-EC2s-free-tier/">
                             Solving out of memory errors with PHP and Composer on EC2s free tier
                         </a>
@@ -506,7 +562,8 @@
             </div>
             
                 <div class="postShorten-excerpt">
-                    <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>This article follows directly on from my <a href="https://talvbansal.me/blog/gitlab-ci-for-php-applications">previous article</a> on adding gitlab’s CI to my PHP projects.</p>
+                    <p><strong> Update March 2020 - I’ve given written a newer more updated version of this article, <a href="/blog/in-depth-gitlab-ci-cd-with-laravel-apps/">check it out over here.</a> </strong></p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>This article follows directly on from my <a href="/blog/gitlab-ci-for-php-applications">previous article</a> on adding gitlab’s CI to my PHP projects.</p>
 <p>Once we’re happy with our code being automatically tested we might want it to be automatically deployed to a testing server / environment or maybe even production.<br>
                     
                         <a href="/blog/simple-push-to-deploy-with-gitlab-cicd/" class="postShorten-excerpt_link link">
@@ -551,7 +608,8 @@
             </div>
             
                 <div class="postShorten-excerpt">
-                    <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>Gitlab provides some good documentation on getting build runners for your projects set up which can be found <a href="https://about.gitlab.com/2016/03/01/gitlab-runner-with-docker/" target="_blank" rel="noopener">here</a>. However I haven’t found a good article on setting up Gitlab CI for PHP applications yet. </p>
+                    <p><strong> Update March 2020 - I’ve given written a newer more updated version of this article, <a href="/blog/in-depth-gitlab-ci-cd-with-laravel-apps/">check it out over here.</a> </strong></p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>Gitlab provides some good documentation on getting build runners for your projects set up which can be found <a href="https://about.gitlab.com/2016/03/01/gitlab-runner-with-docker/" target="_blank" rel="noopener">here</a>. However I haven’t found a good article on setting up Gitlab CI for PHP applications yet. </p>
 <p>This article is not going to discuss setting up shared runners on Gitlab since I felt the documentation provided by them in the link above was easy enough to follow, what this I am going to focus on is the <code>.gitlab-ci.yml</code> configuration that I’m currently using in my projects to do the following: </p>
 <ul>
 <li>Run PHP CS against our code base to ensure that it conforms to PSR-2</li>
@@ -675,50 +733,6 @@
             <a href="/blog/setting-up-a-private-gitlab-server-on-ubuntu-1604/">
                 <div class="postShorten-thumbnailimg">
                     <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1555352729/posts/st-basils-moscow.jpg"/>
-                </div>
-            </a>
-            
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/looking-back-on-laracon-eu-2016/">
-                            Looking back on Laracon EU 2016
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2016-08-30T19:14:25+01:00">
-	
-		    Aug 30, 2016
-    	
-    </time>
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <p>Earlier this week I attended my first “Big” Conference - <strong><a href="http://laracon.eu/2016/" target="_blank" rel="noopener">Laracon EU 2016</a></strong>. I’ve been to other tech conferences before but by comparison Laracon EU was <strong>HUGE</strong>, there were 650 people in attendance in one of the most incredible venues I’ve seen. I sent pictures back to my friends and home who said that it looked like a club night more than a conference!<br>
-                    
-                        <a href="/blog/looking-back-on-laracon-eu-2016/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/blog/looking-back-on-laracon-eu-2016/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1555352383/posts/laracon-2016-stage.jpg"/>
                 </div>
             </a>
             
@@ -974,7 +988,8 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>Gitlab provides some good documentation on getting build runners for your projects set up which can be found <a href="https://about.gitlab.com/2016/03/01/gitlab-runner-with-docker/" target="_blank" rel="noopener">here</a>. However I haven’t found a good article on setting up Gitlab CI for PHP applications yet. </p>
+                        <div class="media-content hide-xs font-merryweather"><p><strong> Update March 2020 - I’ve given written a newer more updated version of this article, <a href="/blog/in-depth-gitlab-ci-cd-with-laravel-apps/">check it out over here.</a> </strong></p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>Gitlab provides some good documentation on getting build runners for your projects set up which can be found <a href="https://about.gitlab.com/2016/03/01/gitlab-runner-with-docker/" target="_blank" rel="noopener">here</a>. However I haven’t found a good article on setting up Gitlab CI for PHP applications yet. </p>
 <p>This article is not going to discuss setting up shared runners on Gitlab since I felt the documentation provided by them in the link above was easy enough to follow, what this I am going to focus on is the <code>.gitlab-ci.yml</code> configuration that I’m currently using in my projects to do the following: </p>
 <ul>
 <li>Run PHP CS against our code base to ensure that it conforms to PSR-2</li>
@@ -1004,7 +1019,8 @@
                                 
                             </span>
                         </span>
-                        <div class="media-content hide-xs font-merryweather"><h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>This article follows directly on from my <a href="https://talvbansal.me/blog/gitlab-ci-for-php-applications">previous article</a> on adding gitlab’s CI to my PHP projects.</p>
+                        <div class="media-content hide-xs font-merryweather"><p><strong> Update March 2020 - I’ve given written a newer more updated version of this article, <a href="/blog/in-depth-gitlab-ci-cd-with-laravel-apps/">check it out over here.</a> </strong></p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>This article follows directly on from my <a href="/blog/gitlab-ci-for-php-applications">previous article</a> on adding gitlab’s CI to my PHP projects.</p>
 <p>Once we’re happy with our code being automatically tested we might want it to be automatically deployed to a testing server / environment or maybe even production.<br></div>
                     </div>
                     <div style="clear:both;"></div>
@@ -1099,7 +1115,7 @@
                 data-message-zero="no post found"
                 data-message-one="1 post found"
                 data-message-other="{n} posts found">
-                26 posts found
+                27 posts found
             </p>
         </div>
     </div>
