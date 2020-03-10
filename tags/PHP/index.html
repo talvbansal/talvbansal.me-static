@@ -245,8 +245,54 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/blog/in-depth-gitlab-ci-cd-with-laravel-apps/">
-                            In depth Gitlab CI/CD with Laravel Apps
+                        <a class="link-unstyled" href="/blog/easy-push-to-deploy-for-laravel-with-gitlab-ci/">
+                            Easy push to deploy for laravel with gitlab ci
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2020-03-10T10:13:49+00:00">
+	
+		    Mar 10, 2020
+    	
+    </time>
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <p>Recently I wrote about <a href="/blog/in-depth-gitlab-ci-with-laravel-apps/">my current Gitlab CI process</a>, when it came to the deployment part of the process I showed how I was handling it using a tool called <a href="https://github.com/lorisleiva/laravel-deployer" target="_blank" rel="noopener">Laravel deployer</a> but I didn’t breakdown what laravel deployer was doing and how I had it configured.</p>
+<p>The Laravel deployer docs are pretty good however I found a couple of server config issues that I always find myself referring back to when setting up auto deployment. Mostly to automatically restart Laravel Horizon and restarting Php-fpm without needing sudo privileges.</p>
+<p>Lets imagine I was going to a set up Gitlab CI / CD for a fictional project hosted over on the fictional domain of <code>deployer.talvbansal.com</code> with a <a href="https://gitlab.com/talvbansal/deployer-example" target="_blank" rel="noopener">real repository here</a> that is hosted on somewhere like Linode, Digital Ocean or even AWS.</p>
+                    
+                        <a href="/blog/easy-push-to-deploy-for-laravel-with-gitlab-ci/" class="postShorten-excerpt_link link">
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+            <a href="/blog/easy-push-to-deploy-for-laravel-with-gitlab-ci/">
+                <div class="postShorten-thumbnailimg">
+                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1583496063/posts/franklin-street-train.jpg"/>
+                </div>
+            </a>
+            
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-right">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a class="link-unstyled" href="/blog/in-depth-gitlab-ci-with-laravel-apps/">
+                            In depth Gitlab CI with Laravel Apps
                         </a>
                     
                 </h1>
@@ -276,7 +322,7 @@
 <p>The stages are processed in order with each stage containing one or many tasks. Should one task fails in a stage then the whole pipeline stops and is marked as failed.</p>
 <p>To run the pipelines I make use of gitlabs free tier which gives you access to 2000 shared minutes per month as well as a runner on a server I have. More about setting that up can be found <a href="/blog/maximising-gitlab-ci-s-free-tier/">here</a>.</p>
                     
-                        <a href="/blog/in-depth-gitlab-ci-cd-with-laravel-apps/" class="postShorten-excerpt_link link">
+                        <a href="/blog/in-depth-gitlab-ci-with-laravel-apps/" class="postShorten-excerpt_link link">
                             Continue reading
                         </a>
                         
@@ -285,7 +331,7 @@
             
         </div>
         
-            <a href="/blog/in-depth-gitlab-ci-cd-with-laravel-apps/">
+            <a href="/blog/in-depth-gitlab-ci-with-laravel-apps/">
                 <div class="postShorten-thumbnailimg">
                     <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1583496063/posts/long-island-city-skyline.jpg"/>
                 </div>
@@ -685,60 +731,6 @@
         
     </article>
     
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/setting-up-a-private-gitlab-server-on-ubuntu-1604/">
-                            Setting up a private GitLab server on Ubuntu 16.04
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2016-09-16T19:09:13+01:00">
-	
-		    Sep 16, 2016
-    	
-    </time>
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>Where I work, we’ve been using an Ubuntu Server running <a href="http://gitolite.com/gitolite/index.html" target="_blank" rel="noopener">gitolite</a> to act as our “Source control server” and manage permissions and access. Its worked well, and after some initial configuration (which I recall being pretty tricky) looking after the gitolite instance has been pretty easy and could easily continue to serve our needs as a small business well.</p>
-<p>Adding new users required you to get an ssh key from the new user, add it to an “administration repository” and then add their name to a config file within that repository. The same config file could then be used to determine which access rights they had to repositories as well as defining new repositories.</p>
-<p>We also use a <a href="https://getcomposer.org/doc/articles/handling-private-packages-with-satis.md" target="_blank" rel="noopener">satis</a> install to act as a private composer for our internal private packages.</p>
-<p>One of the things gitolite doesn’t provide you with is any sort of front end at all, everything has to be done through the terminal. It also requires you to have all of the following tools separately:</p>
-<ul>
-<li>Issue tracker</li>
-<li>File browser</li>
-<li>Activity stream</li>
-<li>Pull request management</li>
-</ul>
-<p>Which are all features that github has built in natively. </p>
-                    
-                        <a href="/blog/setting-up-a-private-gitlab-server-on-ubuntu-1604/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/blog/setting-up-a-private-gitlab-server-on-ubuntu-1604/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1555352729/posts/st-basils-moscow.jpg"/>
-                </div>
-            </a>
-            
-        
-    </article>
-    
     <div class="pagination-bar">
     <ul class="pagination">
         
@@ -1115,7 +1107,7 @@
                 data-message-zero="no post found"
                 data-message-one="1 post found"
                 data-message-other="{n} posts found">
-                27 posts found
+                28 posts found
             </p>
         </div>
     </div>
