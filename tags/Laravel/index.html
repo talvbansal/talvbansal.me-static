@@ -245,6 +245,62 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/blog/laravel-gitlab-ci-generator/">
+                            Laravel Gitlab CI Generator
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2020-03-30T13:19:52+01:00">
+	
+		    Mar 30, 2020
+    	
+    </time>
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <p>At our company setting up gitlab ci configuration is one of the jobs I end up doing by default.</p>
+<p>This weekend I wrote a package to help speed that process up by generating a .gitlab-ci.yml file as well as installing some of the packages and configuration files to make the following possible:</p>
+<ul>
+<li>Setting an <a href="https://github.com/edbizarro/gitlab-ci-pipeline-php" target="_blank" rel="noopener">edbizarro docker image</a> based on your target php version</li>
+<li>Handle Javascript asset compilation using NPM or Yarn</li>
+<li>Lint Javascript and Vue files with <a href="https://eslint.org/" target="_blank" rel="noopener">Eslint</a></li>
+<li>Lint php files using the <a href="https://gist.github.com/laravel-shift/cab527923ed2a109dda047b97d53c200" target="_blank" rel="noopener">laravel shift rules</a> for <a href="https://github.com/FriendsOfPHP/PHP-CS-Fixer" target="_blank" rel="noopener">PHP-Code-Fixer</a></li>
+<li>Perform static analysis with <a href="https://github.com/nunomaduro/larastan" target="_blank" rel="noopener">Larastan</a></li>
+<li>Run phpunit tests</li>
+</ul>
+<p>The package currently provides a single artisan command to do all of the above after answering a few simple questions.</p>
+<p>Check the repo out here:</p>
+<p><a href="https://github.com/talvbansal/laravel-gitlab-ci-config-generator" target="_blank" rel="noopener">https://github.com/talvbansal/laravel-gitlab-ci-config-generator</a></p>
+                    
+                        <a href="/blog/laravel-gitlab-ci-generator/" class="postShorten-excerpt_link link">
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+            <a href="/blog/laravel-gitlab-ci-generator/">
+                <div class="postShorten-thumbnailimg">
+                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1585573513/posts/santorini-oia.jpg"/>
+                </div>
+            </a>
+            
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-right">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/blog/easy-push-to-deploy-for-laravel-with-gitlab-ci/">
                             Easy push to deploy for Laravel with Gitlab CI
                         </a>
@@ -702,53 +758,6 @@
         
     </article>
     
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/search-and-replace-with-slashes-in-mysql/">
-                            Search and Replace with Slashes in MySQL
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-04-30T01:29:26+01:00">
-	
-		    Apr 30, 2019
-    	
-    </time>
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <p>The project im currently working on makes use of Spaties <a href="https://github.com/spatie/laravel-event-projector" target="_blank" rel="noopener">Event Projector package</a>. Recently the team at Spatie upgraded the package to Version 2. </p>
-<p>One of the changes that was made was to separate all storable events from regular events by moving them from the <code>App\Events</code> to a new <code>App\StorableEvents</code> folder. In moving the new stored events a new namespace of <code>App\StorableEvents</code> was created.</p>
-<p>Whilst this isn’t a mandatory change, all new events classes created get in this new namespace and for the sake of keeping code organised, I wanted to move all of our other storable events to this new folder.<br>Light work until I wanted to replay my events. What I’d forgotten is that the fully qualified class names are stored on the <code>stored_events</code> table that the package uses. </p>
-<p>No big deal I thought - ill just search for <code>App\Events\%</code> and replace with <code>App\StorableEvents\%</code>, how hard could that be in SQL? Turns out harder than I thought but not impossible…</p>
-                    
-                        <a href="/blog/search-and-replace-with-slashes-in-mysql/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/blog/search-and-replace-with-slashes-in-mysql/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1557412436/posts/naples-piazza-del-plebiscito.jpg"/>
-                </div>
-            </a>
-            
-        
-    </article>
-    
     <div class="pagination-bar">
     <ul class="pagination">
         
@@ -1125,7 +1134,7 @@
                 data-message-zero="no post found"
                 data-message-one="1 post found"
                 data-message-other="{n} posts found">
-                29 posts found
+                30 posts found
             </p>
         </div>
     </div>

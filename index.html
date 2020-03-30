@@ -238,6 +238,62 @@
                 <section class="postShorten-group main-content-wrap">
     
     
+    <article class="postShorten postShorten--thumbnailimg-right">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a class="link-unstyled" href="/blog/laravel-gitlab-ci-generator/">
+                            Laravel Gitlab CI Generator
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2020-03-30T13:19:52+01:00">
+	
+		    Mar 30, 2020
+    	
+    </time>
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <p>At our company setting up gitlab ci configuration is one of the jobs I end up doing by default.</p>
+<p>This weekend I wrote a package to help speed that process up by generating a .gitlab-ci.yml file as well as installing some of the packages and configuration files to make the following possible:</p>
+<ul>
+<li>Setting an <a href="https://github.com/edbizarro/gitlab-ci-pipeline-php" target="_blank" rel="noopener">edbizarro docker image</a> based on your target php version</li>
+<li>Handle Javascript asset compilation using NPM or Yarn</li>
+<li>Lint Javascript and Vue files with <a href="https://eslint.org/" target="_blank" rel="noopener">Eslint</a></li>
+<li>Lint php files using the <a href="https://gist.github.com/laravel-shift/cab527923ed2a109dda047b97d53c200" target="_blank" rel="noopener">laravel shift rules</a> for <a href="https://github.com/FriendsOfPHP/PHP-CS-Fixer" target="_blank" rel="noopener">PHP-Code-Fixer</a></li>
+<li>Perform static analysis with <a href="https://github.com/nunomaduro/larastan" target="_blank" rel="noopener">Larastan</a></li>
+<li>Run phpunit tests</li>
+</ul>
+<p>The package currently provides a single artisan command to do all of the above after answering a few simple questions.</p>
+<p>Check the repo out here:</p>
+<p><a href="https://github.com/talvbansal/laravel-gitlab-ci-config-generator" target="_blank" rel="noopener">https://github.com/talvbansal/laravel-gitlab-ci-config-generator</a></p>
+                    
+                        <a href="/blog/laravel-gitlab-ci-generator/" class="postShorten-excerpt_link link">
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+            <a href="/blog/laravel-gitlab-ci-generator/">
+                <div class="postShorten-thumbnailimg">
+                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1585573513/posts/santorini-oia.jpg"/>
+                </div>
+            </a>
+            
+        
+    </article>
+    
+    
     <article class="postShorten postShorten--thumbnailimg-bottom">
         <div class="postShorten-wrap">
             
@@ -709,63 +765,6 @@
         
     </article>
     
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/throttling-notifications-for-failed-jobs-in-laravel/">
-                            Throttling Notifications For Failed Jobs In Laravel
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-11-19T16:20:18+00:00">
-	
-		    Nov 19, 2019
-    	
-    </time>
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <p>One of the projects I’ve been working recently has involved writing a system to communicate with a Clients pre-existing Legacy system. The system doesn’t have the ability to “talk out” but can be queried using a SOAP service. </p>
-<p>The legacy system is:</p>
-<ul>
-<li>Slow to interact with</li>
-<li>Prone to crashing regularly</li>
-</ul>
-<p>Here’s how we dealt with those 2 issues:</p>
-<p>Since we don’t want to impact our end users experience the project has been set up to make use of Laravel queuing system with Redis and those queues are configured with Laravel Horizon.</p>
-<p>When these jobs failed for whatever reason - including the clients system going down we wanted to be notified so that someone could look into what was happening.</p>
-<p>The team at <a href="https://spatie.be/" target="_blank" rel="noopener">spatie.be</a> created a great <a href="https://github.com/spatie/laravel-failed-job-monitor" target="_blank" rel="noopener">package to do that</a> handle notifying us when a failed job occurred.</p>
-<p>However there are multiple jobs being run concurrently that run as frequently as every minute to check for things on their server. Which mean’t that once the legacy system went down we would receive multiple notifications until the system came back up, (In some cases this has been hours - not ideal). </p>
-<p>After a while being flooded with these sorts of notifications makes them become an annoyance rather than useful and you begin to start ignoring them.</p>
-<p>So I set out to write something that gave me everything the Spatie package did but also allowed me to throttle how frequently notification of a given type would be sent to us.</p>
-<p><a href="https://github.com/talvbansal/laravel-throttled-failed-jobs" target="_blank" rel="noopener">Laravel throttled failed jobs!</a></p>
-                    
-                        <a href="/blog/throttling-notifications-for-failed-jobs-in-laravel/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/blog/throttling-notifications-for-failed-jobs-in-laravel/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1574185225/posts/south-africa-zebra-back.jpg"/>
-                </div>
-            </a>
-            
-        
-    </article>
-    
     <div class="pagination-bar">
     <ul class="pagination">
         
@@ -1142,7 +1141,7 @@
                 data-message-zero="no post found"
                 data-message-one="1 post found"
                 data-message-other="{n} posts found">
-                29 posts found
+                30 posts found
             </p>
         </div>
     </div>

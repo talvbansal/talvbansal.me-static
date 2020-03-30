@@ -7,26 +7,34 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="generator" content="TalvBansal.me" />
-  <title>Tag: Windows - TalvBansal.me</title>
+  <title>Laravel Gitlab CI Generator - TalvBansal.me</title>
   <meta name="author" content="Talv Bansal" />
   
   <meta name="keywords" content="hexo,gitlab,github,javascript,es6,laravel,php,vue,vue.js,development,full stack,CI/CD," />
    
   <link rel="icon" href="https://talvbansal.me/assets/images/favicon.ico" />
-    <script type="application/ld+json">{}</script> <meta name="description" content="Tales of a full stack developer">
-<meta name="keywords" content="hexo,gitlab,github,javascript,es6,laravel,php,vue,vue.js,development,full stack,CI&#x2F;CD">
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Talv Bansal","sameAs":["https://github.com/talvbansal","https://twitter.com/talv","https://instagram.com/iwantthewindowseat","https://www.linkedin.com/in/talvinder-bansal-5826594a","mailto:talvbansal@outlook.com"],"image":"https://www.gravatar.com/avatar/be14e67a41106fe8731f839b3bd46733"},"articleBody":"At our company setting up gitlab ci configuration is one of the jobs I end up doing by default.\nThis weekend I wrote a package to help speed that process up by generating a .gitlab-ci.yml file as well as installing some of the packages and configuration files to make the following possible:\n\nSetting an edbizarro docker image based on your target php version\nHandle Javascript asset compilation using NPM or Yarn\nLint Javascript and Vue files with Eslint\nLint php files using the laravel shift rules for PHP-Code-Fixer\nPerform static analysis with Larastan\nRun phpunit tests\n\nThe package currently provides a single artisan command to do all of the above after answering a few simple questions.\nCheck the repo out here:\nhttps://github.com/talvbansal/laravel-gitlab-ci-config-generator\n\nCurrently the package doesn’t build anything for automatically deploying code but in time I hope to add this in using Laravel Deployer. \nThis should mean that eventually the sum of these 2 blog posts (Config and Deploying) could be replaced with a single package and artisan command. \nIn order to make the yaml generation easier this package requires the php-yaml extension. Which is installable as follows:\n12345// ubuntusudo apt install php-yaml// otherspecl install yaml\nCurrently php-yaml is installed in the CI process but I think I should be able to drop that requirement since we’re not going to be generating yaml files in our pipelines.\nHopefully this should help speed things up for people setting up new projects.\n","dateCreated":"2020-03-30T13:19:52+01:00","dateModified":"2020-03-30T15:22:28+01:00","datePublished":"2020-03-30T13:19:52+01:00","description":"At our company setting up gitlab ci configuration is one of the jobs I end up doing by default.\nThis weekend I wrote a package to help speed that process up by generating a .gitlab-ci.yml file as well as installing some of the packages and configuration files to make the following possible:\n\nSetting an edbizarro docker image based on your target php version\nHandle Javascript asset compilation using NPM or Yarn\nLint Javascript and Vue files with Eslint\nLint php files using the laravel shift rules for PHP-Code-Fixer\nPerform static analysis with Larastan\nRun phpunit tests\n\nThe package currently provides a single artisan command to do all of the above after answering a few simple questions.\nCheck the repo out here:\nhttps://github.com/talvbansal/laravel-gitlab-ci-config-generator","headline":"Laravel Gitlab CI Generator","image":["https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1585573513/posts/santorini-oia.jpg","https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_1600/v1585573513/posts/santorini-oia.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://talvbansal.me/blog/laravel-gitlab-ci-generator/"},"publisher":{"@type":"Organization","name":"Talv Bansal","sameAs":["https://github.com/talvbansal","https://twitter.com/talv","https://instagram.com/iwantthewindowseat","https://www.linkedin.com/in/talvinder-bansal-5826594a","mailto:talvbansal@outlook.com"],"image":"https://www.gravatar.com/avatar/be14e67a41106fe8731f839b3bd46733","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/be14e67a41106fe8731f839b3bd46733"}},"url":"https://talvbansal.me/blog/laravel-gitlab-ci-generator/","keywords":"Gitlab, Laravel, PHP, Devops, CI/CD, Build, Deploy","thumbnailUrl":"https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1585573513/posts/santorini-oia.jpg"}</script> <meta name="description" content="At our company setting up gitlab ci configuration is one of the jobs I end up doing by default. This weekend I wrote a package to help speed that process up by generating a .gitlab-ci.yml file as well">
+<meta name="keywords" content="Gitlab,Laravel,PHP,Devops,CI&#x2F;CD,Build,Deploy">
 <meta property="og:type" content="blog">
-<meta property="og:title" content="TalvBansal.me">
-<meta property="og:url" content="https://talvbansal.me/tags/Windows/index.html">
+<meta property="og:title" content="Laravel Gitlab CI Generator">
+<meta property="og:url" content="https://talvbansal.me/blog/laravel-gitlab-ci-generator/index.html">
 <meta property="og:site_name" content="TalvBansal.me">
-<meta property="og:description" content="Tales of a full stack developer">
+<meta property="og:description" content="At our company setting up gitlab ci configuration is one of the jobs I end up doing by default. This weekend I wrote a package to help speed that process up by generating a .gitlab-ci.yml file as well">
 <meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2020-03-30T14:22:28.113Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="TalvBansal.me">
-<meta name="twitter:description" content="Tales of a full stack developer">
+<meta name="twitter:title" content="Laravel Gitlab CI Generator">
+<meta name="twitter:description" content="At our company setting up gitlab ci configuration is one of the jobs I end up doing by default. This weekend I wrote a package to help speed that process up by generating a .gitlab-ci.yml file as well">
 <meta name="twitter:creator" content="@talv">     
   <meta property="og:image" content="https://www.gravatar.com/avatar/321065504328f47a4f9d8b57df0635f4?s=640" />
-     
+   
+  <meta property="og:image" content="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1585573513/posts/santorini-oia.jpg" />
+  <meta class="swiftype" name="image" data-type="enum"
+    content="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1585573513/posts/santorini-oia.jpg" />
+   
+  <meta property="og:image" content="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_1600/v1585573513/posts/santorini-oia.jpg" />
+  <meta class="swiftype" name="image" data-type="enum" content="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_1600/v1585573513/posts/santorini-oia.jpg" />
+   
   <!--STYLES-->
   <link rel="stylesheet" href="/assets/css/style-du2xmrqdqrl2ollgeiw050kpl6l4nbyz7bumjuurjgsxyopifvukebxc9lqe.min.css">
   <!--STYLES END-->
@@ -55,7 +63,7 @@
         
     
 
-<header id="header" data-behavior="1">
+<header id="header" data-behavior="4">
     <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
     <div class="header-title">
         <a class="header-title-link" href="/ ">TalvBansal.me</a>
@@ -77,7 +85,7 @@
 
     
 
-<nav id="sidebar" data-behavior="1">
+<nav id="sidebar" data-behavior="4">
     <div class="sidebar-container">
         
             <div class="sidebar-profile">
@@ -231,70 +239,163 @@
 </nav>
 
             
-            <div id="main" data-behavior="1"
-                 class="
-                        hasCoverMetaIn
-                        ">
-                
-    <section class="postShorten-group main-content-wrap">
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
+        <div class="post-header-cover
+                    text-center
+                    post-header-cover--partial"
+             style="background-image:url('https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_1600/v1585573513/posts/santorini-oia.jpg');"
+             data-behavior="4">
             
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/laravel-homestead-on-windows-10-with-bash-on-ubuntu/">
-                            Laravel Homestead on Windows 10 with Bash On Ubuntu
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2016-08-11T19:17:46+01:00">
+                <div class="post-header main-content-wrap text-center">
+    
+        <h1 class="post-title">
+            Laravel Gitlab CI Generator
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2020-03-30T13:19:52+01:00">
 	
-		    Aug 11, 2016
+		    Mar 30, 2020
     	
     </time>
     
 </div>
 
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <p>In preparation for <a href="http://laracon.eu/2016/" target="_blank" rel="noopener">Laracon EU</a> in a couple of weeks i figured I’d need to take a device along with me - paper and pen would probably have been fine but Laracon looks to be huge and i dont want to be unprepared, plus you always see rows of silver lids and glowing apple symbols in the photos from developer conferences! </p>
-<p>I do almost all of my work on a Dell Precision 7710 which dual boots Ubuntu for development purposes and Windows for my photo editing. I also have a Surface Pro 4 which i use for note taking and photo editing on the go - <em>I’ll be writing about how I keep all of my photos in sync in a future post</em>!</p>
-<p>Neither of the above are Macbooks but whilst the Dell Precision runs Ubuntu and anything else I can throw at it, it is HUGE and not ideal to take well … anywhere! So I figured I’d try and get a development environment set up on my Surface Pro 4 instead. </p>
-<p>I’d heard of setups using Homestead / Vagrant / Virtualbox before, but since I was using Ubuntu, I’ve never had any need to explore it any further so this really is a guide for first timer noobs. The <a href="https://laravel.com/docs/5.2/homestead" target="_blank" rel="noopener">official Laravel Homestead guide</a> appears to be geared up mostly for Mac users, Windows users will need a bit more help which is where I’m hoping this post will help.</p>
-<p>Anyway by the end of this guide I’ll have a Surface Pro 4 running Laravel Homestead and fingers crossed you’ll have a Windows device doing the same thing too! This has been a really long introduction, lets get to it!</p>
-                    
-                        <a href="/blog/laravel-homestead-on-windows-10-with-bash-on-ubuntu/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
+    
+</div>
+
             
         </div>
+
+            <div id="main" data-behavior="4"
+                 class="hasCover
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>At our company setting up gitlab ci configuration is one of the jobs I end up doing by default.</p>
+<p>This weekend I wrote a package to help speed that process up by generating a .gitlab-ci.yml file as well as installing some of the packages and configuration files to make the following possible:</p>
+<ul>
+<li>Setting an <a href="https://github.com/edbizarro/gitlab-ci-pipeline-php" target="_blank" rel="noopener">edbizarro docker image</a> based on your target php version</li>
+<li>Handle Javascript asset compilation using NPM or Yarn</li>
+<li>Lint Javascript and Vue files with <a href="https://eslint.org/" target="_blank" rel="noopener">Eslint</a></li>
+<li>Lint php files using the <a href="https://gist.github.com/laravel-shift/cab527923ed2a109dda047b97d53c200" target="_blank" rel="noopener">laravel shift rules</a> for <a href="https://github.com/FriendsOfPHP/PHP-CS-Fixer" target="_blank" rel="noopener">PHP-Code-Fixer</a></li>
+<li>Perform static analysis with <a href="https://github.com/nunomaduro/larastan" target="_blank" rel="noopener">Larastan</a></li>
+<li>Run phpunit tests</li>
+</ul>
+<p>The package currently provides a single artisan command to do all of the above after answering a few simple questions.</p>
+<p>Check the repo out here:</p>
+<p><a href="https://github.com/talvbansal/laravel-gitlab-ci-config-generator" target="_blank" rel="noopener">https://github.com/talvbansal/laravel-gitlab-ci-config-generator</a></p>
+<a id="more"></a>
+<p>Currently the package doesn’t build anything for automatically deploying code but in time I hope to add this in using Laravel Deployer. </p>
+<p>This should mean that eventually the sum of these 2 blog posts (<a href="/blog/in-depth-gitlab-ci-cd-with-laravel-apps/">Config</a> and <a href="/blog/easy-push-to-deploy-for-laravel-with-gitlab-ci/">Deploying</a>) could be replaced with a single package and artisan command. </p>
+<p>In order to make the yaml generation easier this package requires the <code>php-yaml</code> extension. Which is installable as follows:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// ubuntu</span><br><span class="line">sudo apt install php-yaml</span><br><span class="line"></span><br><span class="line">// others</span><br><span class="line">pecl install yaml</span><br></pre></td></tr></table></figure>
+<p>Currently <code>php-yaml</code> is installed in the CI process but I think I should be able to drop that requirement since we’re not going to be generating yaml files in our pipelines.</p>
+<p>Hopefully this should help speed things up for people setting up new projects.</p>
+
+            
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
         
-            <a href="/blog/laravel-homestead-on-windows-10-with-bash-on-ubuntu/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1555352306/posts/south-africa-lion-male.jpg"/>
-                </div>
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/Build/">Build</a> <a class="tag tag--primary tag--small t-link" href="/tags/CI-CD/">CI/CD</a> <a class="tag tag--primary tag--small t-link" href="/tags/Deploy/">Deploy</a> <a class="tag tag--primary tag--small t-link" href="/tags/Devops/">Devops</a> <a class="tag tag--primary tag--small t-link" href="/tags/Gitlab/">Gitlab</a> <a class="tag tag--primary tag--small t-link" href="/tags/Laravel/">Laravel</a> <a class="tag tag--primary tag--small t-link" href="/tags/PHP/">PHP</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--disabled">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/blog/self-hosted-image-stream-with-netlify-and-jigsaw/" data-tooltip="Self Hosted Image Stream With Netlify and Jigsaw" aria-label="NEXT: Self Hosted Image Stream With Netlify and Jigsaw">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://talvbansal.me/blog/laravel-gitlab-ci-generator/" title="Share on Facebook">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://talvbansal.me/blog/laravel-gitlab-ci-generator/" title="Share on Twitter">
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://talvbansal.me/blog/laravel-gitlab-ci-generator/" title="Share on Google+">
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
             
         
-    </article>
-    
-    <div class="pagination-bar">
-    <ul class="pagination">
-        
-        
-        <li class="pagination-number">page 1 of 1</li>
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
     </ul>
 </div>
 
-</section>
+
+        
+        
+            
+                <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+            
+        
+    </div>
+</article>
+
 
 
                 <footer id="footer" class="main-content-wrap">
@@ -304,6 +405,113 @@
 </footer>
 
             </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--disabled">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/blog/self-hosted-image-stream-with-netlify-and-jigsaw/" data-tooltip="Self Hosted Image Stream With Netlify and Jigsaw" aria-label="NEXT: Self Hosted Image Stream With Netlify and Jigsaw">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://talvbansal.me/blog/laravel-gitlab-ci-generator/" title="Share on Facebook">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://talvbansal.me/blog/laravel-gitlab-ci-generator/" title="Share on Twitter">
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://talvbansal.me/blog/laravel-gitlab-ci-generator/" title="Share on Google+">
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a class="post-action-btn btn btn--default" href="#disqus_thread">
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+    <i id="btn-close-shareoptions" class="fa fa-times"></i>
+    <ul class="share-options">
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://talvbansal.me/blog/laravel-gitlab-ci-generator/">
+                    <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https://talvbansal.me/blog/laravel-gitlab-ci-generator/">
+                    <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                </a>
+            </li>
+        
+            
+            
+            <li class="share-option">
+                <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https://talvbansal.me/blog/laravel-gitlab-ci-generator/">
+                    <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                </a>
+            </li>
+        
+    </ul>
+</div>
+
             
         </div>
         
@@ -667,6 +875,25 @@
         <!--SCRIPTS-->
 <script src="/assets/js/script-vufjrm3fmbuttogo1hxuu0w9w0sesk5iyysjuguc2hdhufot9szxg8twijry.min.js"></script>
 <!--SCRIPTS END-->
+
+    
+        <script>
+             var disqus_config = function () {
+                 this.page.url = 'https://talvbansal.me/blog/laravel-gitlab-ci-generator/';
+                 
+                    this.page.identifier = 'blog/laravel-gitlab-ci-generator/';
+                 
+             };
+            (function() {
+                var d = document, s = d.createElement('script');
+                var disqus_shortname = 'talvbansalblog';
+                s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        </script>
+    
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment-with-locales.min.js"></script>

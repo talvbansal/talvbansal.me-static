@@ -245,6 +245,62 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/blog/laravel-gitlab-ci-generator/">
+                            Laravel Gitlab CI Generator
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2020-03-30T13:19:52+01:00">
+	
+		    Mar 30, 2020
+    	
+    </time>
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <p>At our company setting up gitlab ci configuration is one of the jobs I end up doing by default.</p>
+<p>This weekend I wrote a package to help speed that process up by generating a .gitlab-ci.yml file as well as installing some of the packages and configuration files to make the following possible:</p>
+<ul>
+<li>Setting an <a href="https://github.com/edbizarro/gitlab-ci-pipeline-php" target="_blank" rel="noopener">edbizarro docker image</a> based on your target php version</li>
+<li>Handle Javascript asset compilation using NPM or Yarn</li>
+<li>Lint Javascript and Vue files with <a href="https://eslint.org/" target="_blank" rel="noopener">Eslint</a></li>
+<li>Lint php files using the <a href="https://gist.github.com/laravel-shift/cab527923ed2a109dda047b97d53c200" target="_blank" rel="noopener">laravel shift rules</a> for <a href="https://github.com/FriendsOfPHP/PHP-CS-Fixer" target="_blank" rel="noopener">PHP-Code-Fixer</a></li>
+<li>Perform static analysis with <a href="https://github.com/nunomaduro/larastan" target="_blank" rel="noopener">Larastan</a></li>
+<li>Run phpunit tests</li>
+</ul>
+<p>The package currently provides a single artisan command to do all of the above after answering a few simple questions.</p>
+<p>Check the repo out here:</p>
+<p><a href="https://github.com/talvbansal/laravel-gitlab-ci-config-generator" target="_blank" rel="noopener">https://github.com/talvbansal/laravel-gitlab-ci-config-generator</a></p>
+                    
+                        <a href="/blog/laravel-gitlab-ci-generator/" class="postShorten-excerpt_link link">
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+            <a href="/blog/laravel-gitlab-ci-generator/">
+                <div class="postShorten-thumbnailimg">
+                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1585573513/posts/santorini-oia.jpg"/>
+                </div>
+            </a>
+            
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-right">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/blog/easy-push-to-deploy-for-laravel-with-gitlab-ci/">
                             Easy push to deploy for Laravel with Gitlab CI
                         </a>
@@ -680,57 +736,6 @@
         
     </article>
     
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/updating-a-satis-repository-on-git-push/">
-                            Updating a Satis Repository on Git Push
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2016-09-27T16:31:04+01:00">
-	
-		    Sep 27, 2016
-    	
-    </time>
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <p><strong>Update May 2017, looks like with the Gitab update to V9, which uses a new Gitlab API v4, Packages will not let you enable new repositories</strong></p>
-<p>I’ve made amendments to the necessary files and packages on this fork:</p>
-<p><a href="https://github.com/talvbansal/packages" target="_blank" rel="noopener">https://github.com/talvbansal/packages</a> on the “gitlab” branch.</p>
-<p>As long as you change step 2 in the guide below everything should work as expected:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/talvbansal/packages</span><br><span class="line">cd packages</span><br><span class="line">git checkout gitlab</span><br><span class="line">composer install -o --no-dev</span><br></pre></td></tr></table></figure>
-<hr>
-
-<p>After moving our source control server from <strong><a href="http://gitolite.com/gitolite/index.html" target="_blank" rel="noopener">gitolite</a></strong> to a privately hosted <strong><a href="https://about.gitlab.com" target="_blank" rel="noopener">gitlab</a></strong> instance the next thing I wanted to do was get our internal <strong><a href="https://github.com/composer/satis" target="_blank" rel="noopener">Satis</a></strong> server to automatically update whenever code was pushed to a repository.<br>
-                    
-                        <a href="/blog/updating-a-satis-repository-on-git-push/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/blog/updating-a-satis-repository-on-git-push/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1555352875/posts/santorini-domes.jpg"/>
-                </div>
-            </a>
-            
-        
-    </article>
-    
     <div class="pagination-bar">
     <ul class="pagination">
         
@@ -1107,7 +1112,7 @@
                 data-message-zero="no post found"
                 data-message-one="1 post found"
                 data-message-other="{n} posts found">
-                29 posts found
+                30 posts found
             </p>
         </div>
     </div>
