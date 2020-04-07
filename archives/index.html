@@ -239,6 +239,107 @@
     <section class="postShorten-group main-content-wrap">
     
     
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a class="link-unstyled" href="/blog/remove-git-lfs-from-a-repository/">
+                            Remove git-lfs from a repository
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2020-04-07T12:31:00+01:00">
+	
+		    Apr 07, 2020
+    	
+    </time>
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <p>Today I tried to set up my <a href="https://github.com/talvbansal/jigsaw-photo-stream" target="_blank" rel="noopener">jigsaw-photo-stream project</a> to use netlify large media with git-lfs.</p>
+<p>What I failed to read was this key part of the netlify documentation:</p>
+<blockquote>
+<p>Files tracked with Large Media are uploaded directly to the Netlify Large Media storage service on push, completely bypassing the site build.</p>
+</blockquote>
+<p><div style="margin-bottom: -2rem"></div><br>As part of the build process for the project I resize the images that are uploaded.<br>The netlify documentation suggests that you could use netlify’s image transformation to get around this but ideally I dont want the project to be tied into the service provider should I want to migrate to another static site host.</p>
+<p>At this point I’d already set up <code>git-lfs</code> on the repo and my netlify builds were failing.<br>I found <a href="https://github.com/git-lfs/git-lfs/issues/3026#issuecomment-451598434" target="_blank" rel="noopener">this link</a> to remove <code>git-lfs</code> from an existing repo</p>
+<p>The steps being:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git lfs uninstall</span><br></pre></td></tr></table></figure>
+<p>remove lfs stuff from <code>.gitattributes</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">git lfs ls-files | sed -r &apos;s/^.&#123;13&#125;//&apos; &gt; files.txt</span><br><span class="line">while read line; do git rm --cached &quot;$line&quot;; done &lt; files.txt</span><br><span class="line">while read line; do git add &quot;$line&quot;; done &lt; files.txt</span><br><span class="line">git add .gitattributes</span><br><span class="line">git commit -m &quot;unlfs&quot;</span><br><span class="line">git push origin</span><br><span class="line">git lfs ls-files</span><br><span class="line">rm -rf .git/lfs</span><br></pre></td></tr></table></figure></p>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/blog/remove-git-lfs-from-a-repository/#post-footer" class="postShorten-excerpt_link link">
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-right">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a class="link-unstyled" href="/blog/force-laravel-to-return-json-responses/">
+                            Force Laravel to return JSON responses
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2020-04-06T20:32:00+01:00">
+	
+		    Apr 06, 2020
+    	
+    </time>
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <p>Today I was working on an API written in Laravel for a React Native app with another developer.</p>
+<p>He was trying to make requests to the Laravel backend and told me he kept receiving a response with a http status code of 302. 3XX http status codes are redirection status codes. </p>
+<p>It turned out that he had not set an accept header on the requests to the server that the app was making, as a result the server was re-directing to the server route with the </p>
+<p>By default if you dont set a requests accept headers they default to <code>Accept: */*</code>. With those set laravel responds with a <code>Content-Type</code> of <code>text/html</code>.</p>
+<p>For the purpose of this project every api response needs to return JSON.</p>
+<p>We can achieve this really easily by using middleware to overwrite the <code>Accept</code> headers on the incoming request and setting them to <code>application/json</code>.</p>
+                    
+                        <a href="/blog/force-laravel-to-return-json-responses/" class="postShorten-excerpt_link link">
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+            <a href="/blog/force-laravel-to-return-json-responses/">
+                <div class="postShorten-thumbnailimg">
+                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1586202198/posts/bagan-baloons.jpg"/>
+                </div>
+            </a>
+            
+        
+    </article>
+    
+    
     <article class="postShorten postShorten--thumbnailimg-right">
         <div class="postShorten-wrap">
             
@@ -660,112 +761,6 @@
         
     </article>
     
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/update-form-request-data-before-validation-in-laravel/">
-                            Updating Form Request Data Before Validation in Laravel
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-11-24T22:03:20+00:00">
-	
-		    Nov 24, 2019
-    	
-    </time>
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <h3 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h3><p>Laravel’s Form Requests are a great way of removing validation logic from your controllers. </p>
-<p>There are times were it can be useful to update or change the request data before it is passed to the validator for example formatting postcodes, removing invalid characters or providing default values to data.</p>
-<p>The official <a href="https://laravel.com/docs/master/validation#form-request-validation" target="_blank" rel="noopener">documentation</a> shows how we can perform additional logic after the rule sets have been run but not before hand.</p>
-<p>Digging through the Form Request <a href="https://laravel.com/api/master/Illuminate/Foundation/Http/FormRequest.html#method_prepareForValidation" target="_blank" rel="noopener">api</a> there is mention of a method called <code>prepareForValidation</code> which is an empty method that is called before the actual validation rules are run as can be seen in implementation:</p>
-<p><img src="https://res.cloudinary.com/www-talvbansal-me/image/upload/v1574425624/posts/prepare-for-validation.png" alt="the prepare for validation method"></p>
-<div style="text-align: center"><a href="https://github.com/laravel/framework/blob/master/src/Illuminate/Validation/ValidatesWhenResolvedTrait.php#L37" target="_blank" rel="noopener">Heres a link to the above code</a><br></div>
-
-<p>So given that the method is empty how do we use it and go about updating the form request data?</p>
-                    
-                        <a href="/blog/update-form-request-data-before-validation-in-laravel/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/blog/update-form-request-data-before-validation-in-laravel/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1574634761/posts/naples-monument.jpg"/>
-                </div>
-            </a>
-            
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/using-sshuttle-to-solve-static-ip-issues-when-remote-working/">
-                            Using sshuttle to Solve Static IP Issues When Remote Working
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-11-21T15:51:28+00:00">
-	
-		    Nov 21, 2019
-    	
-    </time>
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <h3 id="Introduction-and-Prerequisites"><a href="#Introduction-and-Prerequisites" class="headerlink" title="Introduction and Prerequisites"></a>Introduction and Prerequisites</h3><p>I’ve been remote working full time for over 3 years now. </p>
-<p>In that time I’ve had to work with a number of clients who restrict access to their internal systems via IP Address whitelisting.</p>
-<p>As a developer who often works from different locations and countries this can quickly become problematic. </p>
-<p>A paid for solution is to purchase a Dedicated Static IP VPN from a reputable provider like <a href="https://nordvpn.com/features/dedicated-ip/" target="_blank" rel="noopener">NordVPN.</a>  and ask the clients IT team to whitelist your new Dedicated Static IP.</p>
-<p>This is something I’ve been doing for a while and whilst the initial set up is a little fiddly, (You have to set up 2 accounts and get their team to link them together) its worked flawlessly for me.</p>
-<p>However if you have the following:</p>
-<ul>
-<li>SSH access to a device in a location with a Static IP (Perhaps you get one from your ISP or your office has one)</li>
-<li>You use Linux or OSX (Sorry windows guys I don’t think even with WSL this will work). </li>
-</ul>
-<p>Then you can use the super handy command line tool <a href="https://github.com/sshuttle/sshuttle" target="_blank" rel="noopener">SSHUTTLE</a> to route all (or some) of your traffic through that device.</p>
-<p>Lets take a look at getting it working…</p>
-                    
-                        <a href="/blog/using-sshuttle-to-solve-static-ip-issues-when-remote-working/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/blog/using-sshuttle-to-solve-static-ip-issues-when-remote-working/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1574239597/posts/tribeca-manhattan-nyc.jpg"/>
-                </div>
-            </a>
-            
-        
-    </article>
-    
     <div class="pagination-bar">
     <ul class="pagination">
         
@@ -777,7 +772,7 @@
             </a>
           </li>
         
-        <li class="pagination-number">page 1 of 3</li>
+        <li class="pagination-number">page 1 of 4</li>
     </ul>
 </div>
 
@@ -1143,7 +1138,7 @@
                 data-message-zero="no post found"
                 data-message-one="1 post found"
                 data-message-other="{n} posts found">
-                30 posts found
+                32 posts found
             </p>
         </div>
     </div>

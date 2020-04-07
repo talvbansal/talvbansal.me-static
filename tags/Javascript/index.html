@@ -245,6 +245,55 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/blog/force-laravel-to-return-json-responses/">
+                            Force Laravel to return JSON responses
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2020-04-06T20:32:00+01:00">
+	
+		    Apr 06, 2020
+    	
+    </time>
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <p>Today I was working on an API written in Laravel for a React Native app with another developer.</p>
+<p>He was trying to make requests to the Laravel backend and told me he kept receiving a response with a http status code of 302. 3XX http status codes are redirection status codes. </p>
+<p>It turned out that he had not set an accept header on the requests to the server that the app was making, as a result the server was re-directing to the server route with the </p>
+<p>By default if you dont set a requests accept headers they default to <code>Accept: */*</code>. With those set laravel responds with a <code>Content-Type</code> of <code>text/html</code>.</p>
+<p>For the purpose of this project every api response needs to return JSON.</p>
+<p>We can achieve this really easily by using middleware to overwrite the <code>Accept</code> headers on the incoming request and setting them to <code>application/json</code>.</p>
+                    
+                        <a href="/blog/force-laravel-to-return-json-responses/" class="postShorten-excerpt_link link">
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+            <a href="/blog/force-laravel-to-return-json-responses/">
+                <div class="postShorten-thumbnailimg">
+                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1586202198/posts/bagan-baloons.jpg"/>
+                </div>
+            </a>
+            
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-right">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/blog/updating-laravels-env-file-with-production-credentials-in-gitlab-ci-with-laravel-mix/">
                             Updating Laravel&#39;s .env file with Production Credentials in Gitlab CI with Laravel Mix
                         </a>
@@ -893,7 +942,7 @@
                 data-message-zero="no post found"
                 data-message-one="1 post found"
                 data-message-other="{n} posts found">
-                30 posts found
+                32 posts found
             </p>
         </div>
     </div>
