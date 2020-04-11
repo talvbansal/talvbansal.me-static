@@ -4,16 +4,19 @@
     
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="generator" content="TalvBansal.me" />
-  <title>Force Laravel to return JSON responses - TalvBansal.me</title>
-  <meta name="author" content="Talv Bansal" />
-  
-  <meta name="keywords" content="hexo,gitlab,github,javascript,es6,laravel,php,vue,vue.js,development,full stack,CI/CD," />
-   
-  <link rel="icon" href="https://talvbansal.me/assets/images/favicon.ico" />
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Talv Bansal","sameAs":["https://github.com/talvbansal","https://twitter.com/talv","https://instagram.com/iwantthewindowseat","https://www.linkedin.com/in/talvinder-bansal-5826594a","mailto:talvbansal@outlook.com"],"image":"https://www.gravatar.com/avatar/be14e67a41106fe8731f839b3bd46733"},"articleBody":"Today I was working on an API written in Laravel for a React Native app with another developer.\nHe was trying to make requests to the Laravel backend and told me he kept receiving a response with a http status code of 302. 3XX http status codes are redirection status codes. \nIt turned out that he had not set an accept header on the requests to the server that the app was making, as a result the server was re-directing to the server route with the \nBy default if you dont set a requests accept headers they default to Accept: */*. With those set laravel responds with a Content-Type of text/html.\nFor the purpose of this project every api response needs to return JSON.\nWe can achieve this really easily by using middleware to overwrite the Accept headers on the incoming request and setting them to application/json.\n\nCreate a new middleware class:1php artisan make:middlware RespondWithJsonMiddleware\nNow open the new file created in app/Http/Middlware and change the handle method to look like this:\n123456public function handle($request, Closure $next)&#123;    $request-&gt;headers-&gt;set('Accept', 'application/json');    return $next($request);&#125;\nAnd thats as simple as it gets, now we just need to apply that middleware to a given set of routes.\nApplying to all API routesFor my purposes I wanted every request to return JSON so I added this new class to api global middleware group in app/Http/Kernel.php\n1234567...        'api' =&gt; [            'throttle:60,1',            \\Illuminate\\Routing\\Middleware\\SubstituteBindings::class,            App\\Http\\Middlware\\RespondWithJsonMiddleware::class,        ],...\nIf we look at the app/Providers/RouteServiceProvider.php file we can see that this api middleware group is applied to all of the routes in `routes/api.php:\n1234567protected function mapApiRoutes()&#123;    Route::prefix('api')        -&gt;middleware('api')        -&gt;namespace($this-&gt;namespace)        -&gt;group(base_path('routes/api.php'));&#125;\nApplying to specific routesIf we didn’t want to apply the new middleware to every api route and to a given controller we can do so like this.\nFirst remove the new middleware from the api group\n1234567// app/Http/Kernel.php...        'api' =&gt; [            'throttle:60,1',            \\Illuminate\\Routing\\Middleware\\SubstituteBindings::class,        ],...\nNow add the new middleware item to the $routeMiddleware array in the same file\n12345678protected $routeMiddleware = [        'auth' =&gt; \\App\\Http\\Middleware\\Authenticate::class,        'auth.basic' =&gt; \\Illuminate\\Auth\\Middleware\\AuthenticateWithBasicAuth::class,        'bindings' =&gt; \\Illuminate\\Routing\\Middleware\\SubstituteBindings::class,        'cache.headers' =&gt; \\Illuminate\\Http\\Middleware\\SetCacheHeaders::class,...        'respond.json' =&gt; App\\Http\\Middlware\\RespondWithJsonMiddleware::class,];\nThen use the middleware as you normally would in your routes file\n1234// routes/api.phpRoute::group(['middleware' =&gt; ['respond.json']], function () &#123;    // routes in here...&#125;\nAnonymously in a controllerWe can also apply this code to a controller using the controller middleware function.\n12345678910111213class IndexController extends Controller&#123;    public function __construct()    &#123;        $this-&gt;middleware(function ($request, $next) &#123;            $request-&gt;headers-&gt;set('Accept', 'application/json');            return $next($request);        &#125;);    &#125;...","dateCreated":"2020-04-06T20:32:00+01:00","dateModified":"2020-04-07T13:44:20+01:00","datePublished":"2020-04-06T20:32:00+01:00","description":"Today I was working on an API written in Laravel for a React Native app with another developer.\nHe was trying to make requests to the Laravel backend and told me he kept receiving a response with a http status code of 302. 3XX http status codes are redirection status codes. \nIt turned out that he had not set an accept header on the requests to the server that the app was making, as a result the server was re-directing to the server route with the \nBy default if you dont set a requests accept headers they default to Accept: */*. With those set laravel responds with a Content-Type of text/html.\nFor the purpose of this project every api response needs to return JSON.\nWe can achieve this really easily by using middleware to overwrite the Accept headers on the incoming request and setting them to application/json.","headline":"Force Laravel to return JSON responses","image":["https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1586202198/posts/bagan-baloons.jpg","https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_1600/v1586202198/posts/bagan-baloons.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://talvbansal.me/blog/force-laravel-to-return-json-responses/"},"publisher":{"@type":"Organization","name":"Talv Bansal","sameAs":["https://github.com/talvbansal","https://twitter.com/talv","https://instagram.com/iwantthewindowseat","https://www.linkedin.com/in/talvinder-bansal-5826594a","mailto:talvbansal@outlook.com"],"image":"https://www.gravatar.com/avatar/be14e67a41106fe8731f839b3bd46733","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/be14e67a41106fe8731f839b3bd46733"}},"url":"https://talvbansal.me/blog/force-laravel-to-return-json-responses/","keywords":"Laravel, Javascript, JSON, Middleware","thumbnailUrl":"https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1586202198/posts/bagan-baloons.jpg"}</script> <meta name="description" content="Today I was working on an API written in Laravel for a React Native app with another developer. He was trying to make requests to the Laravel backend and told me he kept receiving a response with a ht">
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="generator" content="TalvBansal.me"/>
+    <title>Force Laravel to return JSON responses - TalvBansal.me</title>
+    <meta name="author" content="Talv Bansal"/>
+    
+        <meta name="keywords" content="hexo,gitlab,github,javascript,es6,laravel,php,vue,vue.js,development,full stack,CI/CD,"/>
+    
+    
+        <link rel="icon" href="https://talvbansal.me/assets/images/favicon.ico"/>
+    
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Talv Bansal","sameAs":["https://github.com/talvbansal","https://twitter.com/talv","https://instagram.com/iwantthewindowseat","https://www.linkedin.com/in/talvinder-bansal-5826594a","mailto:talvbansal@outlook.com"],"image":"https://www.gravatar.com/avatar/be14e67a41106fe8731f839b3bd46733"},"articleBody":"Today I was working on an API written in Laravel for a React Native app with another developer.\nHe was trying to make requests to the Laravel backend and told me he kept receiving a response with a http status code of 302. 3XX http status codes are redirection status codes. \nIt turned out that he had not set an accept header on the requests to the server that the app was making.\nBy default if you dont set a requests accept headers they default to Accept: */*. With those set laravel responds with a Content-Type of text/html.\nFor the purpose of this project every api response needs to return JSON.\nWe can achieve this really easily by using middleware to overwrite the Accept headers on the incoming request and setting them to application/json.\n\nCreate a new middleware class:1php artisan make:middlware RespondWithJsonMiddleware\nNow open the new file created in app/Http/Middlware and change the handle method to look like this:\n123456public function handle($request, Closure $next)&#123;    $request-&gt;headers-&gt;set('Accept', 'application/json');    return $next($request);&#125;\nAnd thats as simple as it gets, now we just need to apply that middleware to a given set of routes.\nApplying to all API routesFor my purposes I wanted every request to return JSON so I added this new class to api global middleware group in app/Http/Kernel.php\n1234567...        'api' =&gt; [            'throttle:60,1',            \\Illuminate\\Routing\\Middleware\\SubstituteBindings::class,            App\\Http\\Middlware\\RespondWithJsonMiddleware::class,        ],...\nIf we look at the app/Providers/RouteServiceProvider.php file we can see that this api middleware group is applied to all of the routes in `routes/api.php:\n1234567protected function mapApiRoutes()&#123;    Route::prefix('api')        -&gt;middleware('api')        -&gt;namespace($this-&gt;namespace)        -&gt;group(base_path('routes/api.php'));&#125;\nApplying to specific routesIf we didn’t want to apply the new middleware to every api route and to a given controller we can do so like this.\nFirst remove the new middleware from the api group\n1234567// app/Http/Kernel.php...        'api' =&gt; [            'throttle:60,1',            \\Illuminate\\Routing\\Middleware\\SubstituteBindings::class,        ],...\nNow add the new middleware item to the $routeMiddleware array in the same file\n12345678protected $routeMiddleware = [        'auth' =&gt; \\App\\Http\\Middleware\\Authenticate::class,        'auth.basic' =&gt; \\Illuminate\\Auth\\Middleware\\AuthenticateWithBasicAuth::class,        'bindings' =&gt; \\Illuminate\\Routing\\Middleware\\SubstituteBindings::class,        'cache.headers' =&gt; \\Illuminate\\Http\\Middleware\\SetCacheHeaders::class,...        'respond.json' =&gt; App\\Http\\Middlware\\RespondWithJsonMiddleware::class,];\nThen use the middleware as you normally would in your routes file\n1234// routes/api.phpRoute::group(['middleware' =&gt; ['respond.json']], function () &#123;    // routes in here...&#125;\nAnonymously in a controllerWe can also apply this code to a controller using the controller middleware function.\n12345678910111213class IndexController extends Controller&#123;    public function __construct()    &#123;        $this-&gt;middleware(function ($request, $next) &#123;            $request-&gt;headers-&gt;set('Accept', 'application/json');            return $next($request);        &#125;);    &#125;...","dateCreated":"2020-04-06T20:32:00+01:00","dateModified":"2020-04-11T14:21:34+01:00","datePublished":"2020-04-06T20:32:00+01:00","description":"Today I was working on an API written in Laravel for a React Native app with another developer.\nHe was trying to make requests to the Laravel backend and told me he kept receiving a response with a http status code of 302. 3XX http status codes are redirection status codes. \nIt turned out that he had not set an accept header on the requests to the server that the app was making.\nBy default if you dont set a requests accept headers they default to Accept: */*. With those set laravel responds with a Content-Type of text/html.\nFor the purpose of this project every api response needs to return JSON.\nWe can achieve this really easily by using middleware to overwrite the Accept headers on the incoming request and setting them to application/json.","headline":"Force Laravel to return JSON responses","image":["https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1586202198/posts/bagan-baloons.jpg","https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_1600/v1586202198/posts/bagan-baloons.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://talvbansal.me/blog/force-laravel-to-return-json-responses/"},"publisher":{"@type":"Organization","name":"Talv Bansal","sameAs":["https://github.com/talvbansal","https://twitter.com/talv","https://instagram.com/iwantthewindowseat","https://www.linkedin.com/in/talvinder-bansal-5826594a","mailto:talvbansal@outlook.com"],"image":"https://www.gravatar.com/avatar/be14e67a41106fe8731f839b3bd46733","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/be14e67a41106fe8731f839b3bd46733"}},"url":"https://talvbansal.me/blog/force-laravel-to-return-json-responses/","keywords":"Laravel, Javascript, JSON, Middleware","thumbnailUrl":"https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1586202198/posts/bagan-baloons.jpg"}</script> <meta name="description" content="Today I was working on an API written in Laravel for a React Native app with another developer. He was trying to make requests to the Laravel backend and told me he kept receiving a response with a ht">
 <meta name="keywords" content="Laravel,Javascript,JSON,Middleware">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Force Laravel to return JSON responses">
@@ -21,24 +24,32 @@
 <meta property="og:site_name" content="TalvBansal.me">
 <meta property="og:description" content="Today I was working on an API written in Laravel for a React Native app with another developer. He was trying to make requests to the Laravel backend and told me he kept receiving a response with a ht">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-04-07T12:44:20.084Z">
+<meta property="og:updated_time" content="2020-04-11T13:21:34.586Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Force Laravel to return JSON responses">
 <meta name="twitter:description" content="Today I was working on an API written in Laravel for a React Native app with another developer. He was trying to make requests to the Laravel backend and told me he kept receiving a response with a ht">
-<meta name="twitter:creator" content="@talv">     
-  <meta property="og:image" content="https://www.gravatar.com/avatar/321065504328f47a4f9d8b57df0635f4?s=640" />
-   
-  <meta property="og:image" content="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1586202198/posts/bagan-baloons.jpg" />
-  <meta class="swiftype" name="image" data-type="enum"
-    content="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1586202198/posts/bagan-baloons.jpg" />
-   
-  <meta property="og:image" content="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_1600/v1586202198/posts/bagan-baloons.jpg" />
-  <meta class="swiftype" name="image" data-type="enum" content="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_1600/v1586202198/posts/bagan-baloons.jpg" />
-   
-  <!--STYLES-->
-  <link rel="stylesheet" href="/assets/css/style-du2xmrqdqrl2ollgeiw050kpl6l4nbyz7bumjuurjgsxyopifvukebxc9lqe.min.css">
-  <!--STYLES END-->
-  
+<meta name="twitter:creator" content="@talv">
+    
+     
+    
+    
+        <meta property="og:image" content="https://www.gravatar.com/avatar/321065504328f47a4f9d8b57df0635f4?s=640"/>
+    
+    
+        <meta property="og:image" content="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1586202198/posts/bagan-baloons.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum"
+              content="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1586202198/posts/bagan-baloons.jpg"/>
+    
+    
+        <meta property="og:image" content="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_1600/v1586202198/posts/bagan-baloons.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum"
+              content="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_1600/v1586202198/posts/bagan-baloons.jpg"/>
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-du2xmrqdqrl2ollgeiw050kpl6l4nbyz7bumjuurjgsxyopifvukebxc9lqe.min.css">
+    <!--STYLES END-->
+    
     <script type="text/javascript">
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
         (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -51,8 +62,8 @@
 
  
 
-  <script data-ad-client="ca-pub-9138914555599712" async
-    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script data-ad-client="ca-pub-9138914555599712" async
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 </head>
     <body>
         <div id="blog">
@@ -279,7 +290,7 @@
         <div class="main-content-wrap">
             <p>Today I was working on an API written in Laravel for a React Native app with another developer.</p>
 <p>He was trying to make requests to the Laravel backend and told me he kept receiving a response with a http status code of 302. 3XX http status codes are redirection status codes. </p>
-<p>It turned out that he had not set an accept header on the requests to the server that the app was making, as a result the server was re-directing to the server route with the </p>
+<p>It turned out that he had not set an accept header on the requests to the server that the app was making.</p>
 <p>By default if you dont set a requests accept headers they default to <code>Accept: */*</code>. With those set laravel responds with a <code>Content-Type</code> of <code>text/html</code>.</p>
 <p>For the purpose of this project every api response needs to return JSON.</p>
 <p>We can achieve this really easily by using middleware to overwrite the <code>Accept</code> headers on the incoming request and setting them to <code>application/json</code>.</p>

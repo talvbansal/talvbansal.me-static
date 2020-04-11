@@ -4,15 +4,18 @@
     
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="generator" content="TalvBansal.me" />
-  <title>Tag: Laravel - TalvBansal.me</title>
-  <meta name="author" content="Talv Bansal" />
-  
-  <meta name="keywords" content="hexo,gitlab,github,javascript,es6,laravel,php,vue,vue.js,development,full stack,CI/CD," />
-   
-  <link rel="icon" href="https://talvbansal.me/assets/images/favicon.ico" />
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="generator" content="TalvBansal.me"/>
+    <title>Tag: Laravel - TalvBansal.me</title>
+    <meta name="author" content="Talv Bansal"/>
+    
+        <meta name="keywords" content="hexo,gitlab,github,javascript,es6,laravel,php,vue,vue.js,development,full stack,CI/CD,"/>
+    
+    
+        <link rel="icon" href="https://talvbansal.me/assets/images/favicon.ico"/>
+    
+    
     <script type="application/ld+json">{}</script> <meta name="description" content="Tales of a full stack developer">
 <meta name="keywords" content="hexo,gitlab,github,javascript,es6,laravel,php,vue,vue.js,development,full stack,CI&#x2F;CD">
 <meta property="og:type" content="blog">
@@ -24,13 +27,20 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="TalvBansal.me">
 <meta name="twitter:description" content="Tales of a full stack developer">
-<meta name="twitter:creator" content="@talv">     
-  <meta property="og:image" content="https://www.gravatar.com/avatar/321065504328f47a4f9d8b57df0635f4?s=640" />
+<meta name="twitter:creator" content="@talv">
+    
      
-  <!--STYLES-->
-  <link rel="stylesheet" href="/assets/css/style-du2xmrqdqrl2ollgeiw050kpl6l4nbyz7bumjuurjgsxyopifvukebxc9lqe.min.css">
-  <!--STYLES END-->
-  
+    
+    
+        <meta property="og:image" content="https://www.gravatar.com/avatar/321065504328f47a4f9d8b57df0635f4?s=640"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-du2xmrqdqrl2ollgeiw050kpl6l4nbyz7bumjuurjgsxyopifvukebxc9lqe.min.css">
+    <!--STYLES END-->
+    
     <script type="text/javascript">
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
         (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -43,8 +53,8 @@
 
  
 
-  <script data-ad-client="ca-pub-9138914555599712" async
-    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script data-ad-client="ca-pub-9138914555599712" async
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 </head>
     <body>
         <div id="blog">
@@ -264,7 +274,7 @@
                 <div class="postShorten-excerpt">
                     <p>Today I was working on an API written in Laravel for a React Native app with another developer.</p>
 <p>He was trying to make requests to the Laravel backend and told me he kept receiving a response with a http status code of 302. 3XX http status codes are redirection status codes. </p>
-<p>It turned out that he had not set an accept header on the requests to the server that the app was making, as a result the server was re-directing to the server route with the </p>
+<p>It turned out that he had not set an accept header on the requests to the server that the app was making.</p>
 <p>By default if you dont set a requests accept headers they default to <code>Accept: */*</code>. With those set laravel responds with a <code>Content-Type</code> of <code>text/html</code>.</p>
 <p>For the purpose of this project every api response needs to return JSON.</p>
 <p>We can achieve this really easily by using middleware to overwrite the <code>Accept</code> headers on the incoming request and setting them to <code>application/json</code>.</p>

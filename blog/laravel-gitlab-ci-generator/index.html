@@ -4,15 +4,18 @@
     
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="generator" content="TalvBansal.me" />
-  <title>Laravel Gitlab CI Generator - TalvBansal.me</title>
-  <meta name="author" content="Talv Bansal" />
-  
-  <meta name="keywords" content="hexo,gitlab,github,javascript,es6,laravel,php,vue,vue.js,development,full stack,CI/CD," />
-   
-  <link rel="icon" href="https://talvbansal.me/assets/images/favicon.ico" />
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="generator" content="TalvBansal.me"/>
+    <title>Laravel Gitlab CI Generator - TalvBansal.me</title>
+    <meta name="author" content="Talv Bansal"/>
+    
+        <meta name="keywords" content="hexo,gitlab,github,javascript,es6,laravel,php,vue,vue.js,development,full stack,CI/CD,"/>
+    
+    
+        <link rel="icon" href="https://talvbansal.me/assets/images/favicon.ico"/>
+    
+    
     <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Talv Bansal","sameAs":["https://github.com/talvbansal","https://twitter.com/talv","https://instagram.com/iwantthewindowseat","https://www.linkedin.com/in/talvinder-bansal-5826594a","mailto:talvbansal@outlook.com"],"image":"https://www.gravatar.com/avatar/be14e67a41106fe8731f839b3bd46733"},"articleBody":"At our company setting up gitlab ci configuration is one of the jobs I end up doing by default.\nThis weekend I wrote a package to help speed that process up by generating a .gitlab-ci.yml file as well as installing some of the packages and configuration files to make the following possible:\n\nSetting an edbizarro docker image based on your target php version\nHandle Javascript asset compilation using NPM or Yarn\nLint Javascript and Vue files with Eslint\nLint php files using the laravel shift rules for PHP-Code-Fixer\nPerform static analysis with Larastan\nRun phpunit tests\n\nThe package currently provides a single artisan command to do all of the above after answering a few simple questions.\nCheck the repo out here:\nhttps://github.com/talvbansal/laravel-gitlab-ci-config-generator\n\nCurrently the package doesn’t build anything for automatically deploying code but in time I hope to add this in using Laravel Deployer. \nThis should mean that eventually the sum of these 2 blog posts (Config and Deploying) could be replaced with a single package and artisan command. \nIn order to make the yaml generation easier this package requires the php-yaml extension. Which is installable as follows:\n12345// ubuntusudo apt install php-yaml// otherspecl install yaml\nCurrently php-yaml is installed in the CI process but I think I should be able to drop that requirement since we’re not going to be generating yaml files in our pipelines.\nHopefully this should help speed things up for people setting up new projects.\n","dateCreated":"2020-03-30T13:19:52+01:00","dateModified":"2020-03-30T15:22:28+01:00","datePublished":"2020-03-30T13:19:52+01:00","description":"At our company setting up gitlab ci configuration is one of the jobs I end up doing by default.\nThis weekend I wrote a package to help speed that process up by generating a .gitlab-ci.yml file as well as installing some of the packages and configuration files to make the following possible:\n\nSetting an edbizarro docker image based on your target php version\nHandle Javascript asset compilation using NPM or Yarn\nLint Javascript and Vue files with Eslint\nLint php files using the laravel shift rules for PHP-Code-Fixer\nPerform static analysis with Larastan\nRun phpunit tests\n\nThe package currently provides a single artisan command to do all of the above after answering a few simple questions.\nCheck the repo out here:\nhttps://github.com/talvbansal/laravel-gitlab-ci-config-generator","headline":"Laravel Gitlab CI Generator","image":["https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1585573513/posts/santorini-oia.jpg","https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_1600/v1585573513/posts/santorini-oia.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://talvbansal.me/blog/laravel-gitlab-ci-generator/"},"publisher":{"@type":"Organization","name":"Talv Bansal","sameAs":["https://github.com/talvbansal","https://twitter.com/talv","https://instagram.com/iwantthewindowseat","https://www.linkedin.com/in/talvinder-bansal-5826594a","mailto:talvbansal@outlook.com"],"image":"https://www.gravatar.com/avatar/be14e67a41106fe8731f839b3bd46733","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/be14e67a41106fe8731f839b3bd46733"}},"url":"https://talvbansal.me/blog/laravel-gitlab-ci-generator/","keywords":"Gitlab, Laravel, PHP, Devops, CI/CD, Build, Deploy","thumbnailUrl":"https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1585573513/posts/santorini-oia.jpg"}</script> <meta name="description" content="At our company setting up gitlab ci configuration is one of the jobs I end up doing by default. This weekend I wrote a package to help speed that process up by generating a .gitlab-ci.yml file as well">
 <meta name="keywords" content="Gitlab,Laravel,PHP,Devops,CI&#x2F;CD,Build,Deploy">
 <meta property="og:type" content="blog">
@@ -25,20 +28,28 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Laravel Gitlab CI Generator">
 <meta name="twitter:description" content="At our company setting up gitlab ci configuration is one of the jobs I end up doing by default. This weekend I wrote a package to help speed that process up by generating a .gitlab-ci.yml file as well">
-<meta name="twitter:creator" content="@talv">     
-  <meta property="og:image" content="https://www.gravatar.com/avatar/321065504328f47a4f9d8b57df0635f4?s=640" />
-   
-  <meta property="og:image" content="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1585573513/posts/santorini-oia.jpg" />
-  <meta class="swiftype" name="image" data-type="enum"
-    content="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1585573513/posts/santorini-oia.jpg" />
-   
-  <meta property="og:image" content="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_1600/v1585573513/posts/santorini-oia.jpg" />
-  <meta class="swiftype" name="image" data-type="enum" content="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_1600/v1585573513/posts/santorini-oia.jpg" />
-   
-  <!--STYLES-->
-  <link rel="stylesheet" href="/assets/css/style-du2xmrqdqrl2ollgeiw050kpl6l4nbyz7bumjuurjgsxyopifvukebxc9lqe.min.css">
-  <!--STYLES END-->
-  
+<meta name="twitter:creator" content="@talv">
+    
+     
+    
+    
+        <meta property="og:image" content="https://www.gravatar.com/avatar/321065504328f47a4f9d8b57df0635f4?s=640"/>
+    
+    
+        <meta property="og:image" content="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1585573513/posts/santorini-oia.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum"
+              content="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1585573513/posts/santorini-oia.jpg"/>
+    
+    
+        <meta property="og:image" content="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_1600/v1585573513/posts/santorini-oia.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum"
+              content="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_1600/v1585573513/posts/santorini-oia.jpg"/>
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-du2xmrqdqrl2ollgeiw050kpl6l4nbyz7bumjuurjgsxyopifvukebxc9lqe.min.css">
+    <!--STYLES END-->
+    
     <script type="text/javascript">
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
         (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -51,8 +62,8 @@
 
  
 
-  <script data-ad-client="ca-pub-9138914555599712" async
-    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script data-ad-client="ca-pub-9138914555599712" async
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 </head>
     <body>
         <div id="blog">

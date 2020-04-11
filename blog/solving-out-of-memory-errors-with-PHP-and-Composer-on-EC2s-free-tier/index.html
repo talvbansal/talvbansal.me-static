@@ -4,15 +4,18 @@
     
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="generator" content="TalvBansal.me" />
-  <title>Solving out of memory errors with PHP and Composer on EC2s free tier - TalvBansal.me</title>
-  <meta name="author" content="Talv Bansal" />
-  
-  <meta name="keywords" content="hexo,gitlab,github,javascript,es6,laravel,php,vue,vue.js,development,full stack,CI/CD," />
-   
-  <link rel="icon" href="https://talvbansal.me/assets/images/favicon.ico" />
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="generator" content="TalvBansal.me"/>
+    <title>Solving out of memory errors with PHP and Composer on EC2s free tier - TalvBansal.me</title>
+    <meta name="author" content="Talv Bansal"/>
+    
+        <meta name="keywords" content="hexo,gitlab,github,javascript,es6,laravel,php,vue,vue.js,development,full stack,CI/CD,"/>
+    
+    
+        <link rel="icon" href="https://talvbansal.me/assets/images/favicon.ico"/>
+    
+    
     <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Talv Bansal","sameAs":["https://github.com/talvbansal","https://twitter.com/talv","https://instagram.com/iwantthewindowseat","https://www.linkedin.com/in/talvinder-bansal-5826594a","mailto:talvbansal@outlook.com"],"image":"https://www.gravatar.com/avatar/be14e67a41106fe8731f839b3bd46733"},"articleBody":"For one of my recent projects I wanted to make use of the free allowance that AWS gives for SES.\nOne of the conditions of the SES allowance was that your calling app needs to be hosted on EC2.\nI’ve not used EC2 before so I figured this would be a good way to dive into it.\nWhilst I would never usually install software like composer on a production server, this was purely to test things out.\n So after signing up for AWS and creating a local ubuntu server on an EC2 t2micro instance then cloning down the project I ran composer install to come across the following message: \n12345678910composer installLoading composer repositories with package informationUpdating dependencies (including require-dev)mmap() failed: [12] Cannot allocate memorymmap() failed: [12] Cannot allocate memoryPHP Fatal error:  Out of memory (allocated 822091776) (tried to allocate 4096 bytes) in phar:///usr/local/bin/composer/src/Composer/DependencyResolver/Solver.php on line 223Fatal error: Out of memory (allocated 822091776) (tried to allocate 4096 bytes) in phar:///usr/local/bin/composer/src/Composer/DependencyResolver/Solver.php on line 223\n822091776bytes is over 800mb of memory being consumed by composer.\n\nWhilst php-fpm has a 128mb max memory limit per script by default, php-cli has a value of -1 which means use unlimited memory.\n In this instance attempting to allocate over 800mb of memory on a server with 1gb was not going to end well.\nThe solve was to create a swap file on the disk.\nA swap file or partition is space on disk allocated that can used when the physical memory allocation is exhausted. Once the allocation is exhausted, older items in memory get offloaded to the swap partition.\nThe actual solve for this i found over on this github issue. \nThe following code will create a 1gb swap file in /var/swap.1 for our instance to use\n123sudo /bin/dd if=/dev/zero of=/var/swap.1 bs=1M count=1024sudo /sbin/mkswap /var/swap.1sudo /sbin/swapon /var/swap.1\n","dateCreated":"2020-02-05T20:45:36+00:00","dateModified":"2020-02-18T13:45:20+00:00","datePublished":"2020-02-05T20:45:36+00:00","description":"For one of my recent projects I wanted to make use of the free allowance that AWS gives for SES.\nOne of the conditions of the SES allowance was that your calling app needs to be hosted on EC2.\nI’ve not used EC2 before so I figured this would be a good way to dive into it.\nWhilst I would never usually install software like composer on a production server, this was purely to test things out.\n So after signing up for AWS and creating a local ubuntu server on an EC2 t2micro instance then cloning down the project I ran composer install to come across the following message: \n12345678910composer installLoading composer repositories with package informationUpdating dependencies (including require-dev)mmap() failed: [12] Cannot allocate memorymmap() failed: [12] Cannot allocate memoryPHP Fatal error:  Out of memory (allocated 822091776) (tried to allocate 4096 bytes) in phar:///usr/local/bin/composer/src/Composer/DependencyResolver/Solver.php on line 223Fatal error: Out of memory (allocated 822091776) (tried to allocate 4096 bytes) in phar:///usr/local/bin/composer/src/Composer/DependencyResolver/Solver.php on line 223\n822091776bytes is over 800mb of memory being consumed by composer.","headline":"Solving out of memory errors with PHP and Composer on EC2s free tier","image":["https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1582033481/posts/istanbul-galata-tower.jpg","https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_1600/v1582033481/posts/istanbul-galata-tower.jpg"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://talvbansal.me/blog/solving-out-of-memory-errors-with-PHP-and-Composer-on-EC2s-free-tier/"},"publisher":{"@type":"Organization","name":"Talv Bansal","sameAs":["https://github.com/talvbansal","https://twitter.com/talv","https://instagram.com/iwantthewindowseat","https://www.linkedin.com/in/talvinder-bansal-5826594a","mailto:talvbansal@outlook.com"],"image":"https://www.gravatar.com/avatar/be14e67a41106fe8731f839b3bd46733","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/be14e67a41106fe8731f839b3bd46733"}},"url":"https://talvbansal.me/blog/solving-out-of-memory-errors-with-PHP-and-Composer-on-EC2s-free-tier/","keywords":"PHP, AWS, EC2, SES, Composer","thumbnailUrl":"https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1582033481/posts/istanbul-galata-tower.jpg"}</script> <meta name="description" content="For one of my recent projects I wanted to make use of the free allowance that AWS gives for SES. One of the conditions of the SES allowance was that your calling app needs to be hosted on EC2. I’ve no">
 <meta name="keywords" content="PHP,AWS,EC2,SES,Composer">
 <meta property="og:type" content="blog">
@@ -25,20 +28,28 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Solving out of memory errors with PHP and Composer on EC2s free tier">
 <meta name="twitter:description" content="For one of my recent projects I wanted to make use of the free allowance that AWS gives for SES. One of the conditions of the SES allowance was that your calling app needs to be hosted on EC2. I’ve no">
-<meta name="twitter:creator" content="@talv">     
-  <meta property="og:image" content="https://www.gravatar.com/avatar/321065504328f47a4f9d8b57df0635f4?s=640" />
-   
-  <meta property="og:image" content="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1582033481/posts/istanbul-galata-tower.jpg" />
-  <meta class="swiftype" name="image" data-type="enum"
-    content="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1582033481/posts/istanbul-galata-tower.jpg" />
-   
-  <meta property="og:image" content="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_1600/v1582033481/posts/istanbul-galata-tower.jpg" />
-  <meta class="swiftype" name="image" data-type="enum" content="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_1600/v1582033481/posts/istanbul-galata-tower.jpg" />
-   
-  <!--STYLES-->
-  <link rel="stylesheet" href="/assets/css/style-du2xmrqdqrl2ollgeiw050kpl6l4nbyz7bumjuurjgsxyopifvukebxc9lqe.min.css">
-  <!--STYLES END-->
-  
+<meta name="twitter:creator" content="@talv">
+    
+     
+    
+    
+        <meta property="og:image" content="https://www.gravatar.com/avatar/321065504328f47a4f9d8b57df0635f4?s=640"/>
+    
+    
+        <meta property="og:image" content="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1582033481/posts/istanbul-galata-tower.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum"
+              content="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1582033481/posts/istanbul-galata-tower.jpg"/>
+    
+    
+        <meta property="og:image" content="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_1600/v1582033481/posts/istanbul-galata-tower.jpg"/>
+        <meta class="swiftype" name="image" data-type="enum"
+              content="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_1600/v1582033481/posts/istanbul-galata-tower.jpg"/>
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-du2xmrqdqrl2ollgeiw050kpl6l4nbyz7bumjuurjgsxyopifvukebxc9lqe.min.css">
+    <!--STYLES END-->
+    
     <script type="text/javascript">
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
         (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -51,8 +62,8 @@
 
  
 
-  <script data-ad-client="ca-pub-9138914555599712" async
-    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script data-ad-client="ca-pub-9138914555599712" async
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 </head>
     <body>
         <div id="blog">

@@ -4,15 +4,18 @@
     
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="generator" content="TalvBansal.me" />
-  <title>Remove git-lfs from a repository - TalvBansal.me</title>
-  <meta name="author" content="Talv Bansal" />
-  
-  <meta name="keywords" content="hexo,gitlab,github,javascript,es6,laravel,php,vue,vue.js,development,full stack,CI/CD," />
-   
-  <link rel="icon" href="https://talvbansal.me/assets/images/favicon.ico" />
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="generator" content="TalvBansal.me"/>
+    <title>Remove git-lfs from a repository - TalvBansal.me</title>
+    <meta name="author" content="Talv Bansal"/>
+    
+        <meta name="keywords" content="hexo,gitlab,github,javascript,es6,laravel,php,vue,vue.js,development,full stack,CI/CD,"/>
+    
+    
+        <link rel="icon" href="https://talvbansal.me/assets/images/favicon.ico"/>
+    
+    
     <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Talv Bansal","sameAs":["https://github.com/talvbansal","https://twitter.com/talv","https://instagram.com/iwantthewindowseat","https://www.linkedin.com/in/talvinder-bansal-5826594a","mailto:talvbansal@outlook.com"],"image":"https://www.gravatar.com/avatar/be14e67a41106fe8731f839b3bd46733"},"articleBody":"Today I tried to set up my jigsaw-photo-stream project to use netlify large media with git-lfs.\nWhat I failed to read was this key part of the netlify documentation:\n\nFiles tracked with Large Media are uploaded directly to the Netlify Large Media storage service on push, completely bypassing the site build.\n\nAs part of the build process for the project I resize the images that are uploaded.The netlify documentation suggests that you could use netlify’s image transformation to get around this but ideally I dont want the project to be tied into the service provider should I want to migrate to another static site host.\nAt this point I’d already set up git-lfs on the repo and my netlify builds were failing.I found this link to remove git-lfs from an existing repo\nThe steps being:\n1git lfs uninstall\nremove lfs stuff from .gitattributes12345678git lfs ls-files | sed -r &apos;s/^.&#123;13&#125;//&apos; &gt; files.txtwhile read line; do git rm --cached &quot;$line&quot;; done &lt; files.txtwhile read line; do git add &quot;$line&quot;; done &lt; files.txtgit add .gitattributesgit commit -m &quot;unlfs&quot;git push origingit lfs ls-filesrm -rf .git/lfs\n","dateCreated":"2020-04-07T12:31:00+01:00","dateModified":"2020-04-07T12:41:45+01:00","datePublished":"2020-04-07T12:31:00+01:00","description":"","headline":"Remove git-lfs from a repository","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"https://talvbansal.me/blog/remove-git-lfs-from-a-repository/"},"publisher":{"@type":"Organization","name":"Talv Bansal","sameAs":["https://github.com/talvbansal","https://twitter.com/talv","https://instagram.com/iwantthewindowseat","https://www.linkedin.com/in/talvinder-bansal-5826594a","mailto:talvbansal@outlook.com"],"image":"https://www.gravatar.com/avatar/be14e67a41106fe8731f839b3bd46733","logo":{"@type":"ImageObject","url":"https://www.gravatar.com/avatar/be14e67a41106fe8731f839b3bd46733"}},"url":"https://talvbansal.me/blog/remove-git-lfs-from-a-repository/","keywords":"git, github, git-lfs"}</script> <meta name="description" content="Today I tried to set up my jigsaw-photo-stream project to use netlify large media with git-lfs. What I failed to read was this key part of the netlify documentation:  Files tracked with Large Media ar">
 <meta name="keywords" content="git,github,git-lfs">
 <meta property="og:type" content="blog">
@@ -25,13 +28,20 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Remove git-lfs from a repository">
 <meta name="twitter:description" content="Today I tried to set up my jigsaw-photo-stream project to use netlify large media with git-lfs. What I failed to read was this key part of the netlify documentation:  Files tracked with Large Media ar">
-<meta name="twitter:creator" content="@talv">     
-  <meta property="og:image" content="https://www.gravatar.com/avatar/321065504328f47a4f9d8b57df0635f4?s=640" />
+<meta name="twitter:creator" content="@talv">
+    
      
-  <!--STYLES-->
-  <link rel="stylesheet" href="/assets/css/style-du2xmrqdqrl2ollgeiw050kpl6l4nbyz7bumjuurjgsxyopifvukebxc9lqe.min.css">
-  <!--STYLES END-->
-  
+    
+    
+        <meta property="og:image" content="https://www.gravatar.com/avatar/321065504328f47a4f9d8b57df0635f4?s=640"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-du2xmrqdqrl2ollgeiw050kpl6l4nbyz7bumjuurjgsxyopifvukebxc9lqe.min.css">
+    <!--STYLES END-->
+    
     <script type="text/javascript">
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
         (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -44,8 +54,8 @@
 
  
 
-  <script data-ad-client="ca-pub-9138914555599712" async
-    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script data-ad-client="ca-pub-9138914555599712" async
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 </head>
     <body>
         <div id="blog">
