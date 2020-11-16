@@ -255,57 +255,6 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/blog/setting-up-a-multicontainer-elasticbeanstalk-build-for-your-php-app/">
-                            Setting up a Multicontainer Elasticbeanstalk build for your PHP App
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2020-11-16T10:30:53+00:00">
-	
-		    Nov 16, 2020
-    	
-    </time>
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <p>Building docker containers for local development is something I’ve been doing for a while now.<br>However I’ve never actually deployed them to a production env, instead I’ve typically used something like <a href="https://github.com/lorisleiva/laravel-deployer" target="_blank" rel="noopener">Laravel Deployer.</a> to update all of the servers in an environment one by one.<br>This works fine when you know the ip addreses of each of the servers you’re targeting but in an autoscaling environment breaks down almost instantly.</p>
-<p>AWS’s Elasticbeanstalk isn’t anything new but its something I recently used to deploy a project I was working on.<br>Locally I had a <code>docker-compose</code> config that seemed pretty simple, it defined 5 containers:</p>
-<ul>
-<li><strong>app</strong> - the app being build</li>
-<li><strong>mysql</strong> - for the database</li>
-<li><strong>redis</strong> - for the queue</li>
-<li><strong>scheduler</strong> - to run scheduled jobs</li>
-<li><strong>queue</strong> - to run laravel horizon<br>Mounted a couple of volumes for redis and the mysql containers
-                    
-                        <a href="/blog/setting-up-a-multicontainer-elasticbeanstalk-build-for-your-php-app/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/blog/setting-up-a-multicontainer-elasticbeanstalk-build-for-your-php-app/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1583496063/posts/franklin-street-train.jpg"/>
-                </div>
-            </a>
-            
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
                         <a class="link-unstyled" href="/blog/bitbucket-ci-for-laravel-php-applications/">
                             Bitbucket CI for Laravel PHP applications
                         </a>
@@ -772,18 +721,64 @@
         
     </article>
     
+    
+    <article class="postShorten postShorten--thumbnailimg-right">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a class="link-unstyled" href="/blog/resizing-images-for-static-sites-with-php-when-deploying-to-netlify/">
+                            Resizing images for static sites with php when deploying to Netlify
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2020-02-02T12:11:39+00:00">
+	
+		    Feb 02, 2020
+    	
+    </time>
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <h3 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h3><p>I recently build my first site with <a href="https://jigsaw.tighten.co" target="_blank" rel="noopener">Jigsaw</a> and deployed it on <a href="https://www.netlify.com" target="_blank" rel="noopener">Netlify</a>.</p>
+<p>As part of that project I had to get some data from the Instagram API and present a feed of the latest 5 images on the site.</p>
+<p>Rather than dealing with CORS errors in javascript I wondered what I could get away with in PHP during the build phase on a statically generated site.</p>
+<p>Would I be able to:</p>
+<ul>
+<li>Query some form of public json endpoint</li>
+<li>Find the urls for the latest 5 images</li>
+<li>Download them locally resize them for efficiency</li>
+<li>Display them using Jigsaw</li>
+</ul>
+                    
+                        <a href="/blog/resizing-images-for-static-sites-with-php-when-deploying-to-netlify/" class="postShorten-excerpt_link link">
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+            <a href="/blog/resizing-images-for-static-sites-with-php-when-deploying-to-netlify/">
+                <div class="postShorten-thumbnailimg">
+                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1580755252/posts/scotland-balvenie-castle.jpg"/>
+                </div>
+            </a>
+            
+        
+    </article>
+    
     <div class="pagination-bar">
     <ul class="pagination">
         
         
-          <li class="pagination-next">
-            <a class="btn btn--default btn--small" href="/archives/2020/page/2/">
-              <span>OLDER POSTS</span>
-              <i class="fa fa-angle-right text-base icon-ml"></i>
-            </a>
-          </li>
-        
-        <li class="pagination-number">page 1 of 2</li>
+        <li class="pagination-number">page 1 of 1</li>
     </ul>
 </div>
 
@@ -1149,7 +1144,7 @@
                 data-message-zero="no post found"
                 data-message-one="1 post found"
                 data-message-other="{n} posts found">
-                34 posts found
+                33 posts found
             </p>
         </div>
     </div>
