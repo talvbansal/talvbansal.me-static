@@ -255,6 +255,107 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/blog/send-notifications-to-ms-teams-with-laravel/">
+                            Send notifications to Microsoft Teams with Laravel
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2019-11-12T19:47:20+00:00">
+	
+		    Nov 12, 2019
+    	
+    </time>
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <p>Today at work we switched away from Telegram to using MS Teams for our company messenger. </p>
+<p>Since we we’re already paying for it it made sense to plus it offers a lot more than just a messenger such as custom wiki functionality.</p>
+<p>One of the things we were making use of was telegram bots for our applications to sent us updates on key events of interest. </p>
+<p>I’ve only recently started to make use of <a href="https://laravel.com/docs/master/notifications" target="_blank" rel="noopener">Laravels notifications</a> in the projects I’ve been working on and to send messages via telegram I’d been using <a href="https://github.com/laravel-notification-channels/telegram" target="_blank" rel="noopener">this package</a>.</p>
+<p>However whilst I’d found documentation that said that sending messages to MS Teams was possible there didn’t seem to be a notification channel for laravel.</p>
+<p>So I went about building a basic one today:</p>
+<h3 id="Laravel-Notifications-for-Microsoft-Teams"><a href="#Laravel-Notifications-for-Microsoft-Teams" class="headerlink" title="Laravel Notifications for Microsoft Teams"></a><a href="https://github.com/talvbansal/laravel-ms-teams-notification-channel" target="_blank" rel="noopener">Laravel Notifications for Microsoft Teams</a></h3>
+                    
+                        <a href="/blog/send-notifications-to-ms-teams-with-laravel/" class="postShorten-excerpt_link link">
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+            <a href="/blog/send-notifications-to-ms-teams-with-laravel/">
+                <div class="postShorten-thumbnailimg">
+                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1573588975/posts/south-africa-lilac-breasted-roller.jpg"/>
+                </div>
+            </a>
+            
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-right">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a class="link-unstyled" href="/blog/human-readable-dates-with-dayjs-in-vue-js/">
+                            Human readable dates with Dayjs in Vue
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2019-05-19T18:13:40+01:00">
+	
+		    May 19, 2019
+    	
+    </time>
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <p>Recently I blogged about replacing <a href="https://momentjs.com/" target="_blank" rel="noopener">Moment.js</a> with a lightweight alternative <a href="https://github.com/iamkun/dayjs" target="_blank" rel="noopener">Day.js</a>.</p>
+<p>In Laravel, when working with dates I’ve been used to using the <a href="https://carbon.nesbot.com/" target="_blank" rel="noopener">Carbon</a> method <code>diffForHumans</code>. </p>
+<p>It gives us a date value relative to an optional given date, but it defaults to now. Examples of output from the diffForHumans method looks like:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- 5 minutes ago</span><br><span class="line">- One week ago</span><br><span class="line">- Last Year</span><br></pre></td></tr></table></figure>
+<p>Rather than: </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">2019-05-19 18:08:40</span><br><span class="line">2019-05-12 18:13:40</span><br><span class="line">2018-05-19 18:13:40</span><br></pre></td></tr></table></figure>
+<p>We can do the same with Moment.js using the <code>fromNow</code> method. Given that Day.js is supposed to have the same API as Moment.js I assumed that the <code>fromNow</code> method would “Just work”.</p>
+<p>Turns out that it didn’t. But with some small changes to our code we can get the same <code>fromNow</code> method working with Day.js.</p>
+                    
+                        <a href="/blog/human-readable-dates-with-dayjs-in-vue-js/" class="postShorten-excerpt_link link">
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+            <a href="/blog/human-readable-dates-with-dayjs-in-vue-js/">
+                <div class="postShorten-thumbnailimg">
+                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1558287756/posts/stockholm-brunkeberg-tunnel.jpg"/>
+                </div>
+            </a>
+            
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-right">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/blog/cleaning-unused-css-with-purge-css-laravel-mix/">
                             Cleaning unused CSS with Purgecss and Laravel Mix
                         </a>
@@ -613,110 +714,6 @@
             <a href="/blog/simple-push-to-deploy-with-gitlab-cicd/">
                 <div class="postShorten-thumbnailimg">
                     <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1555352778/posts/westminister-sunset.jpg"/>
-                </div>
-            </a>
-            
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/gitlab-ci-for-php-applications/">
-                            Gitlab CI for PHP applications
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2017-02-24T16:24:17+00:00">
-	
-		    Feb 24, 2017
-    	
-    </time>
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <p><strong> Update March 2020 - I’ve given written a newer more updated version of this article, <a href="/blog/in-depth-gitlab-ci-cd-with-laravel-apps/">check it out over here.</a> </strong></p>
-<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>Gitlab provides some good documentation on getting build runners for your projects set up which can be found <a href="https://about.gitlab.com/2016/03/01/gitlab-runner-with-docker/" target="_blank" rel="noopener">here</a>. However I haven’t found a good article on setting up Gitlab CI for PHP applications yet. </p>
-<p>This article is not going to discuss setting up shared runners on Gitlab since I felt the documentation provided by them in the link above was easy enough to follow, what this I am going to focus on is the <code>.gitlab-ci.yml</code> configuration that I’m currently using in my projects to do the following: </p>
-<ul>
-<li>Run PHP CS against our code base to ensure that it conforms to PSR-2</li>
-<li>Run PHPUnit against our code base to ensure that our unit tests pass against different versions of PHP (5.6, 7.0, 7.1)</li>
-</ul>
-                    
-                        <a href="/blog/gitlab-ci-for-php-applications/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/blog/gitlab-ci-for-php-applications/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1555352188/posts/cancun-sunset.jpg"/>
-                </div>
-            </a>
-            
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/setting-up-a-private-gitlab-server-on-ubuntu-1604/">
-                            Setting up a private GitLab server on Ubuntu 16.04
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2016-09-16T19:09:13+01:00">
-	
-		    Sep 16, 2016
-    	
-    </time>
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>Where I work, we’ve been using an Ubuntu Server running <a href="http://gitolite.com/gitolite/index.html" target="_blank" rel="noopener">gitolite</a> to act as our “Source control server” and manage permissions and access. Its worked well, and after some initial configuration (which I recall being pretty tricky) looking after the gitolite instance has been pretty easy and could easily continue to serve our needs as a small business well.</p>
-<p>Adding new users required you to get an ssh key from the new user, add it to an “administration repository” and then add their name to a config file within that repository. The same config file could then be used to determine which access rights they had to repositories as well as defining new repositories.</p>
-<p>We also use a <a href="https://getcomposer.org/doc/articles/handling-private-packages-with-satis.md" target="_blank" rel="noopener">satis</a> install to act as a private composer for our internal private packages.</p>
-<p>One of the things gitolite doesn’t provide you with is any sort of front end at all, everything has to be done through the terminal. It also requires you to have all of the following tools separately:</p>
-<ul>
-<li>Issue tracker</li>
-<li>File browser</li>
-<li>Activity stream</li>
-<li>Pull request management</li>
-</ul>
-<p>Which are all features that github has built in natively. </p>
-                    
-                        <a href="/blog/setting-up-a-private-gitlab-server-on-ubuntu-1604/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/blog/setting-up-a-private-gitlab-server-on-ubuntu-1604/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1555352729/posts/st-basils-moscow.jpg"/>
                 </div>
             </a>
             
@@ -1106,7 +1103,7 @@
                 data-message-zero="no post found"
                 data-message-one="1 post found"
                 data-message-other="{n} posts found">
-                32 posts found
+                34 posts found
             </p>
         </div>
     </div>

@@ -249,6 +249,112 @@
     <section class="postShorten-group main-content-wrap">
     
     
+    <article class="postShorten postShorten--thumbnailimg-right">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a class="link-unstyled" href="/blog/setting-up-a-multicontainer-elasticbeanstalk-build-for-your-php-app/">
+                            Setting up a Multicontainer Elasticbeanstalk build for your PHP App
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2020-11-16T10:30:53+00:00">
+	
+		    Nov 16, 2020
+    	
+    </time>
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <p>Building docker containers for local development is something I’ve been doing for a while now.<br>However I’ve never actually deployed them to a production env, instead I’ve typically used something like <a href="https://github.com/lorisleiva/laravel-deployer" target="_blank" rel="noopener">Laravel Deployer.</a> to update all of the servers in an environment one by one.<br>This works fine when you know the ip addreses of each of the servers you’re targeting but in an autoscaling environment breaks down almost instantly.</p>
+<p>AWS’s Elasticbeanstalk isn’t anything new but its something I recently used to deploy a project I was working on.<br>Locally I had a <code>docker-compose</code> config that seemed pretty simple, it defined 5 containers:</p>
+<ul>
+<li><strong>app</strong> - the app being build</li>
+<li><strong>mysql</strong> - for the database</li>
+<li><strong>redis</strong> - for the queue</li>
+<li><strong>scheduler</strong> - to run scheduled jobs</li>
+<li><strong>queue</strong> - to run laravel horizon<br>Mounted a couple of volumes for redis and the mysql containers
+                    
+                        <a href="/blog/setting-up-a-multicontainer-elasticbeanstalk-build-for-your-php-app/" class="postShorten-excerpt_link link">
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+            <a href="/blog/setting-up-a-multicontainer-elasticbeanstalk-build-for-your-php-app/">
+                <div class="postShorten-thumbnailimg">
+                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1583496063/posts/franklin-street-train.jpg"/>
+                </div>
+            </a>
+            
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-right">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a class="link-unstyled" href="/blog/bitbucket-ci-for-laravel-php-applications/">
+                            Bitbucket CI for Laravel PHP applications
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2020-10-15T16:40:39+01:00">
+	
+		    Oct 15, 2020
+    	
+    </time>
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <p>Adding A CI/CD process to my work flow is one of the really quick wins I do on every serious project I work on.</p>
+<p>Whilst most of my personal work is hosted on Gitlab, a recent project I was working had its code in Bitbucket. This was my first time working with Bitbucket, so I wanted to document how I built assets, linted and ran tests using its pipelines. </p>
+<h3 id="What-will-these-pipelines-do"><a href="#What-will-these-pipelines-do" class="headerlink" title="What will these pipelines do?"></a>What will these pipelines do?</h3><p>By the end of this article you should have a working <code>bitbucket-pipelines.yml</code> file for your Laravel project which will do the following:</p>
+<ul>
+<li>Use <code>composer</code> to install your projects dependencies</li>
+<li>Run <code>php-cs-fixer</code> to enforce a code style</li>
+<li>Run <code>larastan</code> to run static analysis against the code base</li>
+<li>Run <code>php-cs-fixer</code> and <code>larastan</code> in parallel </li>
+<li>Run <code>phpunit</code> to run our projects test suite</li>
+<li>For a production build <code>yarn run production</code></li>
+<li>Allow us to manually trigger a deployment to production using <a href="https://github.com/lorisleiva/laravel-deployer" target="_blank" rel="noopener">Laravel Deployer.</a></li>
+</ul>
+                    
+                        <a href="/blog/bitbucket-ci-for-laravel-php-applications/" class="postShorten-excerpt_link link">
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+            <a href="/blog/bitbucket-ci-for-laravel-php-applications/">
+                <div class="postShorten-thumbnailimg">
+                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1600846337/posts/nyc-freedom-tower.jpg"/>
+                </div>
+            </a>
+            
+        
+    </article>
+    
+    
     <article class="postShorten postShorten--thumbnailimg-bottom">
         <div class="postShorten-wrap">
             
@@ -666,111 +772,6 @@
         
     </article>
     
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/resizing-images-for-static-sites-with-php-when-deploying-to-netlify/">
-                            Resizing images for static sites with php when deploying to Netlify
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2020-02-02T12:11:39+00:00">
-	
-		    Feb 02, 2020
-    	
-    </time>
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <h3 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h3><p>I recently build my first site with <a href="https://jigsaw.tighten.co" target="_blank" rel="noopener">Jigsaw</a> and deployed it on <a href="https://www.netlify.com" target="_blank" rel="noopener">Netlify</a>.</p>
-<p>As part of that project I had to get some data from the Instagram API and present a feed of the latest 5 images on the site.</p>
-<p>Rather than dealing with CORS errors in javascript I wondered what I could get away with in PHP during the build phase on a statically generated site.</p>
-<p>Would I be able to:</p>
-<ul>
-<li>Query some form of public json endpoint</li>
-<li>Find the urls for the latest 5 images</li>
-<li>Download them locally resize them for efficiency</li>
-<li>Display them using Jigsaw</li>
-</ul>
-                    
-                        <a href="/blog/resizing-images-for-static-sites-with-php-when-deploying-to-netlify/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/blog/resizing-images-for-static-sites-with-php-when-deploying-to-netlify/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1580755252/posts/scotland-balvenie-castle.jpg"/>
-                </div>
-            </a>
-            
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/updating-laravels-env-file-with-production-credentials-in-gitlab-ci-with-laravel-mix/">
-                            Updating Laravel&#39;s .env file with Production Credentials in Gitlab CI with Laravel Mix
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-12-02T20:58:47+00:00">
-	
-		    Dec 02, 2019
-    	
-    </time>
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <h3 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h3><p>Laravel apps read sensitive information from their <code>.env</code> file.</p>
-<p>Recently I found out that Laravel Mix can <a href="https://laravel.com/docs/master/mix#environment-variables" target="_blank" rel="noopener">pass values from the same <code>.env</code> file</a> to the js portion of your app as long as they are prefixed with <code>MIX_</code>  </p>
-<p>I use Gitlab ci pipelines to build production assets so that I dont need that additional tooling on the production servers the main one being:</p>
-<ul>
-<li><code>yarn run production</code></li>
-</ul>
-<p>This is preceded with <code>cp .env.example .env</code> meaning when the build commands are being run, they are going to use values from the <code>.example.env</code> file.</p>
-<p>If your project doesn’t make use of anything from the <code>.env</code> file then this is totally fine, however in scenarios where you do, since production applications will almost certainly  have different <code>.env</code> values to those in the <code>.example.env</code> file (Never commit credentials to source control!) the resulting file will have been built with the wrong credentials.</p>
-<p>In this article I’m going to show how you can use gitlab CI to build those assets with updated environmental variables so that they function as expected when deployed to your production servers.</p>
-                    
-                        <a href="/blog/updating-laravels-env-file-with-production-credentials-in-gitlab-ci-with-laravel-mix/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/blog/updating-laravels-env-file-with-production-credentials-in-gitlab-ci-with-laravel-mix/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1575320794/posts/india-huyumans-tomb-chains.jpg"/>
-                </div>
-            </a>
-            
-        
-    </article>
-    
     <div class="pagination-bar">
     <ul class="pagination">
         
@@ -1148,7 +1149,7 @@
                 data-message-zero="no post found"
                 data-message-one="1 post found"
                 data-message-other="{n} posts found">
-                32 posts found
+                34 posts found
             </p>
         </div>
     </div>

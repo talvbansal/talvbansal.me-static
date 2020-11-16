@@ -255,6 +255,112 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/blog/setting-up-a-multicontainer-elasticbeanstalk-build-for-your-php-app/">
+                            Setting up a Multicontainer Elasticbeanstalk build for your PHP App
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2020-11-16T10:30:53+00:00">
+	
+		    Nov 16, 2020
+    	
+    </time>
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <p>Building docker containers for local development is something I’ve been doing for a while now.<br>However I’ve never actually deployed them to a production env, instead I’ve typically used something like <a href="https://github.com/lorisleiva/laravel-deployer" target="_blank" rel="noopener">Laravel Deployer.</a> to update all of the servers in an environment one by one.<br>This works fine when you know the ip addreses of each of the servers you’re targeting but in an autoscaling environment breaks down almost instantly.</p>
+<p>AWS’s Elasticbeanstalk isn’t anything new but its something I recently used to deploy a project I was working on.<br>Locally I had a <code>docker-compose</code> config that seemed pretty simple, it defined 5 containers:</p>
+<ul>
+<li><strong>app</strong> - the app being build</li>
+<li><strong>mysql</strong> - for the database</li>
+<li><strong>redis</strong> - for the queue</li>
+<li><strong>scheduler</strong> - to run scheduled jobs</li>
+<li><strong>queue</strong> - to run laravel horizon<br>Mounted a couple of volumes for redis and the mysql containers
+                    
+                        <a href="/blog/setting-up-a-multicontainer-elasticbeanstalk-build-for-your-php-app/" class="postShorten-excerpt_link link">
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+            <a href="/blog/setting-up-a-multicontainer-elasticbeanstalk-build-for-your-php-app/">
+                <div class="postShorten-thumbnailimg">
+                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1583496063/posts/franklin-street-train.jpg"/>
+                </div>
+            </a>
+            
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-right">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a class="link-unstyled" href="/blog/bitbucket-ci-for-laravel-php-applications/">
+                            Bitbucket CI for Laravel PHP applications
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2020-10-15T16:40:39+01:00">
+	
+		    Oct 15, 2020
+    	
+    </time>
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <p>Adding A CI/CD process to my work flow is one of the really quick wins I do on every serious project I work on.</p>
+<p>Whilst most of my personal work is hosted on Gitlab, a recent project I was working had its code in Bitbucket. This was my first time working with Bitbucket, so I wanted to document how I built assets, linted and ran tests using its pipelines. </p>
+<h3 id="What-will-these-pipelines-do"><a href="#What-will-these-pipelines-do" class="headerlink" title="What will these pipelines do?"></a>What will these pipelines do?</h3><p>By the end of this article you should have a working <code>bitbucket-pipelines.yml</code> file for your Laravel project which will do the following:</p>
+<ul>
+<li>Use <code>composer</code> to install your projects dependencies</li>
+<li>Run <code>php-cs-fixer</code> to enforce a code style</li>
+<li>Run <code>larastan</code> to run static analysis against the code base</li>
+<li>Run <code>php-cs-fixer</code> and <code>larastan</code> in parallel </li>
+<li>Run <code>phpunit</code> to run our projects test suite</li>
+<li>For a production build <code>yarn run production</code></li>
+<li>Allow us to manually trigger a deployment to production using <a href="https://github.com/lorisleiva/laravel-deployer" target="_blank" rel="noopener">Laravel Deployer.</a></li>
+</ul>
+                    
+                        <a href="/blog/bitbucket-ci-for-laravel-php-applications/" class="postShorten-excerpt_link link">
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+            <a href="/blog/bitbucket-ci-for-laravel-php-applications/">
+                <div class="postShorten-thumbnailimg">
+                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1600846337/posts/nyc-freedom-tower.jpg"/>
+                </div>
+            </a>
+            
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-right">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/blog/laravel-gitlab-ci-generator/">
                             Laravel Gitlab CI Generator
                         </a>
@@ -650,107 +756,18 @@
         
     </article>
     
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/simple-push-to-deploy-with-gitlab-cicd/">
-                            Simple push to deploy with Gitlab CI/CD
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2017-05-24T16:15:27+01:00">
-	
-		    May 24, 2017
-    	
-    </time>
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <p><strong> Update March 2020 - I’ve given written a newer more updated version of this article, <a href="/blog/in-depth-gitlab-ci-cd-with-laravel-apps/">check it out over here.</a> </strong></p>
-<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>This article follows directly on from my <a href="/blog/gitlab-ci-for-php-applications">previous article</a> on adding gitlab’s CI to my PHP projects.</p>
-<p>Once we’re happy with our code being automatically tested we might want it to be automatically deployed to a testing server / environment or maybe even production.<br>
-                    
-                        <a href="/blog/simple-push-to-deploy-with-gitlab-cicd/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/blog/simple-push-to-deploy-with-gitlab-cicd/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1555352778/posts/westminister-sunset.jpg"/>
-                </div>
-            </a>
-            
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/gitlab-ci-for-php-applications/">
-                            Gitlab CI for PHP applications
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2017-02-24T16:24:17+00:00">
-	
-		    Feb 24, 2017
-    	
-    </time>
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <p><strong> Update March 2020 - I’ve given written a newer more updated version of this article, <a href="/blog/in-depth-gitlab-ci-cd-with-laravel-apps/">check it out over here.</a> </strong></p>
-<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>Gitlab provides some good documentation on getting build runners for your projects set up which can be found <a href="https://about.gitlab.com/2016/03/01/gitlab-runner-with-docker/" target="_blank" rel="noopener">here</a>. However I haven’t found a good article on setting up Gitlab CI for PHP applications yet. </p>
-<p>This article is not going to discuss setting up shared runners on Gitlab since I felt the documentation provided by them in the link above was easy enough to follow, what this I am going to focus on is the <code>.gitlab-ci.yml</code> configuration that I’m currently using in my projects to do the following: </p>
-<ul>
-<li>Run PHP CS against our code base to ensure that it conforms to PSR-2</li>
-<li>Run PHPUnit against our code base to ensure that our unit tests pass against different versions of PHP (5.6, 7.0, 7.1)</li>
-</ul>
-                    
-                        <a href="/blog/gitlab-ci-for-php-applications/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/blog/gitlab-ci-for-php-applications/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1555352188/posts/cancun-sunset.jpg"/>
-                </div>
-            </a>
-            
-        
-    </article>
-    
     <div class="pagination-bar">
     <ul class="pagination">
         
         
-        <li class="pagination-number">page 1 of 1</li>
+          <li class="pagination-next">
+            <a class="btn btn--default btn--small" href="/tags/CI-CD/page/2/">
+              <span>OLDER POSTS</span>
+              <i class="fa fa-angle-right text-base icon-ml"></i>
+            </a>
+          </li>
+        
+        <li class="pagination-number">page 1 of 2</li>
     </ul>
 </div>
 
@@ -1115,7 +1132,7 @@
                 data-message-zero="no post found"
                 data-message-one="1 post found"
                 data-message-other="{n} posts found">
-                32 posts found
+                34 posts found
             </p>
         </div>
     </div>

@@ -255,6 +255,112 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/blog/setting-up-a-multicontainer-elasticbeanstalk-build-for-your-php-app/">
+                            Setting up a Multicontainer Elasticbeanstalk build for your PHP App
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2020-11-16T10:30:53+00:00">
+	
+		    Nov 16, 2020
+    	
+    </time>
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <p>Building docker containers for local development is something I’ve been doing for a while now.<br>However I’ve never actually deployed them to a production env, instead I’ve typically used something like <a href="https://github.com/lorisleiva/laravel-deployer" target="_blank" rel="noopener">Laravel Deployer.</a> to update all of the servers in an environment one by one.<br>This works fine when you know the ip addreses of each of the servers you’re targeting but in an autoscaling environment breaks down almost instantly.</p>
+<p>AWS’s Elasticbeanstalk isn’t anything new but its something I recently used to deploy a project I was working on.<br>Locally I had a <code>docker-compose</code> config that seemed pretty simple, it defined 5 containers:</p>
+<ul>
+<li><strong>app</strong> - the app being build</li>
+<li><strong>mysql</strong> - for the database</li>
+<li><strong>redis</strong> - for the queue</li>
+<li><strong>scheduler</strong> - to run scheduled jobs</li>
+<li><strong>queue</strong> - to run laravel horizon<br>Mounted a couple of volumes for redis and the mysql containers
+                    
+                        <a href="/blog/setting-up-a-multicontainer-elasticbeanstalk-build-for-your-php-app/" class="postShorten-excerpt_link link">
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+            <a href="/blog/setting-up-a-multicontainer-elasticbeanstalk-build-for-your-php-app/">
+                <div class="postShorten-thumbnailimg">
+                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1583496063/posts/franklin-street-train.jpg"/>
+                </div>
+            </a>
+            
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-right">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a class="link-unstyled" href="/blog/bitbucket-ci-for-laravel-php-applications/">
+                            Bitbucket CI for Laravel PHP applications
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2020-10-15T16:40:39+01:00">
+	
+		    Oct 15, 2020
+    	
+    </time>
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <p>Adding A CI/CD process to my work flow is one of the really quick wins I do on every serious project I work on.</p>
+<p>Whilst most of my personal work is hosted on Gitlab, a recent project I was working had its code in Bitbucket. This was my first time working with Bitbucket, so I wanted to document how I built assets, linted and ran tests using its pipelines. </p>
+<h3 id="What-will-these-pipelines-do"><a href="#What-will-these-pipelines-do" class="headerlink" title="What will these pipelines do?"></a>What will these pipelines do?</h3><p>By the end of this article you should have a working <code>bitbucket-pipelines.yml</code> file for your Laravel project which will do the following:</p>
+<ul>
+<li>Use <code>composer</code> to install your projects dependencies</li>
+<li>Run <code>php-cs-fixer</code> to enforce a code style</li>
+<li>Run <code>larastan</code> to run static analysis against the code base</li>
+<li>Run <code>php-cs-fixer</code> and <code>larastan</code> in parallel </li>
+<li>Run <code>phpunit</code> to run our projects test suite</li>
+<li>For a production build <code>yarn run production</code></li>
+<li>Allow us to manually trigger a deployment to production using <a href="https://github.com/lorisleiva/laravel-deployer" target="_blank" rel="noopener">Laravel Deployer.</a></li>
+</ul>
+                    
+                        <a href="/blog/bitbucket-ci-for-laravel-php-applications/" class="postShorten-excerpt_link link">
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+            <a href="/blog/bitbucket-ci-for-laravel-php-applications/">
+                <div class="postShorten-thumbnailimg">
+                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1600846337/posts/nyc-freedom-tower.jpg"/>
+                </div>
+            </a>
+            
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-right">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/blog/force-laravel-to-return-json-responses/">
                             Force Laravel to return JSON responses
                         </a>
@@ -668,107 +774,6 @@
         
     </article>
     
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/send-notifications-to-ms-teams-with-laravel/">
-                            Send notifications to Microsoft Teams with Laravel
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-11-12T19:47:20+00:00">
-	
-		    Nov 12, 2019
-    	
-    </time>
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <p>Today at work we switched away from Telegram to using MS Teams for our company messenger. </p>
-<p>Since we we’re already paying for it it made sense to plus it offers a lot more than just a messenger such as custom wiki functionality.</p>
-<p>One of the things we were making use of was telegram bots for our applications to sent us updates on key events of interest. </p>
-<p>I’ve only recently started to make use of <a href="https://laravel.com/docs/master/notifications" target="_blank" rel="noopener">Laravels notifications</a> in the projects I’ve been working on and to send messages via telegram I’d been using <a href="https://github.com/laravel-notification-channels/telegram" target="_blank" rel="noopener">this package</a>.</p>
-<p>However whilst I’d found documentation that said that sending messages to MS Teams was possible there didn’t seem to be a notification channel for laravel.</p>
-<p>So I went about building a basic one today:</p>
-<h3 id="Laravel-Notifications-for-Microsoft-Teams"><a href="#Laravel-Notifications-for-Microsoft-Teams" class="headerlink" title="Laravel Notifications for Microsoft Teams"></a><a href="https://github.com/talvbansal/laravel-ms-teams-notification-channel" target="_blank" rel="noopener">Laravel Notifications for Microsoft Teams</a></h3>
-                    
-                        <a href="/blog/send-notifications-to-ms-teams-with-laravel/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/blog/send-notifications-to-ms-teams-with-laravel/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1573588975/posts/south-africa-lilac-breasted-roller.jpg"/>
-                </div>
-            </a>
-            
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/human-readable-dates-with-dayjs-in-vue-js/">
-                            Human readable dates with Dayjs in Vue
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-05-19T18:13:40+01:00">
-	
-		    May 19, 2019
-    	
-    </time>
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <p>Recently I blogged about replacing <a href="https://momentjs.com/" target="_blank" rel="noopener">Moment.js</a> with a lightweight alternative <a href="https://github.com/iamkun/dayjs" target="_blank" rel="noopener">Day.js</a>.</p>
-<p>In Laravel, when working with dates I’ve been used to using the <a href="https://carbon.nesbot.com/" target="_blank" rel="noopener">Carbon</a> method <code>diffForHumans</code>. </p>
-<p>It gives us a date value relative to an optional given date, but it defaults to now. Examples of output from the diffForHumans method looks like:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- 5 minutes ago</span><br><span class="line">- One week ago</span><br><span class="line">- Last Year</span><br></pre></td></tr></table></figure>
-<p>Rather than: </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">2019-05-19 18:08:40</span><br><span class="line">2019-05-12 18:13:40</span><br><span class="line">2018-05-19 18:13:40</span><br></pre></td></tr></table></figure>
-<p>We can do the same with Moment.js using the <code>fromNow</code> method. Given that Day.js is supposed to have the same API as Moment.js I assumed that the <code>fromNow</code> method would “Just work”.</p>
-<p>Turns out that it didn’t. But with some small changes to our code we can get the same <code>fromNow</code> method working with Day.js.</p>
-                    
-                        <a href="/blog/human-readable-dates-with-dayjs-in-vue-js/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/blog/human-readable-dates-with-dayjs-in-vue-js/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1558287756/posts/stockholm-brunkeberg-tunnel.jpg"/>
-                </div>
-            </a>
-            
-        
-    </article>
-    
     <div class="pagination-bar">
     <ul class="pagination">
         
@@ -1145,7 +1150,7 @@
                 data-message-zero="no post found"
                 data-message-one="1 post found"
                 data-message-other="{n} posts found">
-                32 posts found
+                34 posts found
             </p>
         </div>
     </div>

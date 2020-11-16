@@ -255,6 +255,112 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/blog/setting-up-a-multicontainer-elasticbeanstalk-build-for-your-php-app/">
+                            Setting up a Multicontainer Elasticbeanstalk build for your PHP App
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2020-11-16T10:30:53+00:00">
+	
+		    Nov 16, 2020
+    	
+    </time>
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <p>Building docker containers for local development is something I’ve been doing for a while now.<br>However I’ve never actually deployed them to a production env, instead I’ve typically used something like <a href="https://github.com/lorisleiva/laravel-deployer" target="_blank" rel="noopener">Laravel Deployer.</a> to update all of the servers in an environment one by one.<br>This works fine when you know the ip addreses of each of the servers you’re targeting but in an autoscaling environment breaks down almost instantly.</p>
+<p>AWS’s Elasticbeanstalk isn’t anything new but its something I recently used to deploy a project I was working on.<br>Locally I had a <code>docker-compose</code> config that seemed pretty simple, it defined 5 containers:</p>
+<ul>
+<li><strong>app</strong> - the app being build</li>
+<li><strong>mysql</strong> - for the database</li>
+<li><strong>redis</strong> - for the queue</li>
+<li><strong>scheduler</strong> - to run scheduled jobs</li>
+<li><strong>queue</strong> - to run laravel horizon<br>Mounted a couple of volumes for redis and the mysql containers
+                    
+                        <a href="/blog/setting-up-a-multicontainer-elasticbeanstalk-build-for-your-php-app/" class="postShorten-excerpt_link link">
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+            <a href="/blog/setting-up-a-multicontainer-elasticbeanstalk-build-for-your-php-app/">
+                <div class="postShorten-thumbnailimg">
+                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1583496063/posts/franklin-street-train.jpg"/>
+                </div>
+            </a>
+            
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-right">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a class="link-unstyled" href="/blog/bitbucket-ci-for-laravel-php-applications/">
+                            Bitbucket CI for Laravel PHP applications
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2020-10-15T16:40:39+01:00">
+	
+		    Oct 15, 2020
+    	
+    </time>
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <p>Adding A CI/CD process to my work flow is one of the really quick wins I do on every serious project I work on.</p>
+<p>Whilst most of my personal work is hosted on Gitlab, a recent project I was working had its code in Bitbucket. This was my first time working with Bitbucket, so I wanted to document how I built assets, linted and ran tests using its pipelines. </p>
+<h3 id="What-will-these-pipelines-do"><a href="#What-will-these-pipelines-do" class="headerlink" title="What will these pipelines do?"></a>What will these pipelines do?</h3><p>By the end of this article you should have a working <code>bitbucket-pipelines.yml</code> file for your Laravel project which will do the following:</p>
+<ul>
+<li>Use <code>composer</code> to install your projects dependencies</li>
+<li>Run <code>php-cs-fixer</code> to enforce a code style</li>
+<li>Run <code>larastan</code> to run static analysis against the code base</li>
+<li>Run <code>php-cs-fixer</code> and <code>larastan</code> in parallel </li>
+<li>Run <code>phpunit</code> to run our projects test suite</li>
+<li>For a production build <code>yarn run production</code></li>
+<li>Allow us to manually trigger a deployment to production using <a href="https://github.com/lorisleiva/laravel-deployer" target="_blank" rel="noopener">Laravel Deployer.</a></li>
+</ul>
+                    
+                        <a href="/blog/bitbucket-ci-for-laravel-php-applications/" class="postShorten-excerpt_link link">
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+            <a href="/blog/bitbucket-ci-for-laravel-php-applications/">
+                <div class="postShorten-thumbnailimg">
+                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1600846337/posts/nyc-freedom-tower.jpg"/>
+                </div>
+            </a>
+            
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-right">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/blog/laravel-gitlab-ci-generator/">
                             Laravel Gitlab CI Generator
                         </a>
@@ -655,65 +761,18 @@
         
     </article>
     
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/setting-up-a-private-gitlab-server-on-ubuntu-1604/">
-                            Setting up a private GitLab server on Ubuntu 16.04
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2016-09-16T19:09:13+01:00">
-	
-		    Sep 16, 2016
-    	
-    </time>
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>Where I work, we’ve been using an Ubuntu Server running <a href="http://gitolite.com/gitolite/index.html" target="_blank" rel="noopener">gitolite</a> to act as our “Source control server” and manage permissions and access. Its worked well, and after some initial configuration (which I recall being pretty tricky) looking after the gitolite instance has been pretty easy and could easily continue to serve our needs as a small business well.</p>
-<p>Adding new users required you to get an ssh key from the new user, add it to an “administration repository” and then add their name to a config file within that repository. The same config file could then be used to determine which access rights they had to repositories as well as defining new repositories.</p>
-<p>We also use a <a href="https://getcomposer.org/doc/articles/handling-private-packages-with-satis.md" target="_blank" rel="noopener">satis</a> install to act as a private composer for our internal private packages.</p>
-<p>One of the things gitolite doesn’t provide you with is any sort of front end at all, everything has to be done through the terminal. It also requires you to have all of the following tools separately:</p>
-<ul>
-<li>Issue tracker</li>
-<li>File browser</li>
-<li>Activity stream</li>
-<li>Pull request management</li>
-</ul>
-<p>Which are all features that github has built in natively. </p>
-                    
-                        <a href="/blog/setting-up-a-private-gitlab-server-on-ubuntu-1604/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/blog/setting-up-a-private-gitlab-server-on-ubuntu-1604/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1555352729/posts/st-basils-moscow.jpg"/>
-                </div>
-            </a>
-            
-        
-    </article>
-    
     <div class="pagination-bar">
     <ul class="pagination">
         
         
-        <li class="pagination-number">page 1 of 1</li>
+          <li class="pagination-next">
+            <a class="btn btn--default btn--small" href="/tags/Devops/page/2/">
+              <span>OLDER POSTS</span>
+              <i class="fa fa-angle-right text-base icon-ml"></i>
+            </a>
+          </li>
+        
+        <li class="pagination-number">page 1 of 2</li>
     </ul>
 </div>
 
@@ -1078,7 +1137,7 @@
                 data-message-zero="no post found"
                 data-message-one="1 post found"
                 data-message-other="{n} posts found">
-                32 posts found
+                34 posts found
             </p>
         </div>
     </div>
