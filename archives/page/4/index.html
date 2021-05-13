@@ -269,6 +269,57 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/blog/updating-a-satis-repository-on-git-push/">
+                            Updating a Satis Repository on Git Push
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2016-09-27T16:31:04+01:00">
+	
+		    Sep 27, 2016
+    	
+    </time>
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <p><strong>Update May 2017, looks like with the Gitab update to V9, which uses a new Gitlab API v4, Packages will not let you enable new repositories</strong></p>
+<p>I’ve made amendments to the necessary files and packages on this fork:</p>
+<p><a href="https://github.com/talvbansal/packages" target="_blank" rel="noopener">https://github.com/talvbansal/packages</a> on the “gitlab” branch.</p>
+<p>As long as you change step 2 in the guide below everything should work as expected:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/talvbansal/packages</span><br><span class="line">cd packages</span><br><span class="line">git checkout gitlab</span><br><span class="line">composer install -o --no-dev</span><br></pre></td></tr></table></figure>
+<hr>
+
+<p>After moving our source control server from <strong><a href="http://gitolite.com/gitolite/index.html" target="_blank" rel="noopener">gitolite</a></strong> to a privately hosted <strong><a href="https://about.gitlab.com" target="_blank" rel="noopener">gitlab</a></strong> instance the next thing I wanted to do was get our internal <strong><a href="https://github.com/composer/satis" target="_blank" rel="noopener">Satis</a></strong> server to automatically update whenever code was pushed to a repository.<br>
+                    
+                        <a href="/blog/updating-a-satis-repository-on-git-push/" class="postShorten-excerpt_link link">
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+            <a href="/blog/updating-a-satis-repository-on-git-push/">
+                <div class="postShorten-thumbnailimg">
+                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1555352875/posts/santorini-domes.jpg"/>
+                </div>
+            </a>
+            
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-right">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/blog/setting-up-a-private-gitlab-server-on-ubuntu-1604/">
                             Setting up a private GitLab server on Ubuntu 16.04
                         </a>
@@ -830,7 +881,7 @@
                 data-message-zero="no post found"
                 data-message-one="1 post found"
                 data-message-other="{n} posts found">
-                34 posts found
+                35 posts found
             </p>
         </div>
     </div>

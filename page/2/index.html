@@ -268,6 +268,56 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/blog/solving-out-of-memory-errors-with-PHP-and-Composer-on-EC2s-free-tier/">
+                            Solving out of memory errors with PHP and Composer on EC2s free tier
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2020-02-05T20:45:36+00:00">
+	
+		    Feb 05, 2020
+    	
+    </time>
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <p>For one of my recent projects I wanted to make use of the free allowance that AWS gives for SES.</p>
+<p>One of the conditions of the SES allowance was that your calling app needs to be hosted on EC2.</p>
+<p>I’ve not used EC2 before so I figured this would be a good way to dive into it.</p>
+<p>Whilst I would never usually install software like composer on a production server, this was purely to test things out.</p>
+<p> So after signing up for AWS and creating a local ubuntu server on an EC2 t2micro instance then cloning down the project I ran composer install to come across the following message: </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">composer install</span><br><span class="line">Loading composer repositories with package information</span><br><span class="line">Updating dependencies (including require-dev)</span><br><span class="line"></span><br><span class="line">mmap() failed: [12] Cannot allocate memory</span><br><span class="line"></span><br><span class="line">mmap() failed: [12] Cannot allocate memory</span><br><span class="line">PHP Fatal error:  Out of memory (allocated 822091776) (tried to allocate 4096 bytes) <span class="keyword">in</span> phar:///usr/<span class="built_in">local</span>/bin/composer/src/Composer/DependencyResolver/Solver.php on line 223</span><br><span class="line"></span><br><span class="line">Fatal error: Out of memory (allocated 822091776) (tried to allocate 4096 bytes) <span class="keyword">in</span> phar:///usr/<span class="built_in">local</span>/bin/composer/src/Composer/DependencyResolver/Solver.php on line 223</span><br></pre></td></tr></table></figure>
+<p>822091776bytes is over 800mb of memory being consumed by composer.</p>
+                    
+                        <a href="/blog/solving-out-of-memory-errors-with-PHP-and-Composer-on-EC2s-free-tier/" class="postShorten-excerpt_link link">
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+            <a href="/blog/solving-out-of-memory-errors-with-PHP-and-Composer-on-EC2s-free-tier/">
+                <div class="postShorten-thumbnailimg">
+                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1582033481/posts/istanbul-galata-tower.jpg"/>
+                </div>
+            </a>
+            
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-right">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/blog/resizing-images-for-static-sites-with-php-when-deploying-to-netlify/">
                             Resizing images for static sites with php when deploying to Netlify
                         </a>
@@ -728,53 +778,6 @@
         
     </article>
     
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/search-and-replace-with-slashes-in-mysql/">
-                            Search and Replace with Slashes in MySQL
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-04-30T01:29:26+01:00">
-	
-		    Apr 30, 2019
-    	
-    </time>
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <p>The project im currently working on makes use of Spaties <a href="https://github.com/spatie/laravel-event-projector" target="_blank" rel="noopener">Event Projector package</a>. Recently the team at Spatie upgraded the package to Version 2. </p>
-<p>One of the changes that was made was to separate all storable events from regular events by moving them from the <code>App\Events</code> to a new <code>App\StorableEvents</code> folder. In moving the new stored events a new namespace of <code>App\StorableEvents</code> was created.</p>
-<p>Whilst this isn’t a mandatory change, all new events classes created get in this new namespace and for the sake of keeping code organised, I wanted to move all of our other storable events to this new folder.<br>Light work until I wanted to replay my events. What I’d forgotten is that the fully qualified class names are stored on the <code>stored_events</code> table that the package uses. </p>
-<p>No big deal I thought - ill just search for <code>App\Events\%</code> and replace with <code>App\StorableEvents\%</code>, how hard could that be in SQL? Turns out harder than I thought but not impossible…</p>
-                    
-                        <a href="/blog/search-and-replace-with-slashes-in-mysql/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/blog/search-and-replace-with-slashes-in-mysql/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1557412436/posts/naples-piazza-del-plebiscito.jpg"/>
-                </div>
-            </a>
-            
-        
-    </article>
-    
     <div class="pagination-bar">
     <ul class="pagination">
         
@@ -1158,7 +1161,7 @@
                 data-message-zero="no post found"
                 data-message-one="1 post found"
                 data-message-other="{n} posts found">
-                34 posts found
+                35 posts found
             </p>
         </div>
     </div>

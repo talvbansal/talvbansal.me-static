@@ -269,6 +269,67 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/blog/sass-with-tailwind-2-x-and-laravel-mix/">
+                            SASS with Tailwind 2.x and Laravel Mix
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2021-05-13T11:06:44+01:00">
+	
+		    May 13, 2021
+    	
+    </time>
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <p>Tailwind 2.x recommends using PostCSS for its preprocessor. However, if you still want to use Sass the documentation isn’t the clearest on how to set it up.</p>
+<p>There is <a href="https://tailwindcss.com/docs/using-with-preprocessors#sass" target="_blank" rel="noopener">a page</a> but it doesn’t seem to give you the step by step breakdown needed - here document whats needed to use Sass with Tailwind 2.x and Laravel-Mix.</p>
+<p>First rename the <code>resources/css/app.css</code> file to use the <code>scss</code> extension:</p>
+<pre><code class="bash">mv resources/css/app.css resources/css/app.scss</code></pre>
+<p>Next remove the default <code>postCss</code> config within the <code>webpack.mix.js</code> config file:</p>
+<pre><code class="javascript">// snip...
+mix.postCss(&#39;resources/css/app.css&#39;, &#39;public/css&#39;, [
+    require(&#39;postcss-import&#39;),
+    require(&#39;tailwindcss&#39;),
+    require(&#39;autoprefixer&#39;)
+])</code></pre>
+<p>Now add the <code>tailwind</code> module and use the <code>sass</code> plugin and configure <code>postCss</code> to use the <code>tailwind.config.js</code> file:</p>
+<pre><code class="javascript">const tailwindcss = require(&#39;tailwindcss&#39;)
+// snip...
+mix.sass(&#39;resources/css/app.scss&#39;, &#39;public/css&#39;)
+    .options({ postCss: [ tailwindcss(&#39;./tailwind.config.js&#39;)]})</code></pre>
+<p>Thats it!</p>
+<p>When you run <code>npm run dev</code> the needed <code>sass</code> and other js dependencies will be detected as missing and automatically installed.</p>
+                    
+                        <a href="/blog/sass-with-tailwind-2-x-and-laravel-mix/" class="postShorten-excerpt_link link">
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+            <a href="/blog/sass-with-tailwind-2-x-and-laravel-mix/">
+                <div class="postShorten-thumbnailimg">
+                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1620900836/posts/east-river-skyline-view.jpg"/>
+                </div>
+            </a>
+            
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-right">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/blog/using-sshuttle-with-docker/">
                             Using sshuttle with docker
                         </a>
@@ -731,56 +792,6 @@
         
     </article>
     
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/solving-out-of-memory-errors-with-PHP-and-Composer-on-EC2s-free-tier/">
-                            Solving out of memory errors with PHP and Composer on EC2s free tier
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2020-02-05T20:45:36+00:00">
-	
-		    Feb 05, 2020
-    	
-    </time>
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <p>For one of my recent projects I wanted to make use of the free allowance that AWS gives for SES.</p>
-<p>One of the conditions of the SES allowance was that your calling app needs to be hosted on EC2.</p>
-<p>I’ve not used EC2 before so I figured this would be a good way to dive into it.</p>
-<p>Whilst I would never usually install software like composer on a production server, this was purely to test things out.</p>
-<p> So after signing up for AWS and creating a local ubuntu server on an EC2 t2micro instance then cloning down the project I ran composer install to come across the following message: </p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">composer install</span><br><span class="line">Loading composer repositories with package information</span><br><span class="line">Updating dependencies (including require-dev)</span><br><span class="line"></span><br><span class="line">mmap() failed: [12] Cannot allocate memory</span><br><span class="line"></span><br><span class="line">mmap() failed: [12] Cannot allocate memory</span><br><span class="line">PHP Fatal error:  Out of memory (allocated 822091776) (tried to allocate 4096 bytes) <span class="keyword">in</span> phar:///usr/<span class="built_in">local</span>/bin/composer/src/Composer/DependencyResolver/Solver.php on line 223</span><br><span class="line"></span><br><span class="line">Fatal error: Out of memory (allocated 822091776) (tried to allocate 4096 bytes) <span class="keyword">in</span> phar:///usr/<span class="built_in">local</span>/bin/composer/src/Composer/DependencyResolver/Solver.php on line 223</span><br></pre></td></tr></table></figure>
-<p>822091776bytes is over 800mb of memory being consumed by composer.</p>
-                    
-                        <a href="/blog/solving-out-of-memory-errors-with-PHP-and-Composer-on-EC2s-free-tier/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/blog/solving-out-of-memory-errors-with-PHP-and-Composer-on-EC2s-free-tier/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1582033481/posts/istanbul-galata-tower.jpg"/>
-                </div>
-            </a>
-            
-        
-    </article>
-    
     <div class="pagination-bar">
     <ul class="pagination">
         
@@ -1158,7 +1169,7 @@
                 data-message-zero="no post found"
                 data-message-one="1 post found"
                 data-message-other="{n} posts found">
-                34 posts found
+                35 posts found
             </p>
         </div>
     </div>
