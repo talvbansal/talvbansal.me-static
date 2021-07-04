@@ -7,7 +7,7 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <meta name="generator" content="TalvBansal.me"/>
-    <title>Archives: 2016/9 - TalvBansal.me</title>
+    <title>Archives: 2021/7 - TalvBansal.me</title>
     <meta name="author" content="Talv Bansal"/>
     
         <meta name="keywords" content="gitlab,github,javascript,es6,laravel,php,vue,vue.js,development,full stack,CI/CD,docker,devops,aws,"/>
@@ -19,7 +19,7 @@
     <script type="application/ld+json">{}</script> <meta name="description" content="Tales of a full stack developer">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="TalvBansal.me">
-<meta property="og:url" content="https://talvbansal.me/archives/2016/09/index.html">
+<meta property="og:url" content="https://talvbansal.me/archives/2021/07/index.html">
 <meta property="og:site_name" content="TalvBansal.me">
 <meta property="og:description" content="Tales of a full stack developer">
 <meta property="og:locale" content="en_US">
@@ -269,15 +269,15 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/blog/updating-a-satis-repository-on-git-push/">
-                            Updating a Satis Repository on Git Push
+                        <a class="link-unstyled" href="/blog/browsersync-with-laravel-mix-and-docker/">
+                            BrowserSync with Laravel Mix and Docker
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2016-09-27T16:31:04+01:00">
+    <time datetime="2021-07-04T20:40:39+01:00">
 	
-		    Sep 27, 2016
+		    Jul 04, 2021
     	
     </time>
     
@@ -286,16 +286,12 @@
             </div>
             
                 <div class="postShorten-excerpt">
-                    <p><strong>Update May 2017, looks like with the Gitab update to V9, which uses a new Gitlab API v4, Packages will not let you enable new repositories</strong></p>
-<p>I’ve made amendments to the necessary files and packages on this fork:</p>
-<p><a href="https://github.com/talvbansal/packages" target="_blank" rel="noopener">https://github.com/talvbansal/packages</a> on the “gitlab” branch.</p>
-<p>As long as you change step 2 in the guide below everything should work as expected:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/talvbansal/packages</span><br><span class="line">cd packages</span><br><span class="line">git checkout gitlab</span><br><span class="line">composer install -o --no-dev</span><br></pre></td></tr></table></figure>
-<hr>
-
-<p>After moving our source control server from <strong><a href="http://gitolite.com/gitolite/index.html" target="_blank" rel="noopener">gitolite</a></strong> to a privately hosted <strong><a href="https://about.gitlab.com" target="_blank" rel="noopener">gitlab</a></strong> instance the next thing I wanted to do was get our internal <strong><a href="https://github.com/composer/satis" target="_blank" rel="noopener">Satis</a></strong> server to automatically update whenever code was pushed to a repository.<br>
+                    <p>I’ve pretty much switched to using docker for everything when doing local development now. </p>
+<p>My set up involves using a <code>docker-compose.yml</code> file for the core application dependencies that can be run in production and a <code>docker-composer.override.yml</code> file for development. This override file is mostly a load of “support” containers that get used in development, things like php, artisan, npm as well as things like mysql and redis that would be handled elsewhere in production.</p>
+<p>Since switching to this development model I’ve just accepted not getting around to getting BrowserSync working· This weekend whilst battling some other issues my fingers got tired of pressing ctrl+r every few seconds so I figured I’d give myself a win by trying to tackle this.</p>
+<p>The <a href="https://laravel-mix.com/docs/main/browsersync" target="_blank" rel="noopener">Laravel mix docs</a> have a brief section on BrowserSync but theres not enough to get BrowserSync working for our config.</p>
                     
-                        <a href="/blog/updating-a-satis-repository-on-git-push/" class="postShorten-excerpt_link link">
+                        <a href="/blog/browsersync-with-laravel-mix-and-docker/" class="postShorten-excerpt_link link">
                             Continue reading
                         </a>
                         
@@ -304,63 +300,9 @@
             
         </div>
         
-            <a href="/blog/updating-a-satis-repository-on-git-push/">
+            <a href="/blog/browsersync-with-laravel-mix-and-docker/">
                 <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1555352875/posts/santorini-domes.jpg"/>
-                </div>
-            </a>
-            
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/setting-up-a-private-gitlab-server-on-ubuntu-1604/">
-                            Setting up a private GitLab server on Ubuntu 16.04
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2016-09-16T19:09:13+01:00">
-	
-		    Sep 16, 2016
-    	
-    </time>
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>Where I work, we’ve been using an Ubuntu Server running <a href="http://gitolite.com/gitolite/index.html" target="_blank" rel="noopener">gitolite</a> to act as our “Source control server” and manage permissions and access. Its worked well, and after some initial configuration (which I recall being pretty tricky) looking after the gitolite instance has been pretty easy and could easily continue to serve our needs as a small business well.</p>
-<p>Adding new users required you to get an ssh key from the new user, add it to an “administration repository” and then add their name to a config file within that repository. The same config file could then be used to determine which access rights they had to repositories as well as defining new repositories.</p>
-<p>We also use a <a href="https://getcomposer.org/doc/articles/handling-private-packages-with-satis.md" target="_blank" rel="noopener">satis</a> install to act as a private composer for our internal private packages.</p>
-<p>One of the things gitolite doesn’t provide you with is any sort of front end at all, everything has to be done through the terminal. It also requires you to have all of the following tools separately:</p>
-<ul>
-<li>Issue tracker</li>
-<li>File browser</li>
-<li>Activity stream</li>
-<li>Pull request management</li>
-</ul>
-<p>Which are all features that github has built in natively. </p>
-                    
-                        <a href="/blog/setting-up-a-private-gitlab-server-on-ubuntu-1604/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/blog/setting-up-a-private-gitlab-server-on-ubuntu-1604/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1555352729/posts/st-basils-moscow.jpg"/>
+                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1555352082/posts/south-africa-penguins.jpg"/>
                 </div>
             </a>
             
