@@ -269,6 +269,108 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/blog/easy-push-to-deploy-for-laravel-with-gitlab-ci/">
+                            Easy push to deploy for Laravel with Gitlab CI
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2020-03-10T10:13:49+00:00">
+	
+		    Mar 10, 2020
+    	
+    </time>
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <p>Recently I wrote about <a href="/blog/in-depth-gitlab-ci-with-laravel-apps/">my current Gitlab CI process</a>, when it came to the deployment part of the process I showed how I was handling it using a tool called <a href="https://github.com/lorisleiva/laravel-deployer" target="_blank" rel="noopener">Laravel deployer</a> but I didn’t breakdown what laravel deployer was doing and how I had it configured.</p>
+<p>The Laravel deployer docs are pretty good however I found a couple of server config issues that I always find myself referring back to when setting up auto deployment. Mostly to automatically restart Laravel Horizon and restarting Php-fpm without needing sudo privileges.</p>
+<p>Lets imagine I was going to a set up Gitlab CI / CD for a fictional project hosted over on the fictional domain of <code>deployer.talvbansal.com</code> with a <a href="https://gitlab.com/talvbansal/deployer-example" target="_blank" rel="noopener">real repository here</a> that is hosted on somewhere like Linode, Digital Ocean or even AWS.</p>
+                    
+                        <a href="/blog/easy-push-to-deploy-for-laravel-with-gitlab-ci/" class="postShorten-excerpt_link link">
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+            <a href="/blog/easy-push-to-deploy-for-laravel-with-gitlab-ci/">
+                <div class="postShorten-thumbnailimg">
+                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1583496063/posts/franklin-street-train.jpg"/>
+                </div>
+            </a>
+            
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-right">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a class="link-unstyled" href="/blog/in-depth-gitlab-ci-cd-with-laravel-apps/">
+                            In depth Gitlab CI/CD with Laravel Apps
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2020-03-06T10:13:49+00:00">
+	
+		    Mar 06, 2020
+    	
+    </time>
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>My most read articles on this blog are about <a href="/all-tags/#Gitlab-list">Gitlab CI/CD</a> with PHP. They cover a basic linting, testing and crude deploying process.</p>
+<p>Today I want to look at my current CI/CD process for my Laravel projects in more depth. Currently the pipelines of my projects might vary slightly but is very similar to this:</p>
+<p> <img src="https://res.cloudinary.com/www-talvbansal-me/image/upload/v1583495330/posts/gitlab-ci-pipelines.png" alt="Gitlab Pipeline"></p>
+<p> So there are 5 main stages in the process:</p>
+<ul>
+<li><strong>Preparation</strong> - The pulling down of dependencies and storing them in an artifact</li>
+<li><strong>Syntax</strong> - Check code syntax</li>
+<li><strong>Testing</strong> - Run unit tests</li>
+<li><strong>Building</strong> - Build assets</li>
+<li><strong>Deployment</strong> - Deploying to an appropriate server</li>
+</ul>
+<p>The stages are processed in order with each stage containing one or many tasks. Should one task fails in a stage then the whole pipeline stops and is marked as failed.</p>
+<p>To run the pipelines I make use of gitlabs free tier which gives you access to 2000 shared minutes per month as well as a runner on a server I have. More about setting that up can be found <a href="/blog/maximising-gitlab-ci-s-free-tier/">here</a>.</p>
+                    
+                        <a href="/blog/in-depth-gitlab-ci-cd-with-laravel-apps/" class="postShorten-excerpt_link link">
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+            <a href="/blog/in-depth-gitlab-ci-cd-with-laravel-apps/">
+                <div class="postShorten-thumbnailimg">
+                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1583496063/posts/long-island-city-skyline.jpg"/>
+                </div>
+            </a>
+            
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-right">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/blog/running-laravels-scheduler-as-a-non-root-user/">
                             Running Laravels scheduler as a non-root user
                         </a>
@@ -683,107 +785,6 @@
         
     </article>
     
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/maximising-gitlab-ci-s-free-tier/">
-                            Maximizing Gitlab&#39;s CI&#39;s Free Tier
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-11-11T17:07:30+00:00">
-	
-		    Nov 11, 2019
-    	
-    </time>
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <p>Last year I began working at a new startup - <a href="https://nx-technology.com" target="_blank" rel="noopener">NX Technology</a>. </p>
-<p>As a start up with limited funding we’re constantly looking for efficiencies and ways to get the most out of what we already have whether that be in hardware or software. </p>
-<p>Whilst previously I’ve set up and <a href="/blog/setting-up-a-private-gitlab-server-on-ubuntu-1604/">self hosted a gitlab instance</a> at NX we needed to get things up and running asap so we decided to use the gitlabs free tier.</p>
-<p>At the time of writing the bronze tier comes with unlimited private repositories and 2000 gitlab ci minutes using gitlab’s shared runners.</p>
-<p>One of the things I love about this is that once those minutes are up you can either <a href="https://customers.gitlab.com/plans" target="_blank" rel="noopener">pay for more</a> or use your own runners to process jobs for your projects.</p>
-<p>We have an old -nothing special- server which we’ve set up a gitlab runner on that will handle jobs for us along with gitlab’s shared runners and when our free minutes run out all jobs will run through that server.</p>
-<p>Since most of the time when you’re pushing code to gitlab your laptop will be on, you can use your development laptop to help out too!</p>
-                    
-                        <a href="/blog/maximising-gitlab-ci-s-free-tier/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/blog/maximising-gitlab-ci-s-free-tier/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1573492411/posts/welvegonden-lion.jpg"/>
-                </div>
-            </a>
-            
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/human-readable-dates-with-dayjs-in-vue-js/">
-                            Human readable dates with Dayjs in Vue
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-05-19T18:13:40+01:00">
-	
-		    May 19, 2019
-    	
-    </time>
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <p>Recently I blogged about replacing <a href="https://momentjs.com/" target="_blank" rel="noopener">Moment.js</a> with a lightweight alternative <a href="https://github.com/iamkun/dayjs" target="_blank" rel="noopener">Day.js</a>.</p>
-<p>In Laravel, when working with dates I’ve been used to using the <a href="https://carbon.nesbot.com/" target="_blank" rel="noopener">Carbon</a> method <code>diffForHumans</code>. </p>
-<p>It gives us a date value relative to an optional given date, but it defaults to now. Examples of output from the diffForHumans method looks like:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- 5 minutes ago</span><br><span class="line">- One week ago</span><br><span class="line">- Last Year</span><br></pre></td></tr></table></figure>
-<p>Rather than: </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">2019-05-19 18:08:40</span><br><span class="line">2019-05-12 18:13:40</span><br><span class="line">2018-05-19 18:13:40</span><br></pre></td></tr></table></figure>
-<p>We can do the same with Moment.js using the <code>fromNow</code> method. Given that Day.js is supposed to have the same API as Moment.js I assumed that the <code>fromNow</code> method would “Just work”.</p>
-<p>Turns out that it didn’t. But with some small changes to our code we can get the same <code>fromNow</code> method working with Day.js.</p>
-                    
-                        <a href="/blog/human-readable-dates-with-dayjs-in-vue-js/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/blog/human-readable-dates-with-dayjs-in-vue-js/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1558287756/posts/stockholm-brunkeberg-tunnel.jpg"/>
-                </div>
-            </a>
-            
-        
-    </article>
-    
     <div class="pagination-bar">
     <ul class="pagination">
         
@@ -1168,7 +1169,7 @@
                 data-message-zero="no post found"
                 data-message-one="1 post found"
                 data-message-other="{n} posts found">
-                36 posts found
+                38 posts found
             </p>
         </div>
     </div>
