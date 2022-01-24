@@ -269,6 +269,57 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/blog/fixing-gitlab-runner-ci-not-being-able-to-connect-to-the-docker-instance/">
+                            Fixing gitlab-runner ci not being able to connect to the docker instance
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2021-12-31T23:14:50+00:00">
+	
+		    Dec 31, 2021
+    	
+    </time>
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <p>Recently I set up an additional gitlab runner on my development laptop so that it could pick up jobs.</p>
+<p><a href="https://docs.gitlab.com/runner/install/docker.html" target="_blank" rel="noopener">https://docs.gitlab.com/runner/install/docker.html</a></p>
+<p>Failed job example</p>
+<p><a href="https://gitlab.com/nx-tech/vehicle-appraisal-server/-/jobs/1933131417" target="_blank" rel="noopener">https://gitlab.com/nx-tech/vehicle-appraisal-server/-/jobs/1933131417</a></p>
+<p>key lines</p>
+<p>$ docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY<br>WARNING! Using –password via the CLI is insecure. Use –password-stdin.<br>error during connect: Post <a href="http://docker:2375/v1.40/auth" target="_blank" rel="noopener">http://docker:2375/v1.40/auth</a>: dial tcp: lookup docker on 8.8.8.8:53: no such host</p>
+<p>Fix</p>
+<p><a href="https://techoverflow.net/2021/01/12/how-to-fix-gitlab-ci-error-during-connect-post-http-docker2375-v1-40-auth-dial-tcp-lookup-docker-on-no-such-host/" target="_blank" rel="noopener">https://techoverflow.net/2021/01/12/how-to-fix-gitlab-ci-error-during-connect-post-http-docker2375-v1-40-auth-dial-tcp-lookup-docker-on-no-such-host/</a></p>
+                    
+                        <a href="/blog/fixing-gitlab-runner-ci-not-being-able-to-connect-to-the-docker-instance/" class="postShorten-excerpt_link link">
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+            <a href="/blog/fixing-gitlab-runner-ci-not-being-able-to-connect-to-the-docker-instance/">
+                <div class="postShorten-thumbnailimg">
+                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,h_280/v1555344239/posts/jaipur-hawa-mahal.jpg"/>
+                </div>
+            </a>
+            
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-right">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/blog/replacing-redis-with-dynamodb-and-sqs-for-local-docker-development/">
                             Replacing Redis with DynamoDB and SQS for Local Docker Development
                         </a>
@@ -339,7 +390,7 @@
             
                 <div class="postShorten-excerpt">
                     <p>I’ve pretty much switched to using docker for everything when doing local development now. </p>
-<p>My set up involves using a <code>docker-compose.yml</code> file for the core application dependencies that can be run in production and a <code>docker-composer.override.yml</code> file for development. This override file is mostly a load of “support” containers that get used in development, things like php, artisan, npm as well as things like mysql and redis that would be handled elsewhere in production.</p>
+<p>My set up involves using a <code>docker-compose.yml</code> file for the core application dependencies that can be run in production and a <code>docker-compose.override.yml</code> file for development. This override file is mostly a load of “support” containers that get used in development, things like php, artisan, npm as well as things like mysql and redis that would be handled elsewhere in production.</p>
 <p>Since switching to this development model I’ve just accepted not getting around to getting BrowserSync working· This weekend whilst battling some other issues my fingers got tired of pressing ctrl+r every few seconds so I figured I’d give myself a win by trying to tackle this.</p>
 <p>The <a href="https://laravel-mix.com/docs/main/browsersync" target="_blank" rel="noopener">Laravel mix docs</a> have a brief section on BrowserSync but theres not enough to get BrowserSync working for our config.</p>
                     
@@ -736,52 +787,6 @@ mix.sass(&#39;resources/css/app.scss&#39;, &#39;public/css&#39;)
         
     </article>
     
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/blog/easy-push-to-deploy-for-laravel-with-gitlab-ci/">
-                            Easy push to deploy for Laravel with Gitlab CI
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2020-03-10T10:13:49+00:00">
-	
-		    Mar 10, 2020
-    	
-    </time>
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <p>Recently I wrote about <a href="/blog/in-depth-gitlab-ci-with-laravel-apps/">my current Gitlab CI process</a>, when it came to the deployment part of the process I showed how I was handling it using a tool called <a href="https://github.com/lorisleiva/laravel-deployer" target="_blank" rel="noopener">Laravel deployer</a> but I didn’t breakdown what laravel deployer was doing and how I had it configured.</p>
-<p>The Laravel deployer docs are pretty good however I found a couple of server config issues that I always find myself referring back to when setting up auto deployment. Mostly to automatically restart Laravel Horizon and restarting Php-fpm without needing sudo privileges.</p>
-<p>Lets imagine I was going to a set up Gitlab CI / CD for a fictional project hosted over on the fictional domain of <code>deployer.talvbansal.com</code> with a <a href="https://gitlab.com/talvbansal/deployer-example" target="_blank" rel="noopener">real repository here</a> that is hosted on somewhere like Linode, Digital Ocean or even AWS.</p>
-                    
-                        <a href="/blog/easy-push-to-deploy-for-laravel-with-gitlab-ci/" class="postShorten-excerpt_link link">
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-            <a href="/blog/easy-push-to-deploy-for-laravel-with-gitlab-ci/">
-                <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1583496063/posts/franklin-street-train.jpg"/>
-                </div>
-            </a>
-            
-        
-    </article>
-    
     <div class="pagination-bar">
     <ul class="pagination">
         
@@ -803,7 +808,7 @@ mix.sass(&#39;resources/css/app.scss&#39;, &#39;public/css&#39;)
 
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
-        Copyrights &copy; 2021 Talv Bansal. All Rights Reserved.
+        Copyrights &copy; 2022 Talv Bansal. All Rights Reserved.
     </span>
 </footer>
 
@@ -1159,7 +1164,7 @@ mix.sass(&#39;resources/css/app.scss&#39;, &#39;public/css&#39;)
                 data-message-zero="no post found"
                 data-message-one="1 post found"
                 data-message-other="{n} posts found">
-                37 posts found
+                38 posts found
             </p>
         </div>
     </div>

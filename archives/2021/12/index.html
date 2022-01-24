@@ -7,7 +7,7 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <meta name="generator" content="TalvBansal.me"/>
-    <title>Tag: Linux - TalvBansal.me</title>
+    <title>Archives: 2021/12 - TalvBansal.me</title>
     <meta name="author" content="Talv Bansal"/>
     
         <meta name="keywords" content="gitlab,github,javascript,es6,laravel,php,vue,vue.js,development,full stack,CI/CD,docker,devops,aws,"/>
@@ -19,7 +19,7 @@
     <script type="application/ld+json">{}</script> <meta name="description" content="Tales of a full stack developer">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="TalvBansal.me">
-<meta property="og:url" content="https://talvbansal.me/tags/Linux/index.html">
+<meta property="og:url" content="https://talvbansal.me/archives/2021/12/index.html">
 <meta property="og:site_name" content="TalvBansal.me">
 <meta property="og:description" content="Tales of a full stack developer">
 <meta property="og:locale" content="en_US">
@@ -269,15 +269,15 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/blog/rsync-ing-data-between-servers/">
-                            RSync-ing Data Between Servers
+                        <a class="link-unstyled" href="/blog/fixing-gitlab-runner-ci-not-being-able-to-connect-to-the-docker-instance/">
+                            Fixing gitlab-runner ci not being able to connect to the docker instance
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2017-08-20T15:10:44+01:00">
+    <time datetime="2021-12-31T23:14:50+00:00">
 	
-		    Aug 20, 2017
+		    Dec 31, 2021
     	
     </time>
     
@@ -286,10 +286,16 @@
             </div>
             
                 <div class="postShorten-excerpt">
-                    <p>After moving to NYC this week, I’ve found the need to move sets of data from my local machine to a server I have back at home in the UK.</p>
-<p>Whilst I use <a href="https://www.resilio.com/" target="_blank" rel="noopener">Resilio sync</a> to keep things that i use regularly in sync between a number of devices this was more of a one off type deal so I decided to use the trusty command line tool rsync.<br>
+                    <p>Recently I set up an additional gitlab runner on my development laptop so that it could pick up jobs.</p>
+<p><a href="https://docs.gitlab.com/runner/install/docker.html" target="_blank" rel="noopener">https://docs.gitlab.com/runner/install/docker.html</a></p>
+<p>Failed job example</p>
+<p><a href="https://gitlab.com/nx-tech/vehicle-appraisal-server/-/jobs/1933131417" target="_blank" rel="noopener">https://gitlab.com/nx-tech/vehicle-appraisal-server/-/jobs/1933131417</a></p>
+<p>key lines</p>
+<p>$ docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY<br>WARNING! Using –password via the CLI is insecure. Use –password-stdin.<br>error during connect: Post <a href="http://docker:2375/v1.40/auth" target="_blank" rel="noopener">http://docker:2375/v1.40/auth</a>: dial tcp: lookup docker on 8.8.8.8:53: no such host</p>
+<p>Fix</p>
+<p><a href="https://techoverflow.net/2021/01/12/how-to-fix-gitlab-ci-error-during-connect-post-http-docker2375-v1-40-auth-dial-tcp-lookup-docker-on-no-such-host/" target="_blank" rel="noopener">https://techoverflow.net/2021/01/12/how-to-fix-gitlab-ci-error-during-connect-post-http-docker2375-v1-40-auth-dial-tcp-lookup-docker-on-no-such-host/</a></p>
                     
-                        <a href="/blog/rsync-ing-data-between-servers/" class="postShorten-excerpt_link link">
+                        <a href="/blog/fixing-gitlab-runner-ci-not-being-able-to-connect-to-the-docker-instance/" class="postShorten-excerpt_link link">
                             Continue reading
                         </a>
                         
@@ -298,9 +304,9 @@
             
         </div>
         
-            <a href="/blog/rsync-ing-data-between-servers/">
+            <a href="/blog/fixing-gitlab-runner-ci-not-being-able-to-connect-to-the-docker-instance/">
                 <div class="postShorten-thumbnailimg">
-                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,w_280/v1555352680/posts/new-york-skyline.jpg"/>
+                    <img alt="" src="https://res.cloudinary.com/www-talvbansal-me/image/upload/c_scale,h_280/v1555344239/posts/jaipur-hawa-mahal.jpg"/>
                 </div>
             </a>
             
@@ -316,6 +322,7 @@
 </div>
 
 </section>
+
 
 
                 <footer id="footer" class="main-content-wrap">
